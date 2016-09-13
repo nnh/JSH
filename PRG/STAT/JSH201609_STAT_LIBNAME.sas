@@ -1,4 +1,4 @@
-﻿**********************************************************************;
+**********************************************************************;
 * Project           : JSH201609
 *
 * Program name      : JSH201609_STAT_LIBNAME.sas
@@ -45,6 +45,8 @@ LIBNAME LIBADS  "&_WK_PATH.\ADS"              access = readonly;
 %LET OUT  = &_WK_PATH.\RESULT ;
 %LET OUTG = &_WK_PATH.\RESULT\GRAPH ;
 %LET LOG  = &_WK_PATH.\LOG\STAT;
+
+%ANNOMAC;
 
 OPTIONS  VALIDVARNAME=V7
          FMTSEARCH = (LIBADS WORK)

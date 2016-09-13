@@ -1,4 +1,4 @@
-п»ї**********************************************************************;
+**********************************************************************;
 * Project           : JSH201609
 *
 * Program name      : JSH201609_STAT_MH002.sas
@@ -58,7 +58,7 @@ DATA  MAIN;
   TRTPN=SEX+1;
   OUTPUT;
   MHGRPCOD=0;
-  MHGRPTERM="е…ЁдЅ“";
+  MHGRPTERM="‘S‘М";
   OUTPUT;
 RUN ;
 
@@ -104,7 +104,7 @@ RUN ;
 
 PROC FORMAT ; PICTURE _PCTF LOW - HIGH = "000009" ; RUN ;
 PROC FORMAT;
- VALUE AGEF  19='0-4ж­і'
+ VALUE AGEF  19='0-4ЌО'
              18='5-9'
              17='10-14'
              16='15-19'
@@ -122,7 +122,7 @@ PROC FORMAT;
              4='75-79'
              3='80-84'
              2='85-89'
-             1='90ж­ід»ҐдёЉ';
+             1='90ЌО€ИЏг';
 RUN ;
 
 %MACRO BUTT(TIT,ID,LEN1,LEN2,LEN3);
@@ -150,19 +150,19 @@ RUN ;
   RUN;
 
 %MEND;
-%BUTT(е…ЁдЅ“,0,1000,-10000,10000);
-%BUTT(йЄЁй«„еў—ж®–жЂ§и…«зЌ,1,100,-1000,1000);
-%BUTT(пј°пј¤пј§пј¦пјІпјЎгЂЃпј°пј¤пј§пј¦пјІпјўгЂЃпј¦пј§пј¦пјІпј‘з•°еёёз—‡,2,10,-100,100);
-%BUTT(йЄЁй«„з•°еЅўж€ђгѓ»йЄЁй«„еў—ж®–жЂ§и…«зЌ,3,50,-500,500);
-%BUTT(йЄЁй«„з•°еЅўж€ђз—‡еЂ™зѕ¤,4,200,-2000,2000);
-%BUTT(жЂҐжЂ§йЄЁй«„жЂ§з™ЅиЎЂз—…гЃЉг‚€гЃій–ўйЂЈи…«зЌ,5,100,-1000,1000);
-%BUTT(зі»зµ±дёЌжЋжЂҐжЂ§з™ЅиЎЂз—…,6,10,-100,100);
-%BUTT(е‰Ќй§†гѓЄгѓігѓ‘зђѓзі»и…«зЌ,7,50,-500,500);
-%BUTT(ж€ђз†џпјўзґ°иѓћи…«зЌпј€гѓЄгѓігѓ‘и…«гѓ»йЄЁй«„и…«пј‰,8,600,-6000,6000);
-%BUTT(ж€ђз†џпјґгѓ»пј®пј«зґ°иѓћи…«зЌ,9,100,-1000,1000);
-%BUTT(гѓ›г‚ёг‚­гѓігѓЄгѓігѓ‘и…«,10,50,-500,500);
-%BUTT(зµ„з№”зђѓгѓ»жЁ№зЉ¶зґ°иѓћи…«зЌ,11,10,-100,100);
-%BUTT(з§»ж¤ЌеѕЊгѓЄгѓігѓ‘еў—ж®–жЂ§з–ѕж‚Ј,12,10,-100,100);
+%BUTT(‘S‘М,0,1000,-10000,10000);
+%BUTT(Ќњђ‘‘ќђBђ«Ћоб‡,1,100,-1000,1000);
+%BUTT(‚o‚c‚f‚e‚q‚`ЃA‚o‚c‚f‚e‚q‚aЃA‚e‚f‚e‚q‚P€ЩЏнЏЗ,2,10,-100,100);
+%BUTT(Ќњђ‘€ЩЊ`ђ¬ЃEЌњђ‘‘ќђBђ«Ћоб‡,3,50,-500,500);
+%BUTT(Ќњђ‘€ЩЊ`ђ¬ЏЗЊуЊQ,4,200,-2000,2000);
+%BUTT(‹}ђ«Ќњђ‘ђ«”’ЊЊ•a‚Ё‚ж‚СЉЦAЋоб‡,5,100,-1000,1000);
+%BUTT(Њn“ќ•s–ѕ‹}ђ«”’ЊЊ•a,6,10,-100,100);
+%BUTT(‘O‹мѓЉѓ“ѓp‹…ЊnЋоб‡,7,50,-500,500);
+%BUTT(ђ¬Џn‚aЌЧ–EЋоб‡ЃiѓЉѓ“ѓpЋоЃEЌњђ‘ЋоЃj,8,600,-6000,6000);
+%BUTT(ђ¬Џn‚sЃE‚m‚jЌЧ–EЋоб‡,9,100,-1000,1000);
+%BUTT(ѓzѓWѓLѓ“ѓЉѓ“ѓpЋо,10,50,-500,500);
+%BUTT(‘gђD‹…ЃEЋчЏуЌЧ–EЋоб‡,11,10,-100,100);
+%BUTT(€ЪђAЊгѓЉѓ“ѓp‘ќђBђ«ЋѕЉі,12,10,-100,100);
 
 /*** Excel Output ***/
 
@@ -173,27 +173,27 @@ DATA _NULL_;
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.0.png"")]";
   PUT '[SELECT("R27C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.1.png"")]";
-  PUT '[SELECT("R50C1")]';
+  PUT '[SELECT("R50C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.2.png"")]";
   PUT '[SELECT("R73C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.3.png"")]";
-  PUT '[SELECT("R96C1")]';
+  PUT '[SELECT("R96C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.4.png"")]";
   PUT '[SELECT("R119C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.5.png"")]";
-  PUT '[SELECT("R142C1")]';
+  PUT '[SELECT("R142C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.6.png"")]";
   PUT '[SELECT("R165C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.7.png"")]";
-  PUT '[SELECT("R188C1")]';
+  PUT '[SELECT("R188C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.8.png"")]";
   PUT '[SELECT("R211C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.9.png"")]";
-  PUT '[SELECT("R234C1")]';
+  PUT '[SELECT("R234C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.10.png"")]";
   PUT '[SELECT("R257C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.11.png"")]";
-  PUT '[SELECT("R280C1")]';
+  PUT '[SELECT("R280C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.12.png"")]";
 RUN;
 
@@ -204,11 +204,11 @@ DATA _NULL_;
    FILE SYS;
    PUT "[WORKBOOK.ACTIVATE(""[JSH201609_STAT_RES_&FILE..xlsx]&FILE."")]";
    PUT '[SELECT("R1")]';
-   PUT '[FONT.PROPERTIES("пј­пјі жЋжњќ",,11)]';
+   PUT '[FONT.PROPERTIES("‚l‚r –ѕ’©",,11)]';
    PUT '[FONT.PROPERTIES("Times New Roman",,11)]';
 
    PUT '[SELECT("R2:R1048576")]';
-   PUT '[FONT.PROPERTIES("пј­пјі жЋжњќ",,9)]';
+   PUT '[FONT.PROPERTIES("‚l‚r –ѕ’©",,9)]';
    PUT '[FONT.PROPERTIES("Times New Roman",,9)]';
 RUN;
 

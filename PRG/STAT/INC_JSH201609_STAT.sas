@@ -1,4 +1,4 @@
-﻿**********************************************************************;
+**********************************************************************;
 * Project           : JSH201609
 *
 * Program name      : INC_JSH201609_STAT.sas
@@ -46,4 +46,7 @@
 %CLE;%inc "&PROJ.\JSH201609_STAT_MH001d.sas" / source2 ;
 %CLE;%inc "&PROJ.\JSH201609_STAT_MH002.sas" / source2 ;
 %CLE;%inc "&PROJ.\JSH201609_STAT_MH003.sas" / source2 ;
-
+%CLE;%inc "&PROJ.\JSH201609_STAT_MH004a.sas" / source2 ;
+%CLE;%inc "&PROJ.\JSH201609_STAT_MH004b.sas" / source2 ;
+%CLE;%inc "&PROJ.\JSH201609_STAT_MH006a.sas" / source2 ;
+%CLE;%inc "&PROJ.\JSH201609_STAT_MH006b.sas" / source2 ;

@@ -1,4 +1,4 @@
-Ôªø**********************************************************************;
+**********************************************************************;
 * Project           : JSH201609
 *
 * Program name      : JSH201609_STAT_MH003.sas
@@ -187,11 +187,11 @@ DATA _NULL_;
    FILE SYS;
    PUT "[WORKBOOK.ACTIVATE(""[JSH201609_STAT_RES_&FILE..xlsx]&FILE."")]";
    PUT '[SELECT("R1")]';
-   PUT '[FONT.PROPERTIES("Ôº≠Ôº≥ ÊòéÊúù",,11)]';
+   PUT '[FONT.PROPERTIES("ÇlÇr ñæí©",,11)]';
    PUT '[FONT.PROPERTIES("Times New Roman",,11)]';
 
    PUT '[SELECT("R2:R1048576")]';
-   PUT '[FONT.PROPERTIES("Ôº≠Ôº≥ ÊòéÊúù",,9)]';
+   PUT '[FONT.PROPERTIES("ÇlÇr ñæí©",,9)]';
    PUT '[FONT.PROPERTIES("Times New Roman",,9)]';
 RUN;
 

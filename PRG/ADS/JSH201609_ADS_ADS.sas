@@ -1,4 +1,4 @@
-﻿**********************************************************************;
+**********************************************************************;
 * Project           : JSH201609
 *
 * Program name      : JSH201609_ADS_ADS.sas
@@ -68,6 +68,14 @@ DATA  WK01;
   ELSE AGEN=INT(AGEN-1);
   IF  AGEN<=0 THEN AGEN=AGEN+100;
   AREA=INT(SITEID/10000000);
+  IF  AREA = 1 THEN AREA2 = 1;
+  ELSE IF 2 <= AREA <= 7 THEN AREA2 = 2;
+  ELSE IF 8 <= AREA <=15 OR 19<= AREA <=20 THEN AREA2 = 3;
+  ELSE IF 16<= AREA <=18 OR 21<= AREA <=24 THEN AREA2 = 4;
+  ELSE IF 25<= AREA <=30 THEN AREA2 = 5;
+  ELSE IF 31<= AREA <=39 THEN AREA2 = 6;
+  ELSE IF 40<= AREA <=47 THEN AREA2 = 7;
+
   IF  0 <= AGEN < 5 THEN AGECAT1N=19;
   ELSE IF  5  <= AGEN < 10 THEN AGECAT1N=18;
   ELSE IF  10 <= AGEN < 15 THEN AGECAT1N=17;

@@ -1,4 +1,4 @@
-п»ї**********************************************************************;
+**********************************************************************;
 * Project           : JSH201609
 *
 * Program name      : JSH201609_STAT_MH001c.sas
@@ -62,7 +62,7 @@ PROC TEMPLATE;
   DEFINE STATGRAPH MYPIECHART;
     DYNAMIC _X;
     BEGINGRAPH;
-    ENTRYTITLE "е…ЁдЅ“";
+    ENTRYTITLE "‘S‘М";
       LAYOUT REGION;
         PIECHART CATEGORY=_X 
           /   NAME="MHGRPTERM"
@@ -117,18 +117,18 @@ RUN;
 
 %MEND;
 
-%PIE(йЄЁй«„еў—ж®–жЂ§и…«зЌ,1);
-%PIE(пј°пј¤пј§пј¦пјІпјЎгЂЃпј°пј¤пј§пј¦пјІпјўгЂЃпј¦пј§пј¦пјІпј‘з•°еёёз—‡,2);
-%PIE(йЄЁй«„з•°еЅўж€ђгѓ»йЄЁй«„еў—ж®–жЂ§и…«зЌ,3);
-%PIE(йЄЁй«„з•°еЅўж€ђз—‡еЂ™зѕ¤,4);
-%PIE(жЂҐжЂ§йЄЁй«„жЂ§з™ЅиЎЂз—…гЃЉг‚€гЃій–ўйЂЈи…«зЌ,5);
-%PIE(зі»зµ±дёЌжЋжЂҐжЂ§з™ЅиЎЂз—…,6);
-%PIE(е‰Ќй§†гѓЄгѓігѓ‘зђѓзі»и…«зЌ,7);
-%PIE(ж€ђз†џпјўзґ°иѓћи…«зЌпј€гѓЄгѓігѓ‘и…«гѓ»йЄЁй«„и…«пј‰,8);
-%PIE(ж€ђз†џпјґгѓ»пј®пј«зґ°иѓћи…«зЌ,9);
-%PIE(гѓ›г‚ёг‚­гѓігѓЄгѓігѓ‘и…«,10);
-%PIE(зµ„з№”зђѓгѓ»жЁ№зЉ¶зґ°иѓћи…«зЌ,11);
-%PIE(з§»ж¤ЌеѕЊгѓЄгѓігѓ‘еў—ж®–жЂ§з–ѕж‚Ј,12);
+%PIE(Ќњђ‘‘ќђBђ«Ћоб‡,1);
+%PIE(‚o‚c‚f‚e‚q‚`ЃA‚o‚c‚f‚e‚q‚aЃA‚e‚f‚e‚q‚P€ЩЏнЏЗ,2);
+%PIE(Ќњђ‘€ЩЊ`ђ¬ЃEЌњђ‘‘ќђBђ«Ћоб‡,3);
+%PIE(Ќњђ‘€ЩЊ`ђ¬ЏЗЊуЊQ,4);
+%PIE(‹}ђ«Ќњђ‘ђ«”’ЊЊ•a‚Ё‚ж‚СЉЦAЋоб‡,5);
+%PIE(Њn“ќ•s–ѕ‹}ђ«”’ЊЊ•a,6);
+%PIE(‘O‹мѓЉѓ“ѓp‹…ЊnЋоб‡,7);
+%PIE(ђ¬Џn‚aЌЧ–EЋоб‡ЃiѓЉѓ“ѓpЋоЃEЌњђ‘ЋоЃj,8);
+%PIE(ђ¬Џn‚sЃE‚m‚jЌЧ–EЋоб‡,9);
+%PIE(ѓzѓWѓLѓ“ѓЉѓ“ѓpЋо,10);
+%PIE(‘gђD‹…ЃEЋчЏуЌЧ–EЋоб‡,11);
+%PIE(€ЪђAЊгѓЉѓ“ѓp‘ќђBђ«ЋѕЉі,12);
 
 /*** Excel Output ***/
 
@@ -139,27 +139,27 @@ DATA _NULL_;
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE..png"")]";
   PUT '[SELECT("R27C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.1.png"")]";
-  PUT '[SELECT("R50C1")]';
+  PUT '[SELECT("R50C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.2.png"")]";
   PUT '[SELECT("R73C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.3.png"")]";
-  PUT '[SELECT("R96C1")]';
+  PUT '[SELECT("R96C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.4.png"")]";
   PUT '[SELECT("R119C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.5.png"")]";
-  PUT '[SELECT("R142C1")]';
+  PUT '[SELECT("R142C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.6.png"")]";
   PUT '[SELECT("R165C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.7.png"")]";
-  PUT '[SELECT("R188C1")]';
+  PUT '[SELECT("R188C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.8.png"")]";
   PUT '[SELECT("R211C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.9.png"")]";
-  PUT '[SELECT("R234C1")]';
+  PUT '[SELECT("R234C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.10.png"")]";
   PUT '[SELECT("R257C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.11.png"")]";
-  PUT '[SELECT("R280C1")]';
+  PUT '[SELECT("R280C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.12.png"")]";
 RUN;
 
@@ -170,11 +170,11 @@ DATA _NULL_;
    FILE SYS;
    PUT "[WORKBOOK.ACTIVATE(""[JSH201609_STAT_RES_&FILE..xlsx]&FILE."")]";
    PUT '[SELECT("R1")]';
-   PUT '[FONT.PROPERTIES("пј­пјі жЋжњќ",,11)]';
+   PUT '[FONT.PROPERTIES("‚l‚r –ѕ’©",,11)]';
    PUT '[FONT.PROPERTIES("Times New Roman",,11)]';
 
    PUT '[SELECT("R2:R1048576")]';
-   PUT '[FONT.PROPERTIES("пј­пјі жЋжњќ",,9)]';
+   PUT '[FONT.PROPERTIES("‚l‚r –ѕ’©",,9)]';
    PUT '[FONT.PROPERTIES("Times New Roman",,9)]';
 RUN;
 

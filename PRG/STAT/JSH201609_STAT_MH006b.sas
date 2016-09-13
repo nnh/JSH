@@ -1,4 +1,4 @@
-ï»¿**********************************************************************;
+**********************************************************************;
 * Project           : JSH201609
 *
 * Program name      : JSH201609_STAT_MH006b.sas
@@ -101,6 +101,38 @@ RUN ;
   RUN ;
 %MEND ;
 
+*** Over Rank10;
+%MH( %STR(MHGRPCOD MHGRPTERM MHDECOD MHTERM ) , 3 )
+
+PROC RANK DATA=OUT3 DESCENDING OUT=RANKOUT;
+  VAR VAR1;
+  RANKS RANKA;
+  BY MHGRPCOD MHGRPTERM;
+RUN;
+
+DATA  RANKOUT2 RANKOUT3;
+  KEEP MHDECOD MHTERM RANKA;
+  SET RANKOUT;
+  IF  RANKA <= 9 THEN OUTPUT RANKOUT2;
+  ELSE OUTPUT RANKOUT3;
+RUN ;
+
+PROC SORT DATA=MAIN; BY MHDECOD MHTERM; RUN ;
+PROC SORT DATA=RANKOUT3; BY MHDECOD MHTERM; RUN ;
+
+DATA  RANKOUT4;
+  MERGE  MAIN RANKOUT3;
+  BY  MHDECOD MHTERM;
+RUN ;
+
+DATA  MAIN;
+  SET  RANKOUT4;
+  IF  ^MISSING(RANKA) THEN DO;
+    MHDECOD = 999;
+    MHTERM = "‚»‚Ì‘¼";
+  END ;
+RUN ; 
+
 %MH( %STR(YEARCATN MHGRPCOD MHGRPTERM ) , 2 )
 %MH( %STR(YEARCATN MHGRPCOD MHGRPTERM MHDECOD MHTERM ) , 3 )
 
@@ -112,12 +144,12 @@ RUN ;
 
 %MACRO VLINE(TIT,ID);
   DATA  VLINE&ID. ;
-    LABEL MHTERM="ç–¾æ‚£å(å°åˆ†é¡ž)";
+    LABEL MHTERM="Ž¾Š³–¼(¬•ª—Þ)";
     SET  OUT1;
     IF  MHGRPCOD = &ID.;
   RUN ;
 
-  ODS GRAPHICS ON / HEIGHT = 9CM WIDTH = 12CM IMAGENAME = "&FILE.&ID."
+  ODS GRAPHICS ON / HEIGHT = 10CM WIDTH = 18CM IMAGENAME = "&FILE.&ID."
     OUTPUTFMT = PNG RESET = INDEX   ANTIALIASMAX=96100;
   ODS LISTING GPATH = "&OUTG." IMAGE_DPI = 300 ;
 
@@ -130,24 +162,24 @@ RUN ;
     XAXIS TYPE=DISCRETE OFFSETMIN=0.2 OFFSETMAX=0.2
     DISPLAY=(NOLABEL) ;
     YAXIS OFFSETMIN=0.2 OFFSETMAX=0.2
-    LABEL="ç²—ç½¹æ‚£çŽ‡(%)";
+    LABEL="‘eœëŠ³—¦(%)";
     KEYLEGEND / LOCATION=OUTSIDE ;
   RUN ;
 
 %MEND;
 
-%VLINE(éª¨é«„å¢—æ®–æ€§è…«ç˜,1);
-%VLINE(ï¼°ï¼¤ï¼§ï¼¦ï¼²ï¼¡ã€ï¼°ï¼¤ï¼§ï¼¦ï¼²ï¼¢ã€ï¼¦ï¼§ï¼¦ï¼²ï¼‘ç•°å¸¸ç—‡,2);
-%VLINE(éª¨é«„ç•°å½¢æˆãƒ»éª¨é«„å¢—æ®–æ€§è…«ç˜,3);
-%VLINE(éª¨é«„ç•°å½¢æˆç—‡å€™ç¾¤,4);
-%VLINE(æ€¥æ€§éª¨é«„æ€§ç™½è¡€ç—…ãŠã‚ˆã³é–¢é€£è…«ç˜,5);
-%VLINE(ç³»çµ±ä¸æ˜Žæ€¥æ€§ç™½è¡€ç—…,6);
-%VLINE(å‰é§†ãƒªãƒ³ãƒ‘çƒç³»è…«ç˜,7);
-%VLINE(æˆç†Ÿï¼¢ç´°èƒžè…«ç˜ï¼ˆãƒªãƒ³ãƒ‘è…«ãƒ»éª¨é«„è…«ï¼‰,8);
-%VLINE(æˆç†Ÿï¼´ãƒ»ï¼®ï¼«ç´°èƒžè…«ç˜,9);
-%VLINE(ãƒ›ã‚¸ã‚­ãƒ³ãƒªãƒ³ãƒ‘è…«,10);
-%VLINE(çµ„ç¹”çƒãƒ»æ¨¹çŠ¶ç´°èƒžè…«ç˜,11);
-%VLINE(ç§»æ¤å¾Œãƒªãƒ³ãƒ‘å¢—æ®–æ€§ç–¾æ‚£,12);
+%VLINE(œ‘‘B«Žîá‡,1);
+%VLINE(‚o‚c‚f‚e‚q‚`A‚o‚c‚f‚e‚q‚aA‚e‚f‚e‚q‚PˆÙíÇ,2);
+%VLINE(œ‘ˆÙŒ`¬Eœ‘‘B«Žîá‡,3);
+%VLINE(œ‘ˆÙŒ`¬ÇŒóŒQ,4);
+%VLINE(‹}«œ‘«”’ŒŒ•a‚¨‚æ‚ÑŠÖ˜AŽîá‡,5);
+%VLINE(Œn“•s–¾‹}«”’ŒŒ•a,6);
+%VLINE(‘O‹ìƒŠƒ“ƒp‹…ŒnŽîá‡,7);
+%VLINE(¬n‚a×–EŽîá‡iƒŠƒ“ƒpŽîEœ‘Žîj,8);
+%VLINE(¬n‚sE‚m‚j×–EŽîá‡,9);
+%VLINE(ƒzƒWƒLƒ“ƒŠƒ“ƒpŽî,10);
+%VLINE(‘gD‹…EŽ÷ó×–EŽîá‡,11);
+%VLINE(ˆÚAŒãƒŠƒ“ƒp‘B«Ž¾Š³,12);
 
 /*** Excel Output ***/
 
@@ -156,28 +188,29 @@ DATA _NULL_;
   FILE SYS;
   PUT '[SELECT("R4C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.1.png"")]";
-  PUT '[SELECT("R27C1")]';
+  PUT '[SELECT("R30C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.2.png"")]";
-  PUT '[SELECT("R50C1")]';
+  PUT '[SELECT("R56C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.3.png"")]";
-  PUT '[SELECT("R73C1")]';
+  PUT '[SELECT("R82C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.4.png"")]";
-  PUT '[SELECT("R96C1")]';
+  PUT '[SELECT("R108C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.5.png"")]";
-  PUT '[SELECT("R119C1")]';
+  PUT '[SELECT("R134C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.6.png"")]";
-  PUT '[SELECT("R142C1")]';
+  PUT '[SELECT("R160C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.7.png"")]";
-  PUT '[SELECT("R165C1")]';
+  PUT '[SELECT("R186C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.8.png"")]";
-  PUT '[SELECT("R188C1")]';
+  PUT '[SELECT("R212C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.9.png"")]";
-  PUT '[SELECT("R211C1")]';
+  PUT '[SELECT("R238C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.10.png"")]";
-  PUT '[SELECT("R234C1")]';
+  PUT '[SELECT("R264C1")]';PUT '[SET.PAGE.BREAK()]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.11.png"")]";
-  PUT '[SELECT("R257C1")]';
+  PUT '[SELECT("R290C1")]';
   PUT "[INSERT.PICTURE(""&OUTG.\&FILE.12.png"")]";
+
 RUN;
 
 *** Font;
@@ -187,11 +220,11 @@ DATA _NULL_;
    FILE SYS;
    PUT "[WORKBOOK.ACTIVATE(""[JSH201609_STAT_RES_&FILE..xlsx]&FILE."")]";
    PUT '[SELECT("R1")]';
-   PUT '[FONT.PROPERTIES("ï¼­ï¼³ æ˜Žæœ",,11)]';
+   PUT '[FONT.PROPERTIES("‚l‚r –¾’©",,11)]';
    PUT '[FONT.PROPERTIES("Times New Roman",,11)]';
 
    PUT '[SELECT("R2:R1048576")]';
-   PUT '[FONT.PROPERTIES("ï¼­ï¼³ æ˜Žæœ",,9)]';
+   PUT '[FONT.PROPERTIES("‚l‚r –¾’©",,9)]';
    PUT '[FONT.PROPERTIES("Times New Roman",,9)]';
 RUN;
 
