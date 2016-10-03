@@ -52,6 +52,15 @@
 %MEND ;
 %DS_READ(LIBADS,ADS);
 
+/*** CSV read ***/
+PROC IMPORT OUT= EXT
+  DATAFILE="&EXT.\Japanese population - Data.csv"
+  DBMS=CSV REPLACE;
+  GETNAMES=YES;
+  DATAROW=2;
+  GUESSINGROWS=2000; 
+RUN; 
+
 /* Create a data set of the boundaries for the states */
 DATA JAPAN;
    SET MAPSGFK.JAPAN;
@@ -126,7 +135,7 @@ PROC SORT DATA=OUT5 ; BY AREA2 MHGRPCOD; RUN ;
 DATA  OUT1;
   MERGE  OUT5 OUT4(RENAME=(VAR1=VAR3));
   BY  AREA2 MHGRPCOD ;
-  PCT=ROUND((VAR3/VAR2)*100,0.1);
+/*  PCT=ROUND((VAR3/VAR2)*100,0.1);*/
 RUN ;
 
 DATA  RESPONSE;
@@ -136,6 +145,46 @@ DATA  RESPONSE;
   IF  AREA=0 THEN DELETE;
 RUN ;
 
+/* add 20161009*/
+DATA  POP;
+  SET  EXT;
+  RENAME SCSTRESC = AREA ;
+RUN ;
+
+DATA  POP;
+  SET  POP;
+  IF  AREA = 1 THEN AREA2 = 1;
+  ELSE IF 2 <= AREA <= 7 THEN AREA2 = 2;
+  ELSE IF 8 <= AREA <=15 OR 19<= AREA <=20 THEN AREA2 = 3;
+  ELSE IF 16<= AREA <=18 OR 21<= AREA <=24 THEN AREA2 = 4;
+  ELSE IF 25<= AREA <=30 THEN AREA2 = 5;
+  ELSE IF 31<= AREA <=39 THEN AREA2 = 6;
+  ELSE IF 40<= AREA <=47 THEN AREA2 = 7;
+RUN ;
+
+PROC SORT DATA=POP; BY AREA2; RUN ;
+
+DATA  POP; 
+  DROP POPULAT AREA;
+  RETAIN POPULAT2;
+  SET  POP;
+  BY  AREA2;
+  IF  FIRST.AREA2=1 THEN POPULAT2=0;
+  POPULAT2=POPULAT2+POPULAT;
+  IF  LAST.AREA2=1 THEN OUTPUT;
+RUN ;
+
+PROC SORT DATA=POP; BY AREA2; RUN ;
+PROC SORT DATA=RESPONSE; BY AREA2; RUN ;
+
+DATA  RESPONSE;
+  MERGE  POP RESPONSE;
+  BY  AREA2;
+  PCT=ROUND((VAR3/POPULAT2*100000)/100000,0.1);
+RUN ;
+
+/* end */
+
 PROC SORT DATA=RESPONSE;
    BY ID1;
 RUN;
@@ -144,11 +193,11 @@ RUN;
 PROC FORMAT;
    VALUE MAPFMT
         .='No Data'
-  low-5  ='5% and under'
-  5.1-10 ='Between 5% and 10%'
-  10.1-15='Between 10% and 15%'
-  15.1-20='Between 15% and 20%'
-  20.1-high='Over 20%';
+  low-5  ='5 and under'
+  5.1-10 ='Between 5 and 10'
+  10.1-15='Between 10 and 15'
+  15.1-20='Between 15 and 20'
+  20.1-high='Over 20';
 RUN;
 
 /* Define an attribute map for the response data */
@@ -158,11 +207,11 @@ DATA ATTRMAP;
    INPUT VALUE $20. @22 FILLCOLOR $;
    DATALINES;
 No Data               beige
-5% and under          blue
-Between 5% and 10%    green
-Between 10% and 15%   yellow
-Between 15% and 20%   orange
-Over 20%              red
+5 and under           blue
+Between 5 and 10      green
+Between 10 and 15     yellow
+Between 15 and 20     orange
+Over 20               red
 ;
 run;
 
@@ -203,7 +252,7 @@ run;
              DATASKIN=MATTE NAME='poly';
     /* Label each polygon with the LABEL variable value */
      SCATTER X=XCEN Y=YCEN / MARKERCHAR=LABEL;
-     KEYLEGEND 'poly' / TITLE='Percent Value: ';
+     KEYLEGEND 'poly' / TITLE='per 100,000 population: ';
      XAXIS OFFSETMIN=0.01 OFFSETMAX=0 DISPLAY=NONE;
      YAXIS OFFSETMIN=0.01 OFFSETMAX=0 DISPLAY=NONE;
   RUN;

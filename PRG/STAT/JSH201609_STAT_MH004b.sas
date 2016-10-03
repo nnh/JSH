@@ -52,6 +52,15 @@
 %MEND ;
 %DS_READ(LIBADS,ADS);
 
+/*** CSV read ***/
+PROC IMPORT OUT= EXT
+  DATAFILE="&EXT.\Japanese population - Data.csv"
+  DBMS=CSV REPLACE;
+  GETNAMES=YES;
+  DATAROW=2;
+  GUESSINGROWS=2000; 
+RUN; 
+
 /* Create a data set of the boundaries for the states */
 DATA JAPAN;
    SET MAPSGFK.JAPAN;
@@ -118,7 +127,7 @@ PROC SORT DATA=OUT3 ; BY MHGRPCOD; RUN ;
 DATA  OUT1;
   MERGE  OUT2(RENAME=(VAR1=VAR2)) OUT3;
   BY  MHGRPCOD ;
-  PCT=ROUND((VAR1/VAR2)*100,0.1);
+/*  PCT=ROUND((VAR1/VAR2)*100,0.1);*/
 RUN ;
 
 DATA  RESPONSE;
@@ -128,6 +137,23 @@ DATA  RESPONSE;
   IF  AREA=0 THEN DELETE;
 RUN ;
 
+/* add 20161009*/
+DATA  POP;
+  SET  EXT;
+  RENAME SCSTRESC = AREA ;
+RUN ;
+
+PROC SORT DATA=POP; BY AREA; RUN ;
+PROC SORT DATA=RESPONSE; BY AREA; RUN ;
+
+DATA  RESPONSE;
+  MERGE  POP RESPONSE;
+  BY  AREA;
+  PCT=ROUND((VAR1/POPULAT*100000)/100000,0.1);
+RUN ;
+
+/* end */
+
 PROC SORT DATA=RESPONSE;
    BY ID1;
 RUN;
@@ -136,11 +162,11 @@ RUN;
 PROC FORMAT;
    VALUE MAPFMT
         .='No Data'
-  low-5='5% and under'
-  5.1-10='Between 5% and 10%'
-  10.1-15='Between 10% and 15%'
-  15.1-20='Between 15% and 20%'
-  20.1-high='Over 20%';
+  low-5='5 and under'
+  5.1-10='Between 5 and 10'
+  10.1-15='Between 10 and 15'
+  15.1-20='Between 15 and 20'
+  20.1-high='Over 20';
 RUN;
 
 /* Define an attribute map for the response data */
@@ -150,11 +176,11 @@ DATA ATTRMAP;
    INPUT VALUE $20. @22 FILLCOLOR $;
    DATALINES;
 No Data               beige
-5% and under          blue
-Between 5% and 10%    green
-Between 10% and 15%   yellow
-Between 15% and 20%   orange
-Over 20%              red
+5 and under           blue
+Between 5 and 10      green
+Between 10 and 15     yellow
+Between 15 and 20     orange
+Over 20               red
 ;
 run;
 
@@ -195,7 +221,7 @@ run;
              DATASKIN=MATTE NAME='poly';
     /* Label each polygon with the LABEL variable value */
      SCATTER X=XCEN Y=YCEN / MARKERCHAR=LABEL;
-     KEYLEGEND 'poly' / TITLE='Percent Value: ';
+     KEYLEGEND 'poly' / TITLE='per 100,000 population: ';
      XAXIS OFFSETMIN=0.01 OFFSETMAX=0 DISPLAY=NONE;
      YAXIS OFFSETMIN=0.01 OFFSETMAX=0 DISPLAY=NONE;
   RUN;
