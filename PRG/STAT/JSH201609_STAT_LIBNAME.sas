@@ -45,6 +45,7 @@ LIBNAME LIBADS  "&_WK_PATH.\ADS"              access = readonly;
 %LET OUT  = &_WK_PATH.\RESULT ;
 %LET OUTG = &_WK_PATH.\RESULT\GRAPH ;
 %LET LOG  = &_WK_PATH.\LOG\STAT;
+%LET EXT = &_WK_PATH.\RAWDATA\EXT;
 
 %ANNOMAC;
 
