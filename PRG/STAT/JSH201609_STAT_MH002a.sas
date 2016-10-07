@@ -59,7 +59,7 @@ DATA  MAIN;
   TRTPN=SEX+1;
   OUTPUT;
   MHDECOD=0;
-  MHTERM="ëSëÃ";
+  MHTERM="Total";
   OUTPUT;
 RUN ; 
 
@@ -105,7 +105,7 @@ RUN ;
 
 PROC FORMAT ; PICTURE _PCTF LOW - HIGH = "000009" ; RUN ;
 PROC FORMAT;
- VALUE AGEF  19='0-4çŒ'
+ VALUE AGEF  19='0-4 y.o.'
              18='5-9'
              17='10-14'
              16='15-19'
@@ -123,11 +123,15 @@ PROC FORMAT;
              4='75-79'
              3='80-84'
              2='85-89'
-             1='90çŒà»è„';
+             1='Over 90 y.o.';
 RUN ;
 
 %MACRO BUTT(ID,LEN1=&SCALE.,LEN2=&MINVAL.,LEN3=&MAXVAL.,TIT=&TERM.);
   %LET TERM=;
+  %LET MINVAL=;
+  %LET MAXVAL=;
+  %LET SCALE=;
+
   DATA BUTTFY&ID.;
     SET  WK01;
     IF  MHDECOD = &ID.;
@@ -195,6 +199,7 @@ RUN ;
   RUN;
 
 %MEND;
+%BUTT(0);
 %BUTT(1);
 %BUTT(2);
 %BUTT(3);
