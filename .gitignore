@@ -4,7 +4,7 @@
 ### Added by Tosh ###
 /ADS/
 /LOG/
-/RAWDATA/
+/RAWDATA/*
 /RESULT/
 !/RAWDATA/EXT/
 

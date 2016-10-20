@@ -1,0 +1,281 @@
+"hematology",1,"CML","慢性骨髄性白血病","Chronic Myelogenous Leukemia, Bcr/Abl  Positive",10,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",2,"CNL","慢性好中球性白血病","Chronic Neutrophilic Leukemia",20,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",3,"PV","真性赤血球増加症","Polycythemia Vera",30,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",4,"MF","原発性骨髄線維症","Primary Myelofibrosis",40,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",5,"ET","本態性血小板血症","Essential Thrombocythemia",50,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",6,"CEL","慢性好酸球性白血病","Chronic Eosinophilic Leukaemia, Not Otherwise Specified",60,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",7,"CM","皮膚肥満細胞症","Cutaneous Mastocytosis",70,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",8,"SM","全身性肥満細胞症","Systemic Mastocytosis",80,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",9,"MCL","肥満細胞性白血病","Mast Cell Leukemia",90,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",10,"MCS","肥満細胞肉腫","Mast Cell Sarcoma",100,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",11,"Extracutaneous mastocytoma","皮膚外肥満細胞腫","Extracutaneous Mastocytoma",110,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",12,"MPD","その他の骨髄増殖性疾患","Myeloproliferative Disease, Unclassifiable",120,1,"MPN","骨髄増殖性腫瘍","Myeloproliferetive Neoplasms","tumor",1
+"hematology",13,"PDGFRA","ＰＤＧＦＲＡ再構成骨髄性・リンパ性腫瘍","Myeloid And Lymphoid Neoplasms With Pdgfra Rearrangement",130,2,,"PDGFRA、PDGFRB、FGFR1異常症","Myeloid And Lymphoid Neoplasms With Eosinophilia And Abnormalities Of Pdgfra, Pdgfrb Or Fgfr1","tumor",2
+"hematology",14,"PDGFRB","ＰＤＧＦＲＢ再構成骨髄性腫瘍","Myeloid Neoplasms With Pdgfrb Rearrangement",140,2,,"PDGFRA、PDGFRB、FGFR1異常症","Myeloid And Lymphoid Neoplasms With Eosinophilia And Abnormalities Of Pdgfra, Pdgfrb Or Fgfr1","tumor",2
+"hematology",15,"FGFR1","ＦＧＦＲ１異常骨髄性・リンパ性腫瘍","Myeloid And Lymphoid Neoplasms With Fgfr1 Rearrangement",150,2,,"PDGFRA、PDGFRB、FGFR1異常症","Myeloid And Lymphoid Neoplasms With Eosinophilia And Abnormalities Of Pdgfra, Pdgfrb Or Fgfr1","tumor",2
+"hematology",16,"CMMoL","慢性骨髄単球性白血病","Chronic Myelomonocytic Leukemia, Nos",160,3,"MDS/MPN","骨髄異形成・骨髄増殖性腫瘍","Myelodysplastic/Myeloproliferative Neoplasms","tumor",3
+"hematology",17,"aCML","非定型慢性骨髄性白血病","Atypical Chronic Myeloid Leukemia, Bcr/Abl Negative",170,3,"MDS/MPN","骨髄異形成・骨髄増殖性腫瘍","Myelodysplastic/Myeloproliferative Neoplasms","tumor",3
+"hematology",18,"JMMoL","若年性骨髄単球性白血病","Juvenile Myelomonocytic Leukemia",180,3,"MDS/MPN","骨髄異形成・骨髄増殖性腫瘍","Myelodysplastic/Myeloproliferative Neoplasms","tumor",3
+"hematology",19,"MDS/MPN","その他の骨髄異形成・増殖性腫瘍","Myelodysplastic/Myeloproliferative Neoplasm, Unclassifiable",190,3,"MDS/MPN","骨髄異形成・骨髄増殖性腫瘍","Myelodysplastic/Myeloproliferative Neoplasms","tumor",3
+"hematology",20,"RARS-T","骨髄異形成症候群（ＲＡＲＳ）・血小板血症","Refractory Anemia With Sideroblasts Associated With Marked Thrombocytosis",200,3,"MDS/MPN","骨髄異形成・骨髄増殖性腫瘍","Myelodysplastic/Myeloproliferative Neoplasms","tumor",3
+"hematology",21,"MDS(RA)","不応性貧血","Refractory Anemia",210,4,"MDS","骨髄異形成症候群","Myelodysplastic Syndromes","tumor",4
+"hematology",22,"RN","不応性好中球減少症","Refractory Neutropenia",220,4,"MDS","骨髄異形成症候群","Myelodysplastic Syndromes","tumor",4
+"hematology",23,"RT","不応性血小板減少症","Refractory Thrombocytopenia",230,4,"MDS","骨髄異形成症候群","Myelodysplastic Syndromes","tumor",4
+"hematology",24,"MDS(RARS)","環状鉄芽球を伴う不応性貧血","Refractory Anemia With Ring Sideroblasts",240,4,"MDS","骨髄異形成症候群","Myelodysplastic Syndromes","tumor",4
+"hematology",25,"MDS(RCMD)","多血球系異形成を伴う不応性血球減少症","Refractory Cytopenia With Multilineage Dysplasia",250,4,"MDS","骨髄異形成症候群","Myelodysplastic Syndromes","tumor",4
+"hematology",26,"MDS(RAEB)","芽球増加を伴う不応性貧血","Refractory Anemia With Excess Blasts",260,4,"MDS","骨髄異形成症候群","Myelodysplastic Syndromes","tumor",4
+"hematology",27,"MDS(5q-)","５ｑ－症候群","Myelodysplastic Syndrome Associated With Isolated Del(5q )",270,4,"MDS","骨髄異形成症候群","Myelodysplastic Syndromes","tumor",4
+"hematology",28,"MDS-U","分類不能型骨髄異形成症候群","Myelodysplastic Syndrome, Unclassifiable",280,4,"MDS","骨髄異形成症候群","Myelodysplastic Syndromes","tumor",4
+"hematology",29,"RCC","小児不応性血球減少症","Refractory Cytopenia Of Childhood",290,4,"MDS","骨髄異形成症候群","Myelodysplastic Syndromes","tumor",4
+"hematology",30,"AML(RUNX1-RUNX1T1)","ＲＵＮＸ１－ＲＵＮＸ１Ｔ１陽性急性骨髄性白血病","Aml With T(8;21)(Q22;Q22); Runx1 Runx1 T1",300,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",31,"AML(M4Eo, CBFB-MYH11)","ＣＢＦＢ－ＭＹＨ１１陽性急性骨髄性白血病","Aml With Inv(16)(P13.1q22) Or T(16;16)(P13.1;Q22); Cbfb Myh11",310,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",32,"APL, AML(M3, M3v)","急性前骨髄球性白血病","Acute Promyelocytic Leukemia With T(15;17)(Q22,Q12); Pml Rara",320,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",33,"AML(MLLT3-MLL)","ＭＬＬＴ３－ＭＬＬ陽性急性骨髄性白血病","Aml With T(9;11)(P22;Q23); Mllt3 Mll",330,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",34,"AML(DEK-NUP214)","ＤＥＫ－ＮＵＰ２１４陽性急性骨髄性白血病","Aml With T(6;9)(P23;Q34); Dek Nup214",340,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",35,"AML(RPN1-EVI1)","ＲＰＮ１－ＥＶＩ１陽性急性骨髄性白血病","Aml With Inv(3)(Q21;Q26.2) Or T(3;3)(Q21;Q26.2); Rpn1 Evi1",350,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",36,"AML(RBM15-MKL1)","ＲＢＭ１５－ＭＫＬ１陽性急性骨髄性白血病","Aml (Megakaryoblastic) With T(1;22)(P13;Q13); Rbm15 Mkl1",360,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",37,"AML(NPM1)","ＮＰＭ１異常急性骨髄性白血病","Aml With Mutated Npm1",370,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",38,"AML(CEBPA)","ＣＥＢＰＡ異常急性骨髄性白血病","Aml With Mutated Cebpa",380,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",39,"AML/MRC","骨髄異形成関連変化随伴急性骨髄性白血病","Aml With Myelodysplasia Related Changes",390,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",40,"t-MN","治療関連白血病・骨髄異形成症候群","Therapy Related Myeloid Neoplasms",400,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",41,"AML","急性骨髄性白血病","Acute Myeloid Leukemia, Nos",410,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",42,"AML(M0)","急性骨髄性白血病（Ｍ０）","Aml With Minimal Differentiation",420,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",43,"AML(M1)","急性骨髄性白血病（Ｍ１）","Aml Without Maturation",430,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",44,"AML(M2)","急性骨髄性白血病（Ｍ２）","Aml With Maturation",440,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",45,"AML(M4)","急性骨髄単球性白血病","Acute Myelomonocytic Leukemia",450,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",46,"AML(M5)","急性単球性白血病","Acute Monoblastic And Monocytic Leukemia",460,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",47,"AML(M6)","急性赤白血病","Acute Erythroid Leukaemia",470,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",48,"AML(M7)","急性巨核芽球性白血病","Acute Megakaryoblastic Leukemia",480,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",49,"Acute basophilic leukemia","急性好塩基球性白血病","Acute Basophilic Leukemia",490,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",50,"APMF","急性骨髄線維症","Acute Panmyelosis With Myelofibrosis",500,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",51,"MS","骨髄性肉腫","Myeloid Sarcoma",510,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",52,"TAM","一過性異常骨髄造血","Transient Abnormal Myelopoiesis",520,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",53,"ML-DS","ダウン症候群関連骨髄性白血病","Myeloid Leukaemia Associated With Down Syndrome",530,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",54,"BPDCN","芽球性形質細胞様樹状細胞腫瘍","Blastic Plasmacytoid Dendritic Cell Neoplasm",540,5,"AML","急性骨髄性白血病および関連腫瘍","Acute Myeloid Leukemia (Aml) And Related Precursor Neoplasms","tumor",5
+"hematology",55,"Acute undifferentiated leukaemia","未分化急性白血病","Acute Undifferentiated Leukaemia",550,6,"mixed AL","系統不明急性白血病","Acute Leukemias Of Ambiguous Lineage","tumor",6
+"hematology",56,"MPAL(BCR-ABL1)","ＢＣＲ－ＡＢＬ１陽性急性混合型白血病","Mixed Phenotype Acute Leukaemia With T(9;22) (Q34;Q11.2); Bcr Abl1 ",560,6,"mixed AL","系統不明急性白血病","Acute Leukemias Of Ambiguous Lineage","tumor",6
+"hematology",57,"MPAL(MLL)","ＭＬＬ再構成急性混合性白血病","Mixed Phenotype Acute Leukaemia With T(V;11q23); Mll Rearranged ",570,6,"mixed AL","系統不明急性白血病","Acute Leukemias Of Ambiguous Lineage","tumor",6
+"hematology",58,"MPAL(B/M)","Ｂ・骨髄性急性混合性白血病","Mixed Phenotype Acute Leukaemias, B/Myeloid, Nos ",580,6,"mixed AL","系統不明急性白血病","Acute Leukemias Of Ambiguous Lineage","tumor",6
+"hematology",59,"MPAL(T/M)","Ｔ・骨髄性急性混合性白血病","Mixed Phenotype Acute Leukaemia, T/Myeloid, Nos ",590,6,"mixed AL","系統不明急性白血病","Acute Leukemias Of Ambiguous Lineage","tumor",6
+"hematology",148,"MPAL(NOS)","稀な急性混合性白血病","Mixed Phenotype Acute Leukaemia, Nos   Rare Types",600,6,"mixed AL","系統不明急性白血病","Acute Leukemias Of Ambiguous Lineage","tumor",6
+"hematology",149,"Other ambiguous lineage leukaemias","系統不明白血病","Other Ambiguous Lineage Leukaemias",610,6,"mixed AL","系統不明急性白血病","Acute Leukemias Of Ambiguous Lineage","tumor",6
+"hematology",60,"NK cell LBL","ＮＫ細胞性白血病・リンパ腫","Natural Killer (Nk) Cell Lymphoblastic Leukaemia/Lymphoma ",620,6,"mixed AL","系統不明急性白血病","Acute Leukemias Of Ambiguous Lineage","tumor",6
+"hematology",61,"B-ALL","Ｂリンパ芽球性白血病／リンパ腫","B Lymphoblastic Leukaemia/Lymphoma, Nos ",630,7,"ALL, LBL","前駆リンパ球系腫瘍","Precursor Lymphoid Neoplasms","tumor",7
+"hematology",62,"B-ALL(BCR-ABL)","ＢＣＲ－ＡＢＬ１陽性Ｂリンパ芽球性白血病／リンパ腫","B Lymphoblastic Leukaemia/Lymphoma With T(9;22) (Q34;Q11.2); Bcr Abl1 ",640,7,"ALL, LBL","前駆リンパ球系腫瘍","Precursor Lymphoid Neoplasms","tumor",7
+"hematology",63,"B-ALL(MLL)","ＭＬＬ再構成型Ｂリンパ芽球性白血病／リンパ腫","B Lymphoblastic Leukaemia/Lymphoma With T(V;11q23); Mll Rearranged ",650,7,"ALL, LBL","前駆リンパ球系腫瘍","Precursor Lymphoid Neoplasms","tumor",7
+"hematology",64,"B-ALL(TEL-AML1)","ＴＥＬ－ＡＭＬ１陽性Ｂリンパ芽球性白血病／リンパ腫","B Lymphoblastic Leukaemia/Lymphoma With T(12;21) (P13;Q22); Tel/Aml1 (Etv6 Runx1) ",660,7,"ALL, LBL","前駆リンパ球系腫瘍","Precursor Lymphoid Neoplasms","tumor",7
+"hematology",65,"hyperdiploid B-ALL","高２倍体性Ｂリンパ芽球性白血病／リンパ腫","B Lymphoblastic Leukaemia/Lymphoma With Hyperdiploidy ",670,7,"ALL, LBL","前駆リンパ球系腫瘍","Precursor Lymphoid Neoplasms","tumor",7
+"hematology",66,"hypodiploid B-ALL","低２倍体性Ｂリンパ芽球性白血病／リンパ腫","B Lymphoblastic Leukaemia/Lymphoma With Hypodiploidy (Hypodiploid All) ",680,7,"ALL, LBL","前駆リンパ球系腫瘍","Precursor Lymphoid Neoplasms","tumor",7
+"hematology",67,"B-ALL(IL3-IGH)","ＩＬ３－ＩＧＨ陽性Ｂリンパ芽球性白血病／リンパ腫","B Lymphoblastic Leukaemia/Lymphoma With T(5;14)(Q31;Q32) Il3 Igh ",690,7,"ALL, LBL","前駆リンパ球系腫瘍","Precursor Lymphoid Neoplasms","tumor",7
+"hematology",68,"B-ALL(E2A-PBX1)","Ｅ２Ａ－ＰＢＸ１陽性Ｂリンパ芽球性白血病／リンパ腫","B Lymphoblastic Leukaemia/Lymphoma With T(1;19)(Q23;P13.3); E2 A Pbx1 (Tcf3 Pbx1)",700,7,"ALL, LBL","前駆リンパ球系腫瘍","Precursor Lymphoid Neoplasms","tumor",7
+"hematology",69,"T-ALL/LBL","Ｔリンパ芽球性白血病／リンパ腫","T Lymphoblastic Leukaemia/Lymphoma",710,7,"ALL, LBL","前駆リンパ球系腫瘍","Precursor Lymphoid Neoplasms","tumor",7
+"hematology",70,"B-CLL","Ｂ細胞慢性リンパ球性白血病","Chronic Lymphocytic Leukemia/Small Lymphocytic Lymphoma",720,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",71,"B-PLL","Ｂ細胞性前リンパ球性白血病","B Cell Prolymphocytic Leukemia",730,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",72,"SMZL","脾辺縁帯リンパ腫","Splenic Marginal Zone B Cell Lymphoma",740,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",73,"HCL","ヘアリー細胞白血病","Hairy Cell Leukemia",750,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",74,"SpLL-U","脾Ｂ細胞性リンパ腫／白血病・分類不能型","Splenic B Cell  Lymphoma/Leukaemia, Unclassifiable",760,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",75,"SRPL","脾びまん性赤脾髄小Ｂ細胞性リンパ腫","Splenic Diffuse Red Pulp Small B Cell Lymphoma",770,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",76,"HCL-v","ヘアリー細胞白血病亜型","Hairy Cell Leukaemia Variant",780,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",77,"LPL","リンパ形質細胞性リンパ腫","Lymphoplasmacytic Lymphoma",790,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",78,"WM","原発性マクログロブリン血症","Waldenstrom Macroglobulinemia",800,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",79,"HCD","重鎖病","Heavy Chain Disease",810,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",80,"αHCD","アルファ重鎖病","Alpha Heavy Chain Disease",820,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",81,"γHCD","ガンマ重鎖病","Gamma Heavy Chain Disease",830,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",82,"μHCD","ミュー重鎖病","Mu Heavy Chain Disease",840,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",150,"MGUS","意義不明Ｍ蛋白血症","Monoclonal Gammopathy Of Undetermined Significance",850,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",83,"MM","多発性骨髄腫","Plasma Cell Myeloma",860,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",84,"Solitary plasmacytoma of bone","孤発性骨形質細胞腫","Solitary Plasmacytoma Of Bone",870,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",85,"Extraosseous plasmacytoma","骨外性形質細胞腫","Extraosseous Plasmacytoma",880,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",151,"Primary amyloidosis","原発性アミロイドーシス","Primary Amyloidosis",890,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",152,"MIDD","単クローン性軽鎖重鎖沈着症","Monoclonal Light And Heavy Chain Deposition Diseases",900,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",153,"POEMS","ＰＯＥＭＳ症候群","Poems Syndrome (Osteosclerotic Myeloma)",910,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",86,"MALT","ＭＡＬＴリンパ腫","Extranodal Marginal Zone Lymphoma Of Mucosa Associated Lymphoid Tissue(Malt Lymphoma)",920,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",87,"nodal MZL","節性辺縁帯リンパ腫","Nodal Marginal Zone Lymphoma",930,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",88,"paediatric nodal MZL","小児節性辺縁帯リンパ腫","Paediatric Nodal Margial Zone Lymphoma",940,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",89,"FL","濾胞性リンパ腫","Follicular Lymphoma",950,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",90,"paediatric FL","小児濾胞性リンパ腫","Paediatric Follicular Lymphoma",960,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",91,"PCFCL","原発性皮膚濾胞中心リンパ腫","Primary Cutaneous Follicle Centre Lymphoma",970,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",92,"MCL","マントル細胞リンパ腫","Mantle Cell Lymphoma",980,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",93,"DLBCL","びまん性大細胞型Ｂ細胞性リンパ腫","Diffuse Large B Cell  Lymphoma(Dlbcl),Nos ",990,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",94,"THRLBCL","Ｔ細胞組織球豊富型大細胞型Ｂ細胞性リンパ腫","T Cell/Histiocyte Rich Large B Cell Lymphoma",1000,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",95,"CNS DLBCL","中枢神経系原発びまん性大細胞型Ｂ細胞性リンパ腫","Primary Dlbcl Of The Cns",1010,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",96,"PCLBCL, leg type","皮膚原発びまん性大細胞型Ｂ細胞リンパ腫・下肢型","Primary Cutaneous Dlbcl, Leg Type",1020,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",97,"EBV(+) DLBCL of the elderly","高齢者ＥＢＶ陽性びまん性大細胞型Ｂ細胞性リンパ腫","Ebv Positive Dlbcl Of The Elderly",1030,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",98,"PAL","慢性炎症関連びまん性大細胞型Ｂ細胞性リンパ腫","Dlbcl Associated With Chronic Inflammation",1040,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",99,"LYG","リンパ腫様肉芽腫症","Lymphomatoid Granulomatosis",1050,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",100,"PMBL","縦隔原発大細胞型Ｂ細胞性リンパ腫","Primary Mediastinal (Thymic) Large B Cell Lymphoma",1060,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",101,"IVLBCL","血管内大細胞型Ｂ細胞性リンパ腫","Intravascular Large B Cell Lymphoma",1070,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",102,"ALK(+) LBCL","ＡＬＫ陽性大細胞型Ｂ細胞性リンパ腫","Alk Positive Large B Cell Lymphoma",1080,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",103,"PBL","形質芽球性リンパ腫","Plasmablastic Lymphoma",1090,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",155,"Castleman","キャッスルマン病","Castleman's Disease",1100,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",104,"HHV8 MCD LBCL","ＨＨＶ８多中心性キャッスルマン病随伴大細胞型Ｂ細胞性リンパ腫","Large B Cell Lymphoma Arising In Hhv8 Associated Multicentric Castleman Disease ",1110,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",105,"PEL","原発性滲出性リンパ腫","Primary Effusion Lymphoma",1120,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",106,"BL","バーキットリンパ腫","Burkitt Lymphoma",1130,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",107,"DLBCL-BL","びまん性大細胞型・バーキット中間型分類不能Ｂ細胞性リンパ腫","B Cell Lymphoma, Unclassifiable, With Features Intermediate Between Diffuse Large B Cell Lymphoma And Burkitt Lymphoma ",1140,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",108,"DLBCL-CHL","びまん性大細胞型・ホジキン中間型分類不能Ｂ細胞性リンパ腫","B Cell Lymphoma,Unclassifiable,With Features Intermediate Between Diffuse Large B Cell Lymphoma And Classical Hodgkin Lymphoma ",1150,8,"B-NHL, MM","成熟B細胞腫瘍（リンパ腫・骨髄腫）","Mature B Cell Neoplasms","tumor",8
+"hematology",109,"T-PLL","Ｔ細胞性前リンパ球白血病","T Cell Prolymphocytic Leukemia",1160,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",110,"T-LGL","Ｔ細胞性大顆粒リンパ球白血病","T Cell Large Granular Lymphocytic Leukemia",1170,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",111,"CLPD-NK","慢性ＮＫ細胞リンパ増殖性疾患","Chronic Lymphoproliferative Disorder Of Nk Cells",1180,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",112,"ANKL","アグレッシブＮＫ細胞白血病","Aggressive Nk Cell Leukemia",1190,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",154,"CAEBV","小児ＥＢＶ陽性Ｔ細胞リンパ増殖性疾患","Chronic Active Epstein Barr Virus Infection",1200,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",113,"Systemic EBV(+) T-cell LPD of childhood","小児全身性ＥＢＶ陽性Ｔ細胞リンパ増殖性疾患","Systemic Ebv Positive T Cell Lymphoproliferative Disease Of Childhood",1210,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",114,"Hydroa vacciniforme-like lymphoma","種痘様水疱症様リンパ腫","Hydroa Vacciniforme Like Lymphoma",1220,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",115,"ATLL","成人Ｔ細胞白血病リンパ腫","Adult T Cell Leukemia/Lymphoma (Htlv 1 Positive)",1230,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",116,"NK/T lymphoma","節外性ＮＫ／Ｔ細胞リンパ腫・鼻型","Extranodal Nk/T Cell Lymphoma, Nasal Type",1240,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",117,"EATL","腸管症関連Ｔ細胞リンパ腫","Enteropathy Associated T Cell Lymphoma",1250,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",118,"HSTL","肝脾Ｔ細胞リンパ腫","Hepatosplenic  T Cell Lymphoma",1260,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",119,"SPTCL","皮下脂肪織炎様Ｔ細胞リンパ腫","Subcutaneous Panniculitis Like T Cell Lymphoma",1270,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",120,"MF","菌状息肉症","Mycosis Fungoides",1280,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",121,"SS","セザリー症候群","Sezary Syndrome",1290,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",122,"LyP","リンパ腫様丘疹症","Lymphomatoid Papulosis",1300,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",123,"C-ALCL","皮膚原発性未分化大細胞リンパ腫","Primary Cutaneous Anaplastic Large Cell Lymphoma",1310,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",124,"Cutaneous γδT","皮膚原発性γδＴ細胞リンパ腫","Primary Cutaneous Gamma Delta T Cell Lymphoma",1320,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",125,"Cutaneous CD8T","ＣＤ８陽性皮膚Ｔ細胞リンパ腫","Primary Cutaneous Cd8 Positive Aggressive Epidermotropic Cytotoxic T Cell Lymphoma",1330,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",126,"Cutaneous CD4T","ＣＤ４陽性皮膚Ｔ細胞リンパ腫","Primary Cutaneous Cd4 Positive Small/Medium T Cell Lymphoma",1340,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",127,"PTCL NOS","末梢性Ｔ細胞リンパ腫・詳細不明","Peripheral T Cell Lymphoma, Nos",1350,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",128,"AITL","血管免疫芽球性Ｔ細胞リンパ腫","Angioimmunoblastic T Cell Lymphoma",1360,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",129,"ALCL ALK(+)","ＡＬＫ陽性未分化大細胞リンパ腫","Anaplastic Large Cell Lymphoma, Alk Positive",1370,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",130,"ALCL ALK(-)","ＡＬＫ陰性未分化大細胞リンパ腫","Anaplastic Large Cell Lymphoma, Alk Negative",1380,9,"T, NK lymphoma","成熟T・NK細胞腫瘍","Mature T Cell And Nk Cell Neoplasms","tumor",9
+"hematology",131,"NLPHL","結節性リンパ球優位型ホジキンリンパ腫","Nodular Lymphocyte Predominance Hodgkin Lymphoma",1390,10,"HD","ホジキン病","Hodgkin Lymphoma","tumor",10
+"hematology",132,"CHL","古典的ホジキンリンパ腫","Classical Hodgkin Lymphoma",1400,10,"HD","ホジキン病","Hodgkin Lymphoma","tumor",10
+"hematology",133,"NSCHL","結節硬化型古典的ホジキンリンパ腫","Nodular Sclerosis Classical Hodgkin Lymphoma",1410,10,"HD","ホジキン病","Hodgkin Lymphoma","tumor",10
+"hematology",134,"LRCHL","リンパ球豊富型古典的ホジキンリンパ腫","Lymphocyte Rich Classical Hodgkin Lymphoma ",1420,10,"HD","ホジキン病","Hodgkin Lymphoma","tumor",10
+"hematology",135,"MCCHL","混合細胞型古典的ホジキンリンパ腫","Mixed Cellularity Classical Hodgkin Lymphoma",1430,10,"HD","ホジキン病","Hodgkin Lymphoma","tumor",10
+"hematology",136,"LDCHL","リンパ球減少型古典的ホジキンリンパ腫","Lymphocyte Depleted Classical Hodgkin Lymphoma",1440,10,"HD","ホジキン病","Hodgkin Lymphoma","tumor",10
+"hematology",137,"Histiocytic sarcoma","組織球肉腫","Histiocytic Sarcoma",1450,11,"LCH, DC","組織球・樹状細胞腫瘍","Histiocytic And Dendritic Cell Neoplasms","tumor",11
+"hematology",138,"LCH","ランゲルハンス細胞組織球症","Langerhans Cell Histiocytosis",1460,11,"LCH, DC","組織球・樹状細胞腫瘍","Histiocytic And Dendritic Cell Neoplasms","tumor",11
+"hematology",139,"Langerhans cell sarcoma","ランゲルハンス細胞肉腫","Langerhans Cell Sarcoma",1470,11,"LCH, DC","組織球・樹状細胞腫瘍","Histiocytic And Dendritic Cell Neoplasms","tumor",11
+"hematology",140,"IDC sarcoma","指状嵌入細胞肉腫","Interdigitating Dendritic Cell Sarcoma",1480,11,"LCH, DC","組織球・樹状細胞腫瘍","Histiocytic And Dendritic Cell Neoplasms","tumor",11
+"hematology",141,"FDC sarcoma","濾胞樹状細胞肉腫","Follicular Dendritic Cell Sarcoma",1490,11,"LCH, DC","組織球・樹状細胞腫瘍","Histiocytic And Dendritic Cell Neoplasms","tumor",11
+"hematology",142,"Fibroblastic reticular cell tumour ","線維芽球性網状細胞腫瘍","Fibroblastic Reticular Cell Tumour ",1500,11,"LCH, DC","組織球・樹状細胞腫瘍","Histiocytic And Dendritic Cell Neoplasms","tumor",11
+"hematology",143,"Indeterminate dendritic cell tumour","その他の樹状細胞腫瘍","Indeterminate Dendritic Cell Tumour",1510,11,"LCH, DC","組織球・樹状細胞腫瘍","Histiocytic And Dendritic Cell Neoplasms","tumor",11
+"hematology",144,"JXG","播種性若年性黄色肉芽腫","Disseminated Juvenile Xanthogranuloma",1520,11,"LCH, DC","組織球・樹状細胞腫瘍","Histiocytic And Dendritic Cell Neoplasms","tumor",11
+"hematology",145,"PTLD(PH)","移植後リンパ増殖性疾患（形質細胞過形成）","Plasmacytic Hyperplasia",1530,12,"PTLD","移植後リンパ増殖性疾患","Post Transplant Lymphoproliferative Disorders (Ptld)","tumor",12
+"hematology",146,"IM-like PTLD","移植後リンパ増殖性疾患（伝染性単核球症様病変）","Infectious Mononucleosis Like Ptld",1540,12,"PTLD","移植後リンパ増殖性疾患","Post Transplant Lymphoproliferative Disorders (Ptld)","tumor",12
+"hematology",147,"P-PTLD","多形性移植後リンパ増殖性疾患","Polymorphic Ptld",1550,12,"PTLD","移植後リンパ増殖性疾患","Post Transplant Lymphoproliferative Disorders (Ptld)","tumor",12
+"hematology",1001,"Fanconi anemia (FA)","ファンコニー貧血",,1560,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1002,"DC","先天性角化異常症",,1570,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1003,"AA","その他の先天性再生不良性貧血",,1580,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1004,"AA","特発性再生不良性貧血",,1590,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1005,"AA","薬剤性再生不良性貧血",,1600,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1006,"AA","放射線性貧血",,1610,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1007,"AA","妊娠貧血症",,1620,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1008,"AA","その他の二次性再生不良性貧血",,1630,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1009,"AA","肝炎後再生不良性貧血",,1640,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1010,"AA-PNH","再生不良性貧血・ＰＮＨ症候群",,1650,101,"AA","再生不良性貧血",,"non_tumor",101
+"hematology",1011,"Diamond-Blackfan anemia (DBA)","先天性赤芽球ろう",,1660,102,"PRCR","赤芽球ろう",,"non_tumor",102
+"hematology",1012,"PRCA","特発性赤芽球癆",,1670,102,"PRCR","赤芽球ろう",,"non_tumor",102
+"hematology",1013,"PRCA","続発性赤芽球癆",,1680,102,"PRCR","赤芽球ろう",,"non_tumor",102
+"hematology",1014,"HS","遺伝性球状赤血球症",,1690,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1015,"HE","遺伝性楕円赤血球症",,1700,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1016,"Red cell membrane anomaly","その他の赤血球膜異常症",,1710,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1017,"G6PD deficiency","Ｇ６ＰＤ欠乏性貧血",,1720,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1018,"Pyruvate kinase deficiency","ピルビン酸キナーゼ欠乏性貧血",,1730,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1019,,"その他の先天性赤血球酵素異常",,1740,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1020,"SCD","鎌状赤血球症",,1750,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1021,"UHD","不安定ヘモグロビン症",,1760,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1022,"Thalassemia","サラセミア",,1770,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1023,,"その他のヘモグロビン異常症",,1780,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1024,"AIHA","温式自己免疫性溶血性貧血",,1790,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1025,"CAD","寒冷凝集素症",,1800,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1026,"Mixed AIHA","混合型自己免疫性溶血性貧血",,1810,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1027,"PCH","発作性寒冷ヘモグロビン尿症",,1820,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1028,"PNH","発作性夜間ヘモグロビン尿症",,1830,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1029,"Upshaw-Schülman syndrome","アプショー・シュールマン症候群",,1840,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1030,"TTP","血栓性血小板減少性紫斑病",,1850,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1031,"HUS","溶血性尿毒症性症候群",,1860,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1032,"DCBM","播種性骨髄癌症",,1870,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1033,"Mechanical HA","機械的溶血性貧血",,1880,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1034,"March hemoglobinuria","行軍血色素尿症",,1890,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1035,"RCFS","その他の赤血球破砕症候群",,1900,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1036,,"新生児溶血性貧血",,1910,103,"Hemolytic anemia","溶血性貧血",,"non_tumor",103
+"hematology",1037,"Vit B12 deficiency anemia","ビタミンＢ１２欠乏性貧血",,1920,104,"Anemia","その他の貧血",,"non_tumor",104
+"hematology",1038,"Folate-deficiency anemia","葉酸欠乏性貧血",,1930,104,"Anemia","その他の貧血",,"non_tumor",104
+"hematology",1039,"Megaloblastic anemia","その他の巨赤芽球性貧血",,1940,104,"Anemia","その他の貧血",,"non_tumor",104
+"hematology",1040,"CDA","先天性赤血球形成異常性貧血",,1950,104,"Anemia","その他の貧血",,"non_tumor",104
+"hematology",1041,"SA","鉄芽球性貧血",,1960,104,"Anemia","その他の貧血",,"non_tumor",104
+"hematology",1042,"Atransferrinemia","無トランスフェリン血症",,1970,104,"Anemia","その他の貧血",,"non_tumor",104
+"hematology",1043,"IPH","特発性肺ヘモジデローシス",,1980,104,"Anemia","その他の貧血",,"non_tumor",104
+"hematology",1044,"RP","相対的赤血球増加症",,1990,105,"Polycythemia","赤血球増加症",,"non_tumor",105
+"hematology",1045,,"続発性赤血球増加症",,2000,105,"Polycythemia","赤血球増加症",,"non_tumor",105
+"hematology",1046,"May-Hegglin syndrome","メイ・ヘグリン症候群",,2010,106,"Platelet dysfunction","血小板機能異常症",,"non_tumor",106
+"hematology",1047,"Bernard-Soulier syndrome","ベルナール・スーリエ症候群",,2020,106,"Platelet dysfunction","血小板機能異常症",,"non_tumor",106
+"hematology",1048,"Thrombasthenia","血小板無力症",,2030,106,"Platelet dysfunction","血小板機能異常症",,"non_tumor",106
+"hematology",1049,,"その他の血小板機能異常症",,2040,106,"Platelet dysfunction","血小板機能異常症",,"non_tumor",106
+"hematology",1050,"Primary thrombocytopenia","原発性血小板減少症",,2050,107,"Thrombocytopenia","血小板減少症",,"non_tumor",107
+"hematology",1051,"acute ITP","急性特発性血小板減少性紫斑病",,2060,107,"Thrombocytopenia","血小板減少症",,"non_tumor",107
+"hematology",1052,"chronic ITP","慢性特発性血小板減少性紫斑病",,2070,107,"Thrombocytopenia","血小板減少症",,"non_tumor",107
+"hematology",1053,"ITP","特発性血小板減少性紫斑病",,2080,107,"Thrombocytopenia","血小板減少症",,"non_tumor",107
+"hematology",1054,"Evans syndrome","エバンス症候群",,2090,107,"Thrombocytopenia","血小板減少症",,"non_tumor",107
+"hematology",1055,"HIT","ヘパリン起因性血小板減少症",,2100,107,"Thrombocytopenia","血小板減少症",,"non_tumor",107
+"hematology",1056,"EDP","ＥＤＴＡ依存性偽性血小板減少症",,2110,107,"Thrombocytopenia","血小板減少症",,"non_tumor",107
+"hematology",1057,"Kasabach-Merritt syndrome","カサバッハ・メリット症候群",,2120,107,"Thrombocytopenia","血小板減少症",,"non_tumor",107
+"hematology",1058,,"その他の血小板減少症",,2130,107,"Thrombocytopenia","血小板減少症",,"non_tumor",107
+"hematology",1059,"Purpura simplex","単純性紫斑病",,2140,108,"Vascular purpura","血管性紫斑病",,"non_tumor",108
+"hematology",1060,"Henoch–Schönlein purpura (HSP)","アレルギー性紫斑病",,2150,108,"Vascular purpura","血管性紫斑病",,"non_tumor",108
+"hematology",1061,,"その他の血管性紫斑病",,2160,108,"Vascular purpura","血管性紫斑病",,"non_tumor",108
+"hematology",1062,"Hemophilia A","血友病Ａ",,2170,109,"Coagulopathy","血液凝固異常",,"non_tumor",109
+"hematology",1063,"Hemophilia B","血友病Ｂ",,2180,109,"Coagulopathy","血液凝固異常",,"non_tumor",109
+"hematology",1064,"vWD","フォンウィルブランド病",,2190,109,"Coagulopathy","血液凝固異常",,"non_tumor",109
+"hematology",1065,,"その他の先天性凝固因子異常症",,2200,109,"Coagulopathy","血液凝固異常",,"non_tumor",109
+"hematology",1066,"Melena neonatorum","新生児メレナ",,2210,109,"Coagulopathy","血液凝固異常",,"non_tumor",109
+"hematology",1067,"Vit K deficiency","ビタミンＫ欠乏による凝固因子欠乏",,2220,109,"Coagulopathy","血液凝固異常",,"non_tumor",109
+"hematology",1068,"Inhibitor","循環性抗凝血因子症",,2230,109,"Coagulopathy","血液凝固異常",,"non_tumor",109
+"hematology",1069,,"その他の後天性凝固因子異常症",,2240,109,"Coagulopathy","血液凝固異常",,"non_tumor",109
+"hematology",1070,"Protein S deficiency","プロテインＳ欠乏症",,2250,110,"Thrombotic disease","血栓性疾患",,"non_tumor",110
+"hematology",1071,"Protein C deficiency","プロテインＣ欠乏症",,2260,110,"Thrombotic disease","血栓性疾患",,"non_tumor",110
+"hematology",1072,"AT-III deficiency","アンチトロンビンＩＩＩ欠乏症",,2270,110,"Thrombotic disease","血栓性疾患",,"non_tumor",110
+"hematology",1073,"HCII deficiency","ヘパリン・コファクターＩＩ欠乏症",,2280,110,"Thrombotic disease","血栓性疾患",,"non_tumor",110
+"hematology",1074,,"プラスミノゲン異常症",,2290,110,"Thrombotic disease","血栓性疾患",,"non_tumor",110
+"hematology",1075,,"その他の先天性血栓傾向",,2300,110,"Thrombotic disease","血栓性疾患",,"non_tumor",110
+"hematology",1076,"APS","抗リン脂質抗体症候群",,2310,110,"Thrombotic disease","血栓性疾患",,"non_tumor",110
+"hematology",1077,,"その他の後天性血栓傾向",,2320,110,"Thrombotic disease","血栓性疾患",,"non_tumor",110
+"hematology",1078,"DIC","播種性血管内凝固",,2330,110,"Thrombotic disease","血栓性疾患",,"non_tumor",110
+"hematology",1079,"Kostmann syndrome","小児遺伝性無顆粒球症",,2340,111,"Neutropenia","好中球減少症",,"non_tumor",111
+"hematology",1080,"Shwachman syndrome","シュワックマン症候群",,2350,111,"Neutropenia","好中球減少症",,"non_tumor",111
+"hematology",1081,,"その他の先天性好中球減少症",,2360,111,"Neutropenia","好中球減少症",,"non_tumor",111
+"hematology",1082,,"自己免疫性好中球減少症",,2370,111,"Neutropenia","好中球減少症",,"non_tumor",111
+"hematology",1083,"Cyclic neutropenia","周期性好中球減少症",,2380,111,"Neutropenia","好中球減少症",,"non_tumor",111
+"hematology",1084,"Agranulocytosis","無顆粒球症",,2390,111,"Neutropenia","好中球減少症",,"non_tumor",111
+"hematology",1085,"Hypersplenism","脾機能亢進症",,2400,111,"Neutropenia","好中球減少症",,"non_tumor",111
+"hematology",1086,"LLS","なまけもの白血球症候群",,2410,112,"Leukocyte dysfunction","白血球機能障害",,"non_tumor",112
+"hematology",1087,"Hyper-IgE syndrome","高ＩｇＥ症候群",,2420,112,"Leukocyte dysfunction","白血球機能障害",,"non_tumor",112
+"hematology",1088,"LAD","白血球接着不全症",,2430,112,"Leukocyte dysfunction","白血球機能障害",,"non_tumor",112
+"hematology",1089,"CHS","チェディアック・東症候群",,2440,112,"Leukocyte dysfunction","白血球機能障害",,"non_tumor",112
+"hematology",1090,"CGD","慢性肉芽腫症",,2450,112,"Leukocyte dysfunction","白血球機能障害",,"non_tumor",112
+"hematology",1091,,"その他の白血球機能障害",,2460,112,"Leukocyte dysfunction","白血球機能障害",,"non_tumor",112
+"hematology",1092,"SCID","重症複合免疫不全症",,2470,113,"Immunodeficiency","免疫不全症",,"non_tumor",113
+"hematology",1093,"Wiskott-Aldrich syndrome","ウィスコット・オルドリッチ症候群",,2480,113,"Immunodeficiency","免疫不全症",,"non_tumor",113
+"hematology",1094,"XLA","Ｘ連鎖無ガンマグロブリン血症",,2490,113,"Immunodeficiency","免疫不全症",,"non_tumor",113
+"hematology",1095,"Common variable immunodeficiency (CVID)","分類不能免疫不全症",,2500,113,"Immunodeficiency","免疫不全症",,"non_tumor",113
+"hematology",1096,"Ataxia telangiectasia","毛細血管拡張性運動失調症",,2510,113,"Immunodeficiency","免疫不全症",,"non_tumor",113
+"hematology",1097,"Hyper-IgM syndrome","高ＩｇＭ症候群",,2520,113,"Immunodeficiency","免疫不全症",,"non_tumor",113
+"hematology",1098,,"その他の免疫不全",,2530,113,"Immunodeficiency","免疫不全症",,"non_tumor",113
+"hematology",1099,"HNL","組織球性壊死性リンパ節炎",,2540,114,"lymphocytic/histiocytic disease","リンパ・組織球性疾患",,"non_tumor",114
+"hematology",1100,"HPS","血球貪食症候群",,2550,114,"lymphocytic/histiocytic disease","リンパ・組織球性疾患",,"non_tumor",114
+"hematology",1101,"IM","伝染性単核症",,2560,114,"lymphocytic/histiocytic disease","リンパ・組織球性疾患",,"non_tumor",114
+"hematology",1102,"HLH","血球貪食性リンパ組織球症",,2570,114,"lymphocytic/histiocytic disease","リンパ・組織球性疾患",,"non_tumor",114
+"epilepsy",1,"EME","早期ミオクロニー脳症","Early myoclonic encephalopathy",10,,,,,,
+"epilepsy",2,"Ohtahara","大田原症候群","Ohtahara syndrome",20,,,,,,
+"epilepsy",3,"EIMFS","遊走性焦点発作を伴う乳児てんかん","Epilepsy of infancy with migrating focal seizures",30,,,,,,
+"epilepsy",4,"West","West症候群（点頭てんかん）","West syndrome",40,,,,,,
+"epilepsy",5,"Dravet ","Dravet症候群（乳児重症ミオクロニーてんかん）","Dravet syndrome",50,,,,,,
+"epilepsy",6,"MSNPE","非進行性疾患のミオクロニー脳症","Myoclonic status in nonprogressive encephalopathy",60,,,,,,
+"epilepsy",7,"Doose","ミオクロニー脱力発作を伴うてんかん","Epilepsy with myoclonic-atonic seizures",70,,,,,,
+"epilepsy",8,"EMS","ミオクロニー欠神てんかん","Epilepsy with myoclonic absences",80,,,,,,
+"epilepsy",9,"LGS","Lennox-Gastaut症候群","Lennox-Gastaut syndrome",90,,,,,,
+"epilepsy",10,"CSWS/ESES","徐波睡眠期持続性棘徐波を示すてんかん性脳症","Epileptic encephalopathy with continuous spike-waves during sleep",100,,,,,,
+"epilepsy",11,"LKS","Landau-Kleffner症候群","Landau-Kleffner syndrome",110,,,,,,
+"epilepsy",12,"PME","進行性ミオクローヌスてんかん","Progressive myoclonus epilepsies",120,,,,,,
+"epilepsy",13,"MTLE with HS","海馬硬化症を伴う内側側頭葉てんかん","Mesial temporal lobe epilepsy with hippocampal sclerosis",130,,,,,,
+"epilepsy",14,"Rasmussen","Rasmussen症候群","Rasmussen syndrome",140,,,,,,
+"epilepsy",15,"Gelastic seizures with HH","視床下部過誤腫による笑い発作","Gelastic seizures with hypothalamic hamartoma",150,,,,,,
+"epilepsy",16,"HHE","片側痙攣片麻痺てんかん症候群","Hemiconvulsion-hemiplegia-epilepsy syndrome",160,,,,,,
+"epilepsy",17,"Aicardi","Aicardi症候群","Aicardi syndrome",170,,,,,,
+"epilepsy",18,"Angelman","Angelman症候群","Angelman syndrome",180,,,,,,
+"epilepsy",19,"Rett","Rett 症候群","Rett syndrome",190,,,,,,
+"epilepsy",20,"PCDH19","PCDH19関連症候群","PCDH19-related epilepsy in females",200,,,,,,
+"epilepsy",21,"Ring20","環状20番染色体症候群","Ring chromosome 20 syndrome",210,,,,,,
+"epilepsy",22,"FE-NOS","その他の焦点てんかん","Focal epilepsy, not otherwise specificied",220,,,,,,
+"epilepsy",23,"GE-NOS","その他の全般てんかん","Generalized epilepsy, not otherwise specificied",230,,,,,,
+"epilepsy",24,"UE-NOS","その他の未決定てんかん","Undetermined epilepsy, not otherwise specificied",240,,,,,,
