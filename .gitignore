@@ -6,6 +6,7 @@
 /LOG/
 /RAWDATA/
 /RESULT/
+!/RAWDATA/EXT/
 
 ### Windows ###
 # Windows image file caches
