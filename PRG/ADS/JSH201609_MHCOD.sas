@@ -41,3 +41,7 @@ PROC DATASETS;
   RENAME VAR1=category VAR2=code VAR3=abbr VAR4=name_ja VAR5=name_en VAR6=order VAR7=group_code VAR8=group_abbr VAR9=group_name_ja VAR10=group_name_en VAR11=group_type VAR12=group_order;
   RENAME code=MHDECOD group_code=MHGRPCOD name_ja=MHTERM_J group_name_ja=MHGRPTERM_J abbr=MHTERM group_abbr=MHGRPTERM order=MHREFID;
 QUIT;
+DATA  MHCOD;
+  SET MHCOD;
+  IF  category="epilepsy" THEN DELETE;
+RUN;
