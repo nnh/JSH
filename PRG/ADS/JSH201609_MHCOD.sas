@@ -4,31 +4,40 @@
 **********************************************************************;
 
 /*** Initial setting ***/
+%MACRO FILE_SEPARATOR;
+  %LOCAL _separator;
+  %LET   _separator = ;
+  %IF &sysscp=LIN X64 
+    %THEN %LET _separator=/;
+    %ELSE %LET _separator=\;
+  &_separator.
+%MEND FILE_SEPARATOR;
+%LET _FS = %FILE_SEPARATOR;
 %MACRO CURRENT_DIR;
-
-    %LOCAL _FULLPATH _PATH;
-    %LET   _FULLPATH = ;
-    %LET   _PATH     = ;
-
+  %LOCAL _FULLPATH _PATH;
+  %LET   _FULLPATH = ;
+  %LET   _PATH     = ;
+  %IF &sysscp=WIN %THEN %DO;
     %IF %LENGTH(%SYSFUNC(GETOPTION(SYSIN))) = 0 %THEN
         %LET _FULLPATH = %SYSGET(SAS_EXECFILEPATH);
     %ELSE
         %LET _FULLPATH = %SYSFUNC(GETOPTION(SYSIN));
-
-    %LET _PATH = %SUBSTR(   &_FULLPATH., 1, %LENGTH(&_FULLPATH.)
-                          - %LENGTH(%SCAN(&_FULLPATH.,-1,'\')) -1 );
-
-    &_PATH.
-
+  %END;
+  %IF &sysscp=LIN X64 %THEN %DO;
+    %LET _FULLPATH = &_SASPROGRAMFILE;
+  %END;
+  %LET _PATH = %SUBSTR(   &_FULLPATH., 1, %LENGTH(&_FULLPATH.)
+                          - %LENGTH(%SCAN(&_FULLPATH.,-1,&_FS.)) -1 );
+  &_PATH.
 %MEND CURRENT_DIR;
 
 %LET _PATH2 = %CURRENT_DIR;
 %LET FILE = ADS;
 
-%INCLUDE "&_PATH2.\JSH201609_ADS_LIBNAME.sas";
+%INCLUDE "&_PATH2.&_FS.JSH201609_ADS_LIBNAME.sas";
 
 /*** CSV read ***/
-FILENAME IN "&EXT.\disease_161021.csv" Encoding="utf-8";
+FILENAME IN "&EXT.&_FS.disease_161021.csv" Encoding="utf-8";
 PROC IMPORT OUT= MHCOD
   DATAFILE=IN
   DBMS=CSV REPLACE;
