@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#JPLSG_AML05_csvファイル整え\n#Sahoko Ando\n#2016/10/11\n\nframe_files <- lapply(sys.frames(), function(x) x$ofile)\nframe_files <- Filter(Negate(is.null), frame_files)\nPATH <- dirname(dirname(frame_files[[length(frame_files)]]))\n\nsetwd(paste(PATH,\"/rawdata\",sep=\"\"))\n#setwd(\"../rawdata\")\nDF <- read.csv(\"AML-05データ_20161011.csv\",as.is=T,skip=11,header=T)\n#DF <- read.csv(\"AML-05データ_20161011.csv\",as.is=T)\n#変数名削除\n#DF1 <- DF[c(2:485),]\n#length(DF1$AML05.No.)\n\n#変数名変更\ncolnames(DF1) <- c(\"AML05No\",\"JPLSG登録コード\",\"事後不適格\",\"解析対象外\",\n                   \"診断年月日\",\"生年月日\",\"生年月日_入力不可_1：あり※ダミーの日付入力\",\n                  \"中止届有無\",\"中止届に記載された中止日\",\"therapy最終投薬日\",\n                  \"リスク\",\n                  \"移植有無\",\"移植日\",\"死亡\",\"最終確認日\")\n\nlength(DF1$AML05No)\n\n#事後不適格を外す\nDF2 <- subset(DF1,DF1$事後不適格!=3)\n\n#解析対象外を外す\nDF3 <- subset(DF2,DF2$解析対象外!=1)\n\nAML05_DF<-DF3\n\n#データの出力\n#write.csv(AML05_DF,\"//Rinken-sv2/プロトコール別/長期フォロー/LTFU/output/AML05_DF.csv\",row.names=F)\n\n#####################\n#中止届有無\n#0：なし、\n#1：あり\n\n#移植有無\n#0：なし、1：あり\n\n#リスク 1：低リスク　\n#2：中間リスク　\n#3：高リスク　　\n#0：治療中止\n#7：リスク判定時に中止\n#8：リスク判定間違いで中止\n#9：リスク判定前中止\n\n#死亡 0:なし, 1:あり\n#######################\n\n#終了日の作成\n#試験中止＝中止日\nsample <-subset(AML05_DF,AML05_DF$中止届有無==1)\nsample$終了日 <-　sample$中止届に記載された中止\n\n#高リスク(高リスク=3),移植あり＝移植日\nsample1 <- subset(AML05_DF,AML05_DF$リスク==3 & AML05_DF$移植有無==1 & AML05_DF$中止届有無!=1) #中止届が出ているものは除く\nsample1$終了日 <-　sample1$移植日\n\n#高リスク(高リスク=3),移植なし＝therapy最終投薬日\nsample2 <- subset(AML05_DF,AML05_DF$リスク==3 & AML05_DF$移植有無==0　& AML05_DF$中止届有無!=1) #中止届が出ているものは除く\nsample2$終了日 <-　sample2$therapy最終投薬日\n\n#高リスク以外の人＝therapy最終投薬日\nsample3_1 <-subset(AML05_DF,AML05_DF$中止届有無!=1)#中止届が出ているものは除く\nsample3 <- subset(sample3_1,sample3_1$リスク!=3)\nsample3$終了日 <-　sample3$therapy最終投薬日\n\n#データの出力\n#write.csv(sample,\"//Rinken-sv2/プロトコール別/長期フォロー/LTFU/output/AML05_sample.csv\",row.names=F)\n#write.csv(sample1,\"//Rinken-sv2/プロトコール別/長期フォロー/LTFU/output/AML05_sample1.csv\",row.names=F)\n#write.csv(sample2,\"//Rinken-sv2/プロトコール別/長期フォロー/LTFU/output/AML05_sample2.csv\",row.names=F)\n#write.csv(sample3,\"//Rinken-sv2/プロトコール別/長期フォロー/LTFU/output/AML05_sample3.csv\",row.names=F)\n\n#sampleのDFをひとつのDFにまとめる\nsample_1 <- rbind(sample,sample1)\nsample_12 <- rbind(sample_1,sample2)\nsample_123 <- rbind(sample_12,sample3)\n\nlength(sample_123$AML05No)\n\n#出力する\n#write.csv(sample_123,\"//Rinken-sv2/プロトコール別/長期フォロー/LTFU/output/AML05_DF_ALL.csv\",row.names=F)\n\n#データフレーム名の書き換え\nAML05_DF_ALL <- sample_123\n\n#AML05のデータから必要な変数名のみ抽出\nAML05 <- AML05_DF_ALL[,c(1,2,5,14,15,16)]\n\n#JPLSGデータの読み込み\nJP_DF <- read.csv(\"JPLSG_registration_161005_0955.csv\",as.is=T)\n\n#JPデータ　必要な変数名のみ抽出\nJP_DF1 <- JP_DF[,c(\"登録コード\",\"生年月日\",\"生死\",\"最終確認日\")]\n\n#マージする\nmerge_J05 <- merge(AML05,JP_DF1,by.x=\"JPLSG登録コード\",by.y=\"登録コード\",all.x=T)\n\n\n#変数名の書き換え\nnames(merge_J05)[5] <- c(\"最終確認日AML05\")\nnames(merge_J05)[9] <- c(\"最終確認日JPLSG\")\n\nsetwd(\"../output\")\n\n#出力する\nwrite.csv(merge_J05,\"JP_AML05.csv\",row.names=F)\n\nsetwd(\"../programs\")\n",
+    "created" : 1478069301269.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "716285015",
+    "id" : "B22A71CA",
+    "lastKnownWriteTime" : 1478069269,
+    "last_content_update" : 1478069269,
+    "path" : "C:/Users/MamikoYonejima/Downloads/JCCG-LTFU-master/JCCG-LTFU-master/programs/AML05データ生成.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "getwd()\nsetwd(\"..\")\n",
+    "created" : 1478048926098.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3150105408",
+    "id" : "E85A2965",
+    "lastKnownWriteTime" : 1478049717,
+    "last_content_update" : 1478049357652,
+    "path" : "//rinken-sv2/学会事務/個人/米島/GitHub/JSH2016/PRG/test.R",
+    "project_path" : "PRG/test.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
