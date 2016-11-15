@@ -69,7 +69,7 @@ for(i in 1:length(DF$登録コード)){
             strMHDECOD <- 34
      }else if (strB==2 && DF$field26[i]==13){
             strMHDECOD <- 36
-     }else if ((strB==2 && DF$field26[i]==9) | (strB==3 && DF$field32[i]==3)){
+     }else if (strB==2 && DF$field26[i]==9){      
             strMHDECOD <- 57 
      }else if (strB==2 && DF$field25[i]==1){
             strMHDECOD <- 42  
@@ -86,13 +86,13 @@ for(i in 1:length(DF$登録コード)){
      }else if (strB==2 && DF$field25[i]==6){
             strMHDECOD <- 48   
      }else if (strB==2 && DF$field24[i]==5){
-            strMHDECOD <- 51   
+            strMHDECOD <- 51   　　　　　　　　　　　　　　　　
       }else if (strB==2 && DF$field24[i]==6){
             strMHDECOD <- 54  
       }else if (strB==2){
             strMHDECOD <- 41                                             #End Classification of AML
       }else if (strB==4 && DF$field159[i]==1){
-            strMHDECOD <- 1
+            strMHDECOD <- 1　　　　　　　　　　　　　##ここまで動く
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==2){
             strMHDECOD <- 5
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==3){
@@ -127,6 +127,8 @@ for(i in 1:length(DF$登録コード)){
             strMHDECOD <- 28
       }else if (strB==4 && DF$field159[i]==2&& DF$field164[i]==3 && DF$field49[i]==9){
             strMHDECOD <- 29                                          #End Classification of MDS MPD
+      }else if (strB==3 && DF$field32[i]==3){      ##koko
+            strMHDECOD <- 57 
       }else if (strB==3 && DF$field32[i]==2){
             strMHDECOD <- 56      
       }else if (strB==3 && DF$field28[i]==1 &&  DF$field29[i]==1 ){
