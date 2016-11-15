@@ -13,8 +13,7 @@ DF <- read.csv("JSPHO_registration_160720_1501.csv",as.is = T)
 
 
 
-for(i in 1:length(DF$症例登録番号)){
-
+for(i in 1:length(DF$登録コード))
 　　strA = DF$field7[i]  　　#疾患種別
 　　strB = DF$field37[i] 　　#血液腫瘍性疾患名
 　　strC = DF$field10[i] 　　#基礎疾患
