@@ -5,8 +5,36 @@
 #reading csv
 setwd("//Rinken-sv2/学会事務/個人/米島/GitHub/JSH2016/rawdata")
 data <- read.csv("JSPHO_registration_160720_1501.csv",as.is = T)
+
 #2012年診断以降
-#診断時年齢20歳未満
+data$year<-substr(data$診断年月日,1,4)
+data<- data[data$year>=2012,]
+
+#Cut data /age diagnosis is over　20
+  data$生年月日 <- as.Date(data$生年月日,format="%Y/%m/%d") 
+  data$診断年月日 <- as.Date(data$診断年月日,format="%Y/%m/%d")
+
+
+  datedif <- function(starting, ending) {
+ y <- as.integer((as.integer(format(ymd(ending),"%Y%m%d")) - as.integer(format(ymd(starting),"%Y%m%d")))/10000)
+ months <- as.numeric((as.integer(format(ymd(ending),"%m%d")) - as.integer(format(ymd(starting),"%m%d")))/100)
+ ym <- ifelse(months<0, as.integer(months + 12), as.integer(months))
+ m <- ym + y*12
+ d <- as.integer(ymd(ending) - ymd(starting))
+ days <- as.integer(format(ymd(ending),"%d")) - as.integer(format(ymd(starting),"%d"))
+ yd <- as.integer(ymd(ending) - (ymd(starting) %m+% months(12*y)))
+ md <- ifelse(days<0, ymd(ending) - (ymd(starting) %m+% months(m)), days)
+ return(data.frame(y,m,d,ym,yd,md))
+}
+  library(lubridate)　　#必須
+Sys.setlocale("LC_TIME", "C") #必須：日本時間にコンピュータ設定を合わせるforwindows
+ age <- datedif(data$生年月日,data$診断年月日)
+data$age_diagnosis <- age$y
+
+data<- data[data$age_diagnosis<20,]
+
+
+
 
 
 #except nontumor
@@ -203,3 +231,17 @@ for(i in 1:length(DF$登録コード)){
                    
     DF$MHDECOD[i]=strMHDECOD
        }　　　　　　　　　　　　　　　　　　　　 #for文終わり　DF$MHDECODが空値は疾患名が当てはまらないcase
+
+
+#SCSTRESC
+DF$県CD <-substr(DF$初発時住所,1,3)
+#ここから！
+#DF$DorA <- if(DF$生死=="true"){
+             
+#Pick up some data using
+WHO.data <- DF[,c("生年月日","診断年月日","登録コード","性別","県CD","生死","死亡日","最終確認日","field161","MHDECOD")]
+colnames(WHO.data)[1:9] <- c("BRTHDTC","MHSTDTC","SUBJID","SEX","SCSTRESC","DTHFL","DTHDTC","DSSTDTC","SITEID")
+
+
+setwd("../output")
+write.csv(WHO.data,"who.csv",row.names=F)
