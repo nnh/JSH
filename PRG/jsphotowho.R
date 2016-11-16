@@ -4,15 +4,24 @@
 
 #reading csv
 setwd("//Rinken-sv2/学会事務/個人/米島/GitHub/JSH2016/rawdata")
-DF <- read.csv("JSPHO_registration_160720_1501.csv",as.is = T)
+data <- read.csv("JSPHO_registration_160720_1501.csv",as.is = T)
 #2012年診断以降
 #診断時年齢20歳未満
 
 
+#except nontumor
+for(i in 1:length(data$登録コード)){
+             ifelse(((data$field7[i]==2)|
+                    (data$field37[i]==8 && data$field69[i]==2)),
+                 data$MHDECOD[i] <- "non_tumor",
+                 data$MHDECOD[i] <- ""
+                        )
+}
 
-
-
-
+#Make a group of tumor
+DF <- subset(data,data$MHDECOD=="")
+        DF[is.na(DF)]<-"FALSE"  #Replace NA to FALSE
+     
 for(i in 1:length(DF$登録コード)){
 
 　　strA = DF$field7[i]  　　#疾患種別
@@ -29,11 +38,7 @@ for(i in 1:length(DF$登録コード)){
 #その他のリンパ増殖性疾患 strB==7
 
 　　strMHDECOD = ""
-
-
- if((strA==2)|(strB==8 && DF$field69[i]==2)){
-         strMHDECOD <- "non_tumor"     
-     }else if((strA==1 && strB==2 && strC==1)|(strA==1 && strB==2 && strC==2)){
+ if((strA==1 && strB==2 && strC==1)|(strA==1 && strB==2 && strC==2)){
          strMHDECOD <- 53
      }else if(strA==1 && strB==10){
             strMHDECOD <- 52
@@ -92,7 +97,7 @@ for(i in 1:length(DF$登録コード)){
       }else if (strB==2){
             strMHDECOD <- 41                                             #End Classification of AML
       }else if (strB==4 && DF$field159[i]==1){
-            strMHDECOD <- 1　　　　　　　　　　　　　##ここまで動く
+            strMHDECOD <- 1　　　　　　　　　　　　　
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==2){
             strMHDECOD <- 5
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==3){
@@ -127,7 +132,7 @@ for(i in 1:length(DF$登録コード)){
             strMHDECOD <- 28
       }else if (strB==4 && DF$field159[i]==2&& DF$field164[i]==3 && DF$field49[i]==9){
             strMHDECOD <- 29                                          #End Classification of MDS MPD
-      }else if (strB==3 && DF$field32[i]==3){      ##koko
+      }else if (strB==3 && DF$field32[i]==3){      
             strMHDECOD <- 57 
       }else if (strB==3 && DF$field32[i]==2){
             strMHDECOD <- 56      
