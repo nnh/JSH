@@ -235,12 +235,21 @@ for(i in 1:length(DF$登録コード)){
 
 #SCSTRESC
 DF$県CD <-substr(DF$初発時住所,1,3)
-#ここから！
-#DF$DorA <- if(DF$生死=="true"){
              
 #Pick up some data using
 WHO.data <- DF[,c("生年月日","診断年月日","登録コード","性別","県CD","生死","死亡日","最終確認日","field161","MHDECOD")]
 colnames(WHO.data)[1:9] <- c("BRTHDTC","MHSTDTC","SUBJID","SEX","SCSTRESC","DTHFL","DTHDTC","DSSTDTC","SITEID")
+
+#Replace Death or Alive CD to 01
+for(i in 1:length(WHO.data$SUBJID)){
+            if (WHO.data$DTHFL[i]=="true"){
+                     WHO.data$DTHFL[i] <- 1
+            }else if (WHO.data$DTHFL[i]=="false"){
+                     WHO.data$DTHFL[i] <- 0
+             }else{
+            WHO.data$DTHFL[i] <- "" }
+          }
+
 
 
 setwd("../output")
