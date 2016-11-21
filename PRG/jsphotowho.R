@@ -48,7 +48,7 @@ for(i in 1:length(data$登録コード)){
 
 #Make a group of tumor
 DF <- subset(data,data$MHDECOD=="")
-        DF[is.na(DF)]<-"FALSE"  #Replace NA to FALSE
+        DF[is.na(DF)]<-"-"  #Replace NA to "-"
      
 for(i in 1:length(DF$登録コード)){
 
@@ -90,14 +90,15 @@ for(i in 1:length(DF$登録コード)){
             strMHDECOD <- 69
      }else if(strB==1&&DF$field17[i]==2){
             strMHDECOD <- 70                                            #End Classification of ALL
-     }else if (strB==2 && DF$field26[i]==12){
-            strMHDECOD <- 30 
+
      }else if ((strB==2 && DF$field26[i]==4)| (strB==2 && DF$field25[i]==7)){
             strMHDECOD <- 31
      }else if ((strB==2 && DF$field26[i]==3)| (strB==2 && DF$field25[i]==4)| (strB==2 && DF$field25[i]==5)){
             strMHDECOD <- 32
      }else if (strB==2 && DF$field26[i]==6){
             strMHDECOD <- 33
+     }else if (strB==2 && DF$field26[i]==2){
+            strMHDECOD <- 30
      }else if (strB==2 && DF$field26[i]==12){
             strMHDECOD <- 34
      }else if (strB==2 && DF$field26[i]==13){
@@ -116,7 +117,7 @@ for(i in 1:length(DF$登録コード)){
             strMHDECOD <- 46 
      }else if ((strB==2 && DF$field25[i]==10) | (strB==2 && DF$field25[i]==11)){
             strMHDECOD <- 47    
-     }else if (strB==2 && DF$field25[i]==6){
+     }else if (strB==2 && DF$field25[i]==12){
             strMHDECOD <- 48   
      }else if (strB==2 && DF$field24[i]==5){
             strMHDECOD <- 51   　　　　　　　　　　　　　　　　
@@ -234,23 +235,24 @@ for(i in 1:length(DF$登録コード)){
 
 
 #SCSTRESC
-DF$県CD <-substr(DF$初発時住所,1,3)
-             
+DF$県CD <-sub("^.*.-","",DF$初発時住所)  
+DF$県CD <-substr(DF$県CD,1,2)
+           
 #Pick up some data using
-WHO.data <- DF[,c("生年月日","診断年月日","登録コード","性別","県CD","生死","死亡日","最終確認日","field161","MHDECOD")]
-colnames(WHO.data)[1:9] <- c("BRTHDTC","MHSTDTC","SUBJID","SEX","SCSTRESC","DTHFL","DTHDTC","DSSTDTC","SITEID")
+WHOdata <- DF[,c("生年月日","診断年月日","登録コード","性別","県CD","生死","死亡日","最終確認日","field161","MHDECOD")]
+colnames(WHOdata)[1:9] <- c("BRTHDTC","MHSTDTC","SUBJID","SEX","SCSTRESC","DTHFL","DTHDTC","DSSTDTC","SITEID")
 
 #Replace Death or Alive CD to 01
-for(i in 1:length(WHO.data$SUBJID)){
-            if (WHO.data$DTHFL[i]=="true"){
-                     WHO.data$DTHFL[i] <- 1
-            }else if (WHO.data$DTHFL[i]=="false"){
-                     WHO.data$DTHFL[i] <- 0
+for(i in 1:length(WHOdata$SUBJID)){
+            if (WHOdata$DTHFL[i]=="true"){
+                     WHOdata$DTHFL[i] <- 1
+            }else if (WHOdata$DTHFL[i]=="false"){
+                     WHOdata$DTHFL[i] <- 0
              }else{
-            WHO.data$DTHFL[i] <- "" }
+            WHOdata$DTHFL[i] <- "" }
           }
 
 
 
 setwd("../output")
-write.csv(WHO.data,"who.csv",row.names=F)
+write.csv(WHOdata,"who.csv",row.names=F)
