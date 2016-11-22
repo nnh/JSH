@@ -6,7 +6,8 @@
 /LOG/
 /RAWDATA/
 /RESULT/
-/output/
+/.Rproj.user/
+#/output/
 
 ### Windows ###
 # Windows image file caches
