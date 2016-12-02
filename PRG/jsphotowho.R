@@ -3,32 +3,32 @@
 #2016/11/14
 
 #reading csv
-setwd("//Rinken-sv2/Šw‰ï––±/ŒÂl/•Ä“‡/GitHub/JSH2016/rawdata")
+setwd("//Rinken-sv2/å­¦ä¼šäº‹å‹™/å€‹äºº/ç±³å³¶/GitHub/JSH2016/rawdata")
 DF <- read.csv("JSPHO_registration_160720_1501.csv",as.is = T)
-#2012”Nf’fˆÈ~
-#f’f”N—î20Î–¢–
+#2012å¹´è¨ºæ–­ä»¥é™
+#è¨ºæ–­æ™‚å¹´é½¢20æ­³æœªæº€
 
 
 
 
 
 
-for(i in 1:length(DF$“o˜^ƒR[ƒh)){
+for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
 
-@@strA = DF$field7[i]  @@#¾Š³í•Ê
-@@strB = DF$field37[i] @@#ŒŒ‰tîá‡«¾Š³–¼
-@@strC = DF$field10[i] @@#Šî‘b¾Š³
+ã€€ã€€strA = DF$field7[i]  ã€€ã€€#ç–¾æ‚£ç¨®åˆ¥
+ã€€ã€€strB = DF$field37[i] ã€€ã€€#è¡€æ¶²è…«ç˜æ€§ç–¾æ‚£å
+ã€€ã€€strC = DF$field10[i] ã€€ã€€#åŸºç¤ç–¾æ‚£
 
 #ALL strB==1
-#NHL srtB==5@@@@@@@@@@@@@@@@@@@@@@
+#NHL srtB==5ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€
 #AML strB==2
 #exceptCML strB==4 && DF$field159[i]==2
-#‚Ü‚ê‚È”’ŒŒ•a strB==3
+#ã¾ã‚Œãªç™½è¡€ç—… strB==3
 #HL strB==6
-#‘gD‹…Ç strB==8
-#‚»‚Ì‘¼‚ÌƒŠƒ“ƒp‘B«¾Š³ strB==7
+#çµ„ç¹”çƒç—‡ strB==8
+#ãã®ä»–ã®ãƒªãƒ³ãƒ‘å¢—æ®–æ€§ç–¾æ‚£ strB==7
 
-@@strMHDECOD = ""
+ã€€ã€€strMHDECOD = ""
 
 
  if((strA==2)|(strB==8 && DF$field69[i]==2)){
@@ -86,13 +86,13 @@ for(i in 1:length(DF$“o˜^ƒR[ƒh)){
      }else if (strB==2 && DF$field25[i]==6){
             strMHDECOD <- 48   
      }else if (strB==2 && DF$field24[i]==5){
-            strMHDECOD <- 51   @@@@@@@@@@@@@@@@
+            strMHDECOD <- 51   ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€
       }else if (strB==2 && DF$field24[i]==6){
             strMHDECOD <- 54  
       }else if (strB==2){
             strMHDECOD <- 41                                             #End Classification of AML
       }else if (strB==4 && DF$field159[i]==1){
-            strMHDECOD <- 1@@@@@@@@@@@@@##‚±‚±‚Ü‚Å“®‚­
+            strMHDECOD <- 1ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€##ã“ã“ã¾ã§å‹•ã
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==2){
             strMHDECOD <- 5
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==3){
@@ -197,4 +197,4 @@ for(i in 1:length(DF$“o˜^ƒR[ƒh)){
             strMHDECOD <- "" }         
                    
     DF$MHDECOD[i]=strMHDECOD
-       }@@@@@@@@@@@@@@@@@@@@ #for•¶I‚í‚è@DF$MHDECOD‚ª‹ó’l‚Í¾Š³–¼‚ª“–‚Ä‚Í‚Ü‚ç‚È‚¢case
+       }ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ #foræ–‡çµ‚ã‚ã‚Šã€€DF$MHDECODãŒç©ºå€¤ã¯ç–¾æ‚£åãŒå½“ã¦ã¯ã¾ã‚‰ãªã„case
