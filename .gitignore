@@ -6,7 +6,6 @@
 /LOG/
 /RAWDATA/
 /RESULT/
-/output/
 
 ### Windows ###
 # Windows image file caches
@@ -69,3 +68,5 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+.Rproj.user
+.Rhistory
