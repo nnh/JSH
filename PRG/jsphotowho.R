@@ -3,17 +3,65 @@
 #2016/11/14
 
 #reading csv
+<<<<<<< HEAD
 setwd("//Rinken-sv2/å­¦ä¼šäº‹å‹™/å€‹äºº/ç±³å³¶/GitHub/JSH2016/rawdata")
 DF <- read.csv("JSPHO_registration_160720_1501.csv",as.is = T)
 #2012å¹´è¨ºæ–­ä»¥é™
 #è¨ºæ–­æ™‚å¹´é½¢20æ­³æœªæº€
+=======
+setwd("//Rinken-sv2/Šw‰ï––±/ŒÂl/•Ä“‡/GitHub/JSH2016/rawdata")
+data <- read.csv("JSPHO_registration_160720_1501.csv",as.is = T)
+
+#2012”Nf’fˆÈ~
+data$year<-substr(data$f’f”NŒ“ú,1,4)
+data<- data[data$year>=2012,]
+
+#Cut data /age diagnosis is over@20
+  data$¶”NŒ“ú <- as.Date(data$¶”NŒ“ú,format="%Y/%m/%d") 
+  data$f’f”NŒ“ú <- as.Date(data$f’f”NŒ“ú,format="%Y/%m/%d")
+
+
+  datedif <- function(starting, ending) {
+ y <- as.integer((as.integer(format(ymd(ending),"%Y%m%d")) - as.integer(format(ymd(starting),"%Y%m%d")))/10000)
+ months <- as.numeric((as.integer(format(ymd(ending),"%m%d")) - as.integer(format(ymd(starting),"%m%d")))/100)
+ ym <- ifelse(months<0, as.integer(months + 12), as.integer(months))
+ m <- ym + y*12
+ d <- as.integer(ymd(ending) - ymd(starting))
+ days <- as.integer(format(ymd(ending),"%d")) - as.integer(format(ymd(starting),"%d"))
+ yd <- as.integer(ymd(ending) - (ymd(starting) %m+% months(12*y)))
+ md <- ifelse(days<0, ymd(ending) - (ymd(starting) %m+% months(m)), days)
+ return(data.frame(y,m,d,ym,yd,md))
+}
+  library(lubridate)@@#•K{
+Sys.setlocale("LC_TIME", "C") #•K{F“ú–{ŠÔ‚ÉƒRƒ“ƒsƒ…[ƒ^İ’è‚ğ‡‚í‚¹‚éforwindows
+ age <- datedif(data$¶”NŒ“ú,data$f’f”NŒ“ú)
+data$age_diagnosis <- age$y
+>>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
+
+data<- data[data$age_diagnosis<20,]
 
 
 
 
 
-
+<<<<<<< HEAD
 for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
+=======
+#except nontumor
+for(i in 1:length(data$“o˜^ƒR[ƒh)){
+             ifelse(((data$field7[i]==2)|
+                    (data$field37[i]==8 && data$field69[i]==2)),
+                 data$MHDECOD[i] <- "non_tumor",
+                 data$MHDECOD[i] <- ""
+                        )
+}
+
+#Make a group of tumor
+DF <- subset(data,data$MHDECOD=="")
+        DF[is.na(DF)]<-"-"  #Replace NA to "-"
+     
+for(i in 1:length(DF$“o˜^ƒR[ƒh)){
+>>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
 
 ã€€ã€€strA = DF$field7[i]  ã€€ã€€#ç–¾æ‚£ç¨®åˆ¥
 ã€€ã€€strB = DF$field37[i] ã€€ã€€#è¡€æ¶²è…«ç˜æ€§ç–¾æ‚£å
@@ -28,12 +76,17 @@ for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
 #çµ„ç¹”çƒç—‡ strB==8
 #ãã®ä»–ã®ãƒªãƒ³ãƒ‘å¢—æ®–æ€§ç–¾æ‚£ strB==7
 
+<<<<<<< HEAD
 ã€€ã€€strMHDECOD = ""
 
 
  if((strA==2)|(strB==8 && DF$field69[i]==2)){
          strMHDECOD <- "non_tumor"     
      }else if((strA==1 && strB==2 && strC==1)|(strA==1 && strB==2 && strC==2)){
+=======
+@@strMHDECOD = ""
+ if((strA==1 && strB==2 && strC==1)|(strA==1 && strB==2 && strC==2)){
+>>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
          strMHDECOD <- 53
      }else if(strA==1 && strB==10){
             strMHDECOD <- 52
@@ -57,14 +110,15 @@ for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
             strMHDECOD <- 69
      }else if(strB==1&&DF$field17[i]==2){
             strMHDECOD <- 70                                            #End Classification of ALL
-     }else if (strB==2 && DF$field26[i]==12){
-            strMHDECOD <- 30 
+
      }else if ((strB==2 && DF$field26[i]==4)| (strB==2 && DF$field25[i]==7)){
             strMHDECOD <- 31
      }else if ((strB==2 && DF$field26[i]==3)| (strB==2 && DF$field25[i]==4)| (strB==2 && DF$field25[i]==5)){
             strMHDECOD <- 32
      }else if (strB==2 && DF$field26[i]==6){
             strMHDECOD <- 33
+     }else if (strB==2 && DF$field26[i]==2){
+            strMHDECOD <- 30
      }else if (strB==2 && DF$field26[i]==12){
             strMHDECOD <- 34
      }else if (strB==2 && DF$field26[i]==13){
@@ -83,7 +137,7 @@ for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
             strMHDECOD <- 46 
      }else if ((strB==2 && DF$field25[i]==10) | (strB==2 && DF$field25[i]==11)){
             strMHDECOD <- 47    
-     }else if (strB==2 && DF$field25[i]==6){
+     }else if (strB==2 && DF$field25[i]==12){
             strMHDECOD <- 48   
      }else if (strB==2 && DF$field24[i]==5){
             strMHDECOD <- 51   ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€
@@ -92,7 +146,11 @@ for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
       }else if (strB==2){
             strMHDECOD <- 41                                             #End Classification of AML
       }else if (strB==4 && DF$field159[i]==1){
+<<<<<<< HEAD
             strMHDECOD <- 1ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€##ã“ã“ã¾ã§å‹•ã
+=======
+            strMHDECOD <- 1@@@@@@@@@@@@@
+>>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==2){
             strMHDECOD <- 5
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==3){
@@ -127,7 +185,7 @@ for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
             strMHDECOD <- 28
       }else if (strB==4 && DF$field159[i]==2&& DF$field164[i]==3 && DF$field49[i]==9){
             strMHDECOD <- 29                                          #End Classification of MDS MPD
-      }else if (strB==3 && DF$field32[i]==3){      ##koko
+      }else if (strB==3 && DF$field32[i]==3){      
             strMHDECOD <- 57 
       }else if (strB==3 && DF$field32[i]==2){
             strMHDECOD <- 56      
@@ -197,4 +255,32 @@ for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
             strMHDECOD <- "" }         
                    
     DF$MHDECOD[i]=strMHDECOD
+<<<<<<< HEAD
        }ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ #foræ–‡çµ‚ã‚ã‚Šã€€DF$MHDECODãŒç©ºå€¤ã¯ç–¾æ‚£åãŒå½“ã¦ã¯ã¾ã‚‰ãªã„case
+=======
+       }@@@@@@@@@@@@@@@@@@@@ #for•¶I‚í‚è@DF$MHDECOD‚ª‹ó’l‚Í¾Š³–¼‚ª“–‚Ä‚Í‚Ü‚ç‚È‚¢case
+
+
+#SCSTRESC
+DF$Œ§CD <-sub("^.*.-","",DF$‰”­ZŠ)  
+DF$Œ§CD <-substr(DF$Œ§CD,1,2)
+           
+#Pick up some data using
+WHOdata <- DF[,c("¶”NŒ“ú","f’f”NŒ“ú","“o˜^ƒR[ƒh","«•Ê","Œ§CD","¶€","€–S“ú","ÅIŠm”F“ú","field161","MHDECOD")]
+colnames(WHOdata)[1:9] <- c("BRTHDTC","MHSTDTC","SUBJID","SEX","SCSTRESC","DTHFL","DTHDTC","DSSTDTC","SITEID")
+
+#Replace Death or Alive CD to 01
+for(i in 1:length(WHOdata$SUBJID)){
+            if (WHOdata$DTHFL[i]=="true"){
+                     WHOdata$DTHFL[i] <- 1
+            }else if (WHOdata$DTHFL[i]=="false"){
+                     WHOdata$DTHFL[i] <- 0
+             }else{
+            WHOdata$DTHFL[i] <- "" }
+          }
+
+
+
+setwd("../output")
+write.csv(WHOdata,"who.csv",row.names=F)
+>>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
