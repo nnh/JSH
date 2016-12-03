@@ -8,6 +8,14 @@
 /RESULT/
 /output/
 
+
+### R ###
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+
 ### Windows ###
 # Windows image file caches
 Thumbs.db
