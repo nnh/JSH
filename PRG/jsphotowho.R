@@ -3,23 +3,16 @@
 #2016/11/14
 
 #reading csv
-<<<<<<< HEAD
 setwd("//Rinken-sv2/å­¦ä¼šäº‹å‹™/å€‹äºº/ç±³å³¶/GitHub/JSH2016/rawdata")
-DF <- read.csv("JSPHO_registration_160720_1501.csv",as.is = T)
-#2012å¹´è¨ºæ–­ä»¥é™
-#è¨ºæ–­æ™‚å¹´é½¢20æ­³æœªæº€
-=======
-setwd("//Rinken-sv2/Šw‰ï––±/ŒÂl/•Ä“‡/GitHub/JSH2016/rawdata")
 data <- read.csv("JSPHO_registration_160720_1501.csv",as.is = T)
 
-#2012”Nf’fˆÈ~
-data$year<-substr(data$f’f”NŒ“ú,1,4)
+#2012å¹´è¨ºæ–­ä»¥é™
+data$year<-substr(data$è¨ºæ–­å¹´æœˆæ—¥,1,4)
 data<- data[data$year>=2012,]
 
-#Cut data /age diagnosis is over@20
-  data$¶”NŒ“ú <- as.Date(data$¶”NŒ“ú,format="%Y/%m/%d") 
-  data$f’f”NŒ“ú <- as.Date(data$f’f”NŒ“ú,format="%Y/%m/%d")
-
+#Cut data /age diagnosis is overã€€20
+  data$ç”Ÿå¹´æœˆæ—¥ <- as.Date(data$ç”Ÿå¹´æœˆæ—¥,format="%Y/%m/%d") 
+  data$è¨ºæ–­å¹´æœˆæ—¥ <- as.Date(data$è¨ºæ–­å¹´æœˆæ—¥,format="%Y/%m/%d")
 
   datedif <- function(starting, ending) {
  y <- as.integer((as.integer(format(ymd(ending),"%Y%m%d")) - as.integer(format(ymd(starting),"%Y%m%d")))/10000)
@@ -32,23 +25,15 @@ data<- data[data$year>=2012,]
  md <- ifelse(days<0, ymd(ending) - (ymd(starting) %m+% months(m)), days)
  return(data.frame(y,m,d,ym,yd,md))
 }
-  library(lubridate)@@#•K{
-Sys.setlocale("LC_TIME", "C") #•K{F“ú–{ŠÔ‚ÉƒRƒ“ƒsƒ…[ƒ^İ’è‚ğ‡‚í‚¹‚éforwindows
- age <- datedif(data$¶”NŒ“ú,data$f’f”NŒ“ú)
+  library(lubridate)ã€€ã€€#å¿…é ˆ
+Sys.setlocale("LC_TIME", "C") #å¿…é ˆï¼šæ—¥æœ¬æ™‚é–“ã«ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿è¨­å®šã‚’åˆã‚ã›ã‚‹forwindows
+ age <- datedif(data$ç”Ÿå¹´æœˆæ—¥,data$è¨ºæ–­å¹´æœˆæ—¥)
 data$age_diagnosis <- age$y
->>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
 
 data<- data[data$age_diagnosis<20,]
 
-
-
-
-
-<<<<<<< HEAD
-for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
-=======
 #except nontumor
-for(i in 1:length(data$“o˜^ƒR[ƒh)){
+for(i in 1:length(data$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
              ifelse(((data$field7[i]==2)|
                     (data$field37[i]==8 && data$field69[i]==2)),
                  data$MHDECOD[i] <- "non_tumor",
@@ -60,8 +45,7 @@ for(i in 1:length(data$“o˜^ƒR[ƒh)){
 DF <- subset(data,data$MHDECOD=="")
         DF[is.na(DF)]<-"-"  #Replace NA to "-"
      
-for(i in 1:length(DF$“o˜^ƒR[ƒh)){
->>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
+for(i in 1:length(DF$ç™»éŒ²ã‚³ãƒ¼ãƒ‰)){
 
 ã€€ã€€strA = DF$field7[i]  ã€€ã€€#ç–¾æ‚£ç¨®åˆ¥
 ã€€ã€€strB = DF$field37[i] ã€€ã€€#è¡€æ¶²è…«ç˜æ€§ç–¾æ‚£å
@@ -76,17 +60,8 @@ for(i in 1:length(DF$“o˜^ƒR[ƒh)){
 #çµ„ç¹”çƒç—‡ strB==8
 #ãã®ä»–ã®ãƒªãƒ³ãƒ‘å¢—æ®–æ€§ç–¾æ‚£ strB==7
 
-<<<<<<< HEAD
 ã€€ã€€strMHDECOD = ""
-
-
- if((strA==2)|(strB==8 && DF$field69[i]==2)){
-         strMHDECOD <- "non_tumor"     
-     }else if((strA==1 && strB==2 && strC==1)|(strA==1 && strB==2 && strC==2)){
-=======
-@@strMHDECOD = ""
  if((strA==1 && strB==2 && strC==1)|(strA==1 && strB==2 && strC==2)){
->>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
          strMHDECOD <- 53
      }else if(strA==1 && strB==10){
             strMHDECOD <- 52
@@ -146,11 +121,7 @@ for(i in 1:length(DF$“o˜^ƒR[ƒh)){
       }else if (strB==2){
             strMHDECOD <- 41                                             #End Classification of AML
       }else if (strB==4 && DF$field159[i]==1){
-<<<<<<< HEAD
-            strMHDECOD <- 1ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€##ã“ã“ã¾ã§å‹•ã
-=======
-            strMHDECOD <- 1@@@@@@@@@@@@@
->>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
+            strMHDECOD <- 1ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==2){
             strMHDECOD <- 5
       }else if (strB==4 && DF$field159[i]==2 && DF$field164[i]==1 && DF$field35[i]==3){
@@ -255,18 +226,14 @@ for(i in 1:length(DF$“o˜^ƒR[ƒh)){
             strMHDECOD <- "" }         
                    
     DF$MHDECOD[i]=strMHDECOD
-<<<<<<< HEAD
        }ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ #foræ–‡çµ‚ã‚ã‚Šã€€DF$MHDECODãŒç©ºå€¤ã¯ç–¾æ‚£åãŒå½“ã¦ã¯ã¾ã‚‰ãªã„case
-=======
-       }@@@@@@@@@@@@@@@@@@@@ #for•¶I‚í‚è@DF$MHDECOD‚ª‹ó’l‚Í¾Š³–¼‚ª“–‚Ä‚Í‚Ü‚ç‚È‚¢case
-
 
 #SCSTRESC
-DF$Œ§CD <-sub("^.*.-","",DF$‰”­ZŠ)  
-DF$Œ§CD <-substr(DF$Œ§CD,1,2)
+DF$çœŒCD <-sub("^.*.-","",DF$åˆç™ºæ™‚ä½æ‰€)  
+DF$çœŒCD <-substr(DF$çœŒCD,1,2)
            
 #Pick up some data using
-WHOdata <- DF[,c("¶”NŒ“ú","f’f”NŒ“ú","“o˜^ƒR[ƒh","«•Ê","Œ§CD","¶€","€–S“ú","ÅIŠm”F“ú","field161","MHDECOD")]
+WHOdata <- DF[,c("ç”Ÿå¹´æœˆæ—¥","è¨ºæ–­å¹´æœˆæ—¥","ç™»éŒ²ã‚³ãƒ¼ãƒ‰","æ€§åˆ¥","çœŒCD","ç”Ÿæ­»","æ­»äº¡æ—¥","æœ€çµ‚ç¢ºèªæ—¥","field161","MHDECOD")]
 colnames(WHOdata)[1:9] <- c("BRTHDTC","MHSTDTC","SUBJID","SEX","SCSTRESC","DTHFL","DTHDTC","DSSTDTC","SITEID")
 
 #Replace Death or Alive CD to 01
@@ -279,8 +246,5 @@ for(i in 1:length(WHOdata$SUBJID)){
             WHOdata$DTHFL[i] <- "" }
           }
 
-
-
 setwd("../output")
 write.csv(WHOdata,"who.csv",row.names=F)
->>>>>>> dff81181f4bc457ecbc40b4d3debb539a77d5396
