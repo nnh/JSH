@@ -9,6 +9,7 @@ setwd("./rawdata")
 data <- read.csv("JSPHO_registration_160720_1501.csv", as.is=T, fileEncoding="CP932")
 
 YearDif <- function(starting, ending) {
+  # 2つの日付の年差（切り下げ）を計算する。startingに生年月日を指定すれば満年齢計算に使用可能。
   as.integer((as.integer(format(as.Date(ending), "%Y%m%d")) - as.integer(format(as.Date(starting), "%Y%m%d"))) / 10000)
 }
 
@@ -19,9 +20,7 @@ data <- data[data$year >= 2012, ]
 # Cut data /age diagnosis is over 20
 data$生年月日 <- as.Date(data$生年月日, format="%Y/%m/%d") 
 data$診断年月日 <- as.Date(data$診断年月日, format="%Y/%m/%d")
-
 Sys.setlocale("LC_TIME", "C") # 必須：日本時間にコンピュータ設定を合わせるfor Windows
-
 data$age_diagnosis <- YearDif (data$生年月日, data$診断年月日)
 data <- data[data$age_diagnosis < 20,]
 
@@ -36,9 +35,9 @@ DF <- subset(data, data$MHDECOD=="")
 DF[is.na(DF)] <- "-"  # Replace NA to "-"
      
 for (i in 1:length(DF$登録コード)) {
-  strA = DF$field7[i]  　　# 疾患種別
-  strB = DF$field37[i] 　　# 血液腫瘍性疾患名
-  strC = DF$field10[i] 　　# 基礎疾患
+  strA <- DF$field7[i]  　　# 疾患種別
+  strB <- DF$field37[i] 　　# 血液腫瘍性疾患名
+  strC <- DF$field10[i] 　　# 基礎疾患
 
 # ALL strB==1
 # NHL srtB==5
@@ -241,3 +240,4 @@ for (i in 1:length(WHOdata$SUBJID)) {
 
 setwd("../output")
 write.csv(WHOdata, "who.csv", row.names=F)
+setwd("..")
