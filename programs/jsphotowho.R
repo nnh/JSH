@@ -2,11 +2,11 @@
 # Mamiko Yonejima
 # 2016/11/14
 YearDif <- function(starting, ending) {
-  # 2つの日付の年差（切り下げ）を計算する。startingに生年月日を指定すれば満年齢計算に使用可能。
+# 2つの日付の年差（切り下げ）を計算する。startingに生年月日を指定すれば満年齢計算に使用可能。
   as.integer((as.integer(format(as.Date(ending), "%Y%m%d")) - as.integer(format(as.Date(starting), "%Y%m%d"))) / 10000)
 }
 Sys.setlocale("LC_TIME", "C") #必須：日本時間にコンピュータ設定を合わせるforwindows
-#2012年診断以降
+# 2012年診断以降
 jspho$year <- substr(jspho$診断年月日, 1, 4)
 jspho <- jspho[jspho$year >= 2012, ]
 
@@ -27,22 +27,22 @@ for (i in 1:length(jspho$登録コード)) {
 DF <- subset(jspho, jspho$MHDECOD == "")
 DF[is.na(DF)] <- "-"  # Replace NA to "-"
 
-for(i in 1:length(DF$登録コード)) {
-  strA = DF$field7[i]  　　#疾患種別
-  strB = DF$field37[i] 　　#血液腫瘍性疾患名
-  strC = DF$field10[i] 　　#基礎疾患
-#ALL strB == 1
-#NHL srtB == 5　　　　　　　　　　　　　　　　　　　　　　
-#AML strB == 2
-#exceptCML strB == 4 && DF$field159[i] == 2
-#まれな白血病 strB == 3
-#HL strB == 6
-#組織球症 strB == 8
-#その他のリンパ増殖性疾患 strB == 7
+for (i in 1:length(DF$登録コード)) {
+  strA = DF$field7[i]  # 疾患種別
+  strB = DF$field37[i]  # 血液腫瘍性疾患名
+  strC = DF$field10[i]  # 基礎疾患
+# ALL strB == 1
+# NHL srtB == 5
+# AML strB == 2
+# exceptCML strB == 4 && DF$field159[i] == 2
+# まれな白血病 strB == 3
+# HL strB == 6
+# 組織球症 strB == 8
+# その他のリンパ増殖性疾患 strB == 7
 
-strMHDECOD = ""
-if ((strA == 1 && strB == 2 && strC == 1) | (strA == 1 && strB == 2 && strC == 2)) {
-  strMHDECOD <- 53
+  strMHDECOD = ""
+  if ((strA == 1 && strB == 2 && strC == 1) | (strA == 1 && strB == 2 && strC == 2)) {
+    strMHDECOD <- 53
   } else if (strA == 1 && strB == 10) {
     strMHDECOD <- 52
   } else if ((strB == 1 && DF$field20[i] == 6) | (strB == 1 && DF$field20[i] == 7) | (strB == 1 && DF$field20[i] == 8)) {
@@ -59,9 +59,9 @@ if ((strA == 1 && strB == 2 && strC == 1) | (strA == 1 && strB == 2 && strC == 2
   } else if (strB == 1 && DF$field19[i] == 14) {
     strMHDECOD <- 67
   } else if (strB == 1 && DF$field19[i] == 8) {
-    strMHDECOD <- 68  
+    strMHDECOD <- 68
   } else if ((strB == 1 && DF$field17[i] == 1) | (strB == 5 && DF$field55[i] == 2)) {
-    strMHDECOD <- 61  
+    strMHDECOD <- 61
   } else if ((strB == 1 && DF$field17[i] == 3) | (strB == 5 && DF$field55[i] == 1)) {
     strMHDECOD <- 69
   } else if (strB == 1 && DF$field17[i] == 2) {
@@ -79,25 +79,25 @@ if ((strA == 1 && strB == 2 && strC == 1) | (strA == 1 && strB == 2 && strC == 2
   } else if (strB == 2 && DF$field26[i] == 13) {
     strMHDECOD <- 36
   } else if (strB == 2 && DF$field26[i] == 9) {   
-    strMHDECOD <- 57 
+    strMHDECOD <- 57
   } else if (strB == 2 && DF$field25[i] == 1) {
-    strMHDECOD <- 42  
+    strMHDECOD <- 42
   } else if (strB == 2 && DF$field25[i] == 2) {
-    strMHDECOD <- 43    
+    strMHDECOD <- 43
   } else if (strB == 2 && DF$field25[i] == 3) {
-    strMHDECOD <- 44  
+    strMHDECOD <- 44
   } else if (strB == 2 && DF$field25[i] == 6) {
-    strMHDECOD <- 45  
+    strMHDECOD <- 45
   } else if ((strB == 2 && DF$field25[i] == 8) | (strB == 2 && DF$field25[i] == 9)) {
-    strMHDECOD <- 46 
+    strMHDECOD <- 46
   } else if ((strB == 2 && DF$field25[i] == 10) | (strB == 2 && DF$field25[i] == 11)) {
-    strMHDECOD <- 47    
+    strMHDECOD <- 47
   } else if (strB == 2 && DF$field25[i] == 12) {
-    strMHDECOD <- 48   
+    strMHDECOD <- 48
   } else if (strB == 2 && DF$field24[i] == 5) {
-    strMHDECOD <- 51   　　　　　　　　　　　　　　　　
+    strMHDECOD <- 51
   } else if (strB == 2 && DF$field24[i] == 6) {
-    strMHDECOD <- 54  
+    strMHDECOD <- 54
   } else if (strB == 2) {
     strMHDECOD <- 41  # End Classification of AML
   } else if (strB == 4 && DF$field159[i] == 1) {
@@ -205,10 +205,10 @@ if ((strA == 1 && strB == 2 && strC == 1) | (strA == 1 && strB == 2 && strC == 2
   } else if (strB == 7 && DF$field77[i] == 3) {
     strMHDECOD <- 155
   } else{
-    strMHDECOD <- "" }
-        
-    DF$MHDECOD[i]=strMHDECOD
-}  # for文終わり　DF$MHDECODが空値は疾患名が当てはまらないcase
+    strMHDECOD <- ""
+  }
+  DF$MHDECOD[i] <- strMHDECOD
+}  # for文終わり DF$MHDECODが空値は疾患名が当てはまらないcase
 
 #SCSTRESC
 DF$県CD <- sub("^.*.-", "", DF$初発時住所)  
@@ -218,18 +218,18 @@ DF$県CD <- substr(DF$県CD, 1, 2)
 DF$STUDYID <- "JSPHO"
 
 # Read external data
-wd <- getwd()
 setwd("./input")
 disease <- read.csv('disease.csv', as.is=T, header=F, fileEncoding="UTF-8-BOM")
 DF$MHDECOD <- as.integer(DF$MHDECOD)
 jspho.0 <- merge(DF, disease, by.x="MHDECOD", by.y="V2", all.x=T)
-     
-#Pick up some jspho using
-WHOjspho <-jspho.0[, c("生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "県CD", "生死", "死亡日", "最終確認日", "field161", "V4", "MHDECOD")]
-colnames(WHOjspho)[1:11] <- c("BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHTERM")
 
-jspho <- WHOjspho[,c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM", "BRTHDTC", "MHSTDTC", "STUDYID")]
-
+# Pick up some jspho using
+WHOjspho <- jspho.0[, c("生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "県CD", "生死", "死亡日",
+                        "最終確認日", "field161", "V4", "MHDECOD")]
+colnames(WHOjspho)[1:11] <- c("BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC",
+                              "DSSTDTC", "SITEID", "MHTERM")
+jspho <- WHOjspho[, c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
+                      "BRTHDTC", "MHSTDTC", "STUDYID")]
 # #Replace Death or Alive CD to 01
 # for(i in 1:length(WHOjspho$SUBJID)) {
 #     if (WHOjspho$DTHFL[i] == "true") {
