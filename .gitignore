@@ -5,6 +5,8 @@
 /RAWDATA/*
 /RESULT/
 !/RAWDATA/EXT/
+/output/
+JSH2016.Rproj
 
 ### R ###
 .Rproj.user
