@@ -30,7 +30,7 @@ colnames(jsh.1)[1:11] <- c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSST
 jsh.1$STUDYID <- "JSH"
 
 setwd("..")
-source("./programs/jsphotowho.R", chdir=F)
+source("./programs/jsphotowho.R", chdir=F, encoding="UTF-8")
 ads <- rbind(jsh.1, nhoh.3, jspho)
 
 setwd("../output")
