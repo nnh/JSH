@@ -1,6 +1,7 @@
 # JSPHO to WHO mapping
 # Mamiko Yonejima
 # 2016/11/14
+
 YearDif <- function(starting, ending) {
 # 2つの日付の年差（切り下げ）を計算する。startingに生年月日を指定すれば満年齢計算に使用可能。
   as.integer((as.integer(format(as.Date(ending), "%Y%m%d")) - as.integer(format(as.Date(starting), "%Y%m%d"))) / 10000)
@@ -211,34 +212,19 @@ for (i in 1:length(DF$登録コード)) {
 }  # for文終わり DF$MHDECODが空値は疾患名が当てはまらないcase
 
 #SCSTRESC
-DF$県CD <- sub("^.*.-", "", DF$初発時住所)  
-DF$県CD <- substr(DF$県CD, 1, 2)
-
+DF$SCSTRESC <- floor(as.integer(sub("^.*.-","",DF$初発時住所))/1000)
 #STUDYID
 DF$STUDYID <- "JSPHO"
 
 # Read external data
-setwd("./input")
-disease <- read.csv('disease.csv', as.is=T, header=F, fileEncoding="UTF-8-BOM")
 DF$MHDECOD <- as.integer(DF$MHDECOD)
+disease$V2 <- as.integer(disease$V2)
 jspho.0 <- merge(DF, disease, by.x="MHDECOD", by.y="V2", all.x=T)
 
 # Pick up some jspho using
-WHOjspho <- jspho.0[, c("生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "県CD", "生死", "死亡日",
+WHOjspho <- jspho.0[, c("生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "SCSTRESC", "生死", "死亡日",
                         "最終確認日", "field161", "V4", "MHDECOD")]
 colnames(WHOjspho)[1:11] <- c("BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC",
                               "DSSTDTC", "SITEID", "MHTERM")
-jspho <- WHOjspho[, c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
+jspho.1 <- WHOjspho[, c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                       "BRTHDTC", "MHSTDTC", "STUDYID")]
-# #Replace Death or Alive CD to 01
-# for(i in 1:length(WHOjspho$SUBJID)) {
-#     if (WHOjspho$DTHFL[i] == "true") {
-#        WHOjspho$DTHFL[i] <- 1
-#     } else if (WHOjspho$DTHFL[i] == "false") {
-#        WHOjspho$DTHFL[i] <- 0
-#      } else{
-#     WHOjspho$DTHFL[i] <- "" }
-#     }
-
-#setwd("../output")
-#write.csv(WHOjspho,"who.csv",row.names=F)
