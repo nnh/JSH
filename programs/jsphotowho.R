@@ -7,13 +7,12 @@ YearDif <- function(starting, ending) {
   as.integer((as.integer(format(as.Date(ending), "%Y%m%d")) - as.integer(format(as.Date(starting), "%Y%m%d"))) / 10000)
 }
 Sys.setlocale("LC_TIME", "C") #必須：日本時間にコンピュータ設定を合わせるforwindows
-# 2012年診断以降
+
+# 2012年診断以降,2016年診断
 jspho$year <- substr(jspho$診断年月日, 1, 4)
-jspho <- jspho[jspho$year >= 2012, ]
+jspho <- jspho[jspho$year >= 2012 &  jspho$year <= 2016, ]
 
 # Cut jspho /age diagnosis is over　20
-# jspho$生年月日 <- as.Date(jspho$生年月日,format="%Y/%m/%d") 
-# jspho$診断年月日 <- as.Date(jspho$診断年月日,format="%Y/%m/%d")
 
 jspho$age_diagnosis <- YearDif(jspho$診断年月日, jspho$生年月日)
 jspho <- jspho[jspho$age_diagnosis < 20, ]
@@ -217,14 +216,13 @@ DF$SCSTRESC <- floor(as.integer(sub("^.*.-","",DF$初発時住所))/1000)
 DF$STUDYID <- "JSPHO"
 
 # Read external data
-DF$MHDECOD <- as.integer(DF$MHDECOD)
-disease$V2 <- as.integer(disease$V2)
-jspho.0 <- merge(DF, disease, by.x="MHDECOD", by.y="V2", all.x=T)
+# DF$MHDECOD <- as.integer(DF$MHDECOD)
+jspho.0 <- merge(DF, p.disease, by="MHDECOD", all.x=T)
 
 # Pick up some jspho using
 WHOjspho <- jspho.0[, c("生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "SCSTRESC", "生死", "死亡日",
-                        "最終確認日", "field161", "V4", "MHDECOD")]
-colnames(WHOjspho)[1:11] <- c("BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC",
-                              "DSSTDTC", "SITEID", "MHTERM")
+                        "最終確認日", "field161", "MHTERM", "MHDECOD")]
+colnames(WHOjspho)[1:10] <- c("BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC",
+                              "DSSTDTC", "SITEID")
 jspho.1 <- WHOjspho[, c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                       "BRTHDTC", "MHSTDTC", "STUDYID")]
