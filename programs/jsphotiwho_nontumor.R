@@ -21,3 +21,5 @@ jspho <- jspho[jspho$year >= 2012 &  jspho$year <= 2016, ]
 jspho$age_diagnosis <- YearDif(jspho$診断年月日, jspho$生年月日)
 jspho <- jspho[jspho$age_diagnosis < 20, ]
 ###############ここまではtumorとつないだら削除
+
+Jspho <- (9)
