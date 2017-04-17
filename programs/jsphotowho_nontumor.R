@@ -43,4 +43,4 @@ df.non.t$MHDECOD <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non
                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 1, 1011,
                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 2, 1012, 
                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 3, 1013,                     
-                    ##TODO　ここから埋める     )
+                                ##TODO　Andoここから埋める     )
