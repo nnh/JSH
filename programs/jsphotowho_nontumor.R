@@ -4,7 +4,7 @@
 #################################
 ##########ここから
 setwd("./rawdata")
-jspho <- read.csv("JSPHO_registration_160720_1501.csv", na.strings = "", as.is=T, fileEncoding="CP932")
+jspho <- read.csv("JSPHO_registration_170410_1047.csv", na.strings = "", as.is=T, fileEncoding="CP932")
 
 YearDif <- function(starting, ending) {
   # 2つの日付の年差（切り下げ）を計算する。startingに生年月日を指定すれば満年齢計算に使用可能。
@@ -42,5 +42,7 @@ df.non.t$MHDECOD <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non
                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 3 & df.non.t$field90 == 2, 1010,
                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 1, 1011,
                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 2, 1012, 
-                    ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 3, 1013,                     
+                    ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 3, 1013,    
+                    ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 1, 1014,
+                  )       
                                 ##TODO　Andoここから埋める     )
