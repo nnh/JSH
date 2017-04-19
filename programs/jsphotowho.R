@@ -1,6 +1,6 @@
 # JSPHO to WHO mapping
 # Mamiko Yonejima
-# 2016/11/14
+# 2017/4/19
 
 YearDif <- function(starting, ending) {
 # 2つの日付の年差（切り下げ）を計算する。startingに生年月日を指定すれば満年齢計算に使用可能。
