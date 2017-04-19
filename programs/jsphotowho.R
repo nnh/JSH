@@ -21,7 +21,7 @@ jspho$flag <- ifelse(jspho$field7 == 2 | (jspho$field37 == 8 & jspho$field69 == 
 
 # Make a group of tumor
 df.tumor <- subset(jspho, jspho$flag == "tumor")
-
+# WHO分類にあてはめる
 df.tumor$MHDECOD1 <- ifelse((df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 1) | (df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 2), 53, 
                      ifelse(df.tumor$field7 == 1 & df.tumor$field37 == 10, 52, 
                      ifelse((df.tumor$field37 == 1 & df.tumor$field20 == 6) | (df.tumor$field37 == 1 & df.tumor$field20 == 7) | (df.tumor$field37 == 1 & df.tumor$field20 == 8), 65,
