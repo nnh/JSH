@@ -13,7 +13,7 @@ source("../programs/jsphotowho.R", chdir=F, encoding="UTF-8")
 source("../programs/jsphotowho_nontumor.R", chdir=F, encoding="UTF-8")
 
 dataset.jspho <- rbind(jspho.1, jspho.non.t.1)  # 腫瘍性と非腫瘍性をくっつける
-dxt.jspho <- jspho[, c(15, 39:284)]  # 詳細をくっつける
+dxt.jspho <- jspho[, c(15, 39:286)]  # 詳細をくっつける
 
 ads.jspho <- merge(dataset.jspho, dxt.jspho,  by.x = "SUBJID", by.y = "登録コード", all.x = T)
 ads.jspho[is.na(ads.jspho)] <- ""
