@@ -1,6 +1,6 @@
 #JSPHO to WHO non tumor version
 #Ando Sahoko & Mamiko Yonejima
-#2017/4/XX
+#2017/4/19
 #################################
 ##########ここから
 setwd("./rawdata")
@@ -125,9 +125,25 @@ df.non.t$MHDECOD2 <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.n
                   　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 1, 1099,
                   　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 2, 1100,
                   　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 3, 1102, NA)))))))))))))))))))))))))))))))))))))))))))))))))
-                                ##TODO　前半、後半でDFを分ける   )
 
 df.non.t$MHDECOD <- ifelse(is.na(df.non.t$MHDECOD1), df.non.t$MHDECOD2, df.non.t$MHDECOD1)  # 空欄はあてはまらないもの
 
 #SCSTRESC
 df.non.t$SCSTRESC <- floor(as.integer(sub("^.*.-","",df.non.t$初発時住所))/1000)
+
+#STUDYID
+df.non.t$STUDYID <- "JSPHO"
+
+# Read external data
+p.disease <- subset(disease, disease$tumor_or_nontumor == "non_tumor")
+jspho.non.t.0 <- merge(df.non.t, p.disease, by="MHDECOD", all.x=T)
+
+# Pick up some jspho using
+WHOjspho.non.t <- jspho.non.t.0 [, c("生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "SCSTRESC", "生死", "死亡日",
+                        "最終確認日", "field161", "MHTERM", "MHDECOD")]
+colnames(WHOjspho.non.t)[1:10] <- c("BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC",
+                              "DSSTDTC", "SITEID")
+jspho.non.t.1 <- WHOjspho.non.t[, c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
+                        "BRTHDTC", "MHSTDTC", "STUDYID")]
+
+

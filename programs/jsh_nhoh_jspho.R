@@ -11,9 +11,6 @@ nhoh.rgst <- read.csv("NHOH_registration_161018_1705.csv", as.is=T, fileEncoding
 setwd("../input")
 disease <- read.csv("disease.csv", header=F, as.is=T)  # fileEncoding="UTF-8-BOM"付けると読み込めません、hematologyのみ抽出するコード
 colnames(disease) <- c("大分類", "MHDECOD", "病名略", "MHTERM", "病名英語", "MHDECOD+0", "中分類番号", "中分類略名" ,"中分類名日本語" ,"中分類名英語", "tumor_or_nontumor", "中分類番号")
-p.disease <- subset(disease, disease$tumor_or_nontumor == "tumor")
-#prefecture <- read.csv("prefectures.csv", header=F, as.is=T, fileEncoding="UTF-8-BOM")
-#colnames(prefecture) <- c("SCSTRESC", "県名", "ふりがな", "ローマ字", "地区")
 
 #施設コードをマージする処理(NHOH)
 p.nhoh.rgst <- nhoh.rgst[,c("登録コード","初発時住所")]

@@ -114,7 +114,7 @@ df.tumor$SCSTRESC <- floor(as.integer(sub("^.*.-","",df.tumor$初発時住所))/
 df.tumor$STUDYID <- "JSPHO"
 
 # Read external data
-# df.tumor$MHDECOD <- as.integer(df.tumor$MHDECOD)
+p.disease <- subset(disease, disease$tumor_or_nontumor == "tumor")
 jspho.0 <- merge(df.tumor, p.disease, by="MHDECOD", all.x=T)
 
 # Pick up some jspho using
