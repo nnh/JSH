@@ -100,7 +100,7 @@ df.non.t$MHDECOD2 <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.n
                   　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 1, 1099,
                   　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 2, 1100,
                   　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 3, 1102, NA)))))))))))))))))))))))))))))))))))))))))))))))))
-
+## TODO Ando 血液腫瘍性疾患のHLH追加
 df.non.t$MHDECOD <- ifelse(is.na(df.non.t$MHDECOD1), df.non.t$MHDECOD2, df.non.t$MHDECOD1)  # 空欄はあてはまらないもの
 
 #SCSTRESC

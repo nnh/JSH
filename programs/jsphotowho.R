@@ -17,7 +17,7 @@ jspho$age_diagnosis <- YearDif(jspho$診断年月日, jspho$生年月日)
 jspho <- jspho[jspho$age_diagnosis < 20, ]
 
 # except nontumor
-jspho$flag <- ifelse(jspho$field7 == 2 | (jspho$field37 == 8 & jspho$field69 == 2), "non_tumor", "tumor")
+jspho$flag <- ifelse(jspho$field7 == 2 | (jspho$field7 == 1 & jspho$field37 == 8 & jspho$field69 == 2), "non_tumor", "tumor")
 
 # Make a group of tumor
 df.tumor <- subset(jspho, jspho$flag == "tumor")
