@@ -6,7 +6,7 @@ setwd("./rawdata")
 jspho <- read.csv("JSPHO_registration_160720_1501.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 setwd("../input")
-disease <- read.csv("disease.csv", header=F, as.is=T)  # fileEncoding="UTF-8-BOM"付けると読み込めません
+disease <- read.csv("disease.csv", fileEncoding="UTF-8-BOM", header=F, as.is=T)  # fileEncoding="UTF-8-BOM"付けると読み込めません
 colnames(disease) <- c("大分類", "MHDECOD", "病名略", "MHTERM", "病名英語", "MHDECOD+0", "中分類番号", "中分類略名" ,"中分類名日本語" ,"中分類名英語", "tumor_or_nontumor", "中分類番号")
 
 source("../programs/jsphotowho.R", chdir=F, encoding="UTF-8")
