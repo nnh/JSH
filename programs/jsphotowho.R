@@ -24,11 +24,11 @@ df.tumor <- subset(jspho, jspho$flag == "tumor")
 # WHO分類にあてはめる
 df.tumor$MHDECOD1 <- ifelse((df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 1) | (df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 2), 53, 
                      ifelse(df.tumor$field7 == 1 & df.tumor$field37 == 10, 52, 
-                     ifelse((df.tumor$field37 == 1 & df.tumor$field20 == 6) | (df.tumor$field37 == 1 & df.tumor$field20 == 7) | (df.tumor$field37 == 1 & df.tumor$field20 == 8), 65, #filde20=7,8も含む？？
+                     ifelse((df.tumor$field37 == 1 & df.tumor$field20 == 6) | (df.tumor$field37 == 1 & df.tumor$field20 == 7) | (df.tumor$field37 == 1 & df.tumor$field20 == 8), 65, 
                      ifelse((df.tumor$field37 == 1 & df.tumor$field20 == 1) | (df.tumor$field37 == 1 & df.tumor$field20 == 2) | (df.tumor$field37 == 1 & df.tumor$field20 == 3), 66,
                      ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 2, 62,
                      ifelse((df.tumor$field37 == 1 & df.tumor$field19 == 4) | (df.tumor$field37 == 1 & df.tumor$field19 == 5) | (df.tumor$field37 == 1 & df.tumor$field19 == 6) |(df.tumor$field37 == 1 & df.tumor$field19 == 7), 63,
-                     ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 3, 64, #f19 == 1正常の記載なし
+                     ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 3, 64, 
                      ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 14, 67,
                      ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 8, 68,
                      ifelse((df.tumor$field37 == 1 & df.tumor$field17 == 1) | (df.tumor$field37 == 5 & df.tumor$field55 == 2), 61,
@@ -72,10 +72,10 @@ df.tumor$MHDECOD2 <-ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.t
                     ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 9, 29, # End Classification of MDS MPD
                     ifelse(df.tumor$field37 == 3 & df.tumor$field32 == 3, 57,
                     ifelse(df.tumor$field37 == 3 & df.tumor$field32 == 2, 56, 
-                    ifelse((df.tumor$field37 == 3 && df.tumor$field28 == 1 && df.tumor$field29 == 3) | (df.tumor$field37 == 3 && df.tumor$field28 == 6), 60,
-                    ifelse(df.tumor$field37 == 3 && df.tumor$field28 == 1 && df.tumor$field29 == 1, 58,
+                    ifelse((df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 3) | (df.tumor$field37 == 3 & df.tumor$field28 == 6), 60,
+                    ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 1, 58,
                     ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 2, 59,
-                    ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 2, 55, # End Classification of Rare leukemia
+                    ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 2 , 55, # End Classification of Rare leukemia
                     ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 3, 106,
                     ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 4, 93,
                     ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 5, 100,
