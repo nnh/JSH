@@ -13,7 +13,7 @@ jspho$year <- substr(jspho$診断年月日, 1, 4)
 jspho <- jspho[!is.na(jspho$year) & jspho$year >= 2012 &  jspho$year <= 2016, ]
 
 # Cut jspho /age diagnosis is over　20
-jspho$age_diagnosis <- YearDif(jspho$診断年月日, jspho$生年月日)
+jspho$age_diagnosis <- YearDif(jspho$生年月日, jspho$診断年月日)
 jspho <- jspho[jspho$age_diagnosis < 20, ]
 
 # except nontumor
@@ -71,11 +71,10 @@ df.tumor$MHDECOD2 <-ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.t
                     ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 7, 28,
                     ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 9, 29, # End Classification of MDS MPD
                     ifelse(df.tumor$field37 == 3 & df.tumor$field32 == 3, 57,
-                    ifelse(df.tumor$field37 == 3 & df.tumor$field32 == 2, 56,   
-                    ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 1 ,58,
+                    ifelse(df.tumor$field37 == 3 & df.tumor$field32 == 2, 56, 
+                    ifelse((df.tumor$field37 == 3 && df.tumor$field28 == 1 && df.tumor$field29 == 3) | (df.tumor$field37 == 3 && df.tumor$field28 == 6), 60,
+                    ifelse(df.tumor$field37 == 3 && df.tumor$field28 == 1 && df.tumor$field29 == 1, 58,
                     ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 2, 59,
-                    ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 3, 60,
-                    ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 6, 60, 
                     ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 2, 55, # End Classification of Rare leukemia
                     ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 3, 106,
                     ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 4, 93,
@@ -103,7 +102,7 @@ df.tumor$MHDECOD2 <-ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.t
                     ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 5, 144,
                     ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 4, 145,
                     ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 2, 154,
-                    ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 3, 155, NA))))))))))))))))))))))))))))))))))))))))))
+                    ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 3, 155, NA)))))))))))))))))))))))))))))))))))))))))
 
 
 df.tumor$MHDECOD <- ifelse(is.na(df.tumor$MHDECOD1), df.tumor$MHDECOD2, df.tumor$MHDECOD1)  # 空欄はあてはまらないもの
