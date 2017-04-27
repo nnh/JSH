@@ -48,7 +48,7 @@ jsh.1$STUDYID <- "JSH"
 dataset.3org <- rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1)  # 3団体を繋げた基本のデータセットを作成
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
 
-dxt.dataset.3org.year <- dataset.3org[substr(dataset.3org$MHSTDTC, 1, 4) == 2016, ]  # 診断年のみ抽出 
+dxt.dataset.3org.year <- dataset.3org[substr(dataset.3org$MHSTDTC, 1, 4) == 2016, ]  # 診断年のみ抽出
 dxt.dataset.3org.year$count <- 1
 
 # 団体別登録数
@@ -92,7 +92,7 @@ res.by.facilities <- rbind(dxt.by.facilities, total)
 # 疾患滅集計
 dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, breaks = c(0,20,150),
                                     labels= c("<20", "20 <="), right=FALSE)
-by.disease <- xtabs( ~ MHDECOD + cat.age.diagnosis, data = dxt.dataset.3org.year)
+by.disease <- xtabs(count ~ MHDECOD + cat.age.diagnosis, data = dxt.dataset.3org.year)
 by.disease.mat <- matrix(by.disease , nrow(by.disease), ncol(by.disease))
 colnames(by.disease.mat) <- c("less than 20y", "over.20y")
 rownames(by.disease.mat) <- rownames(by.disease)
@@ -108,7 +108,7 @@ res.by.disease <- wip.merge.disease[, c(7, 1, 9, 4, 13:15)]
 # NA処理
 res.by.organization[is.na(res.by.organization)] <- ""
 res.by.facilities[is.na(res.by.facilities)] <- ""
-res.by.disease[is.na(res.by.disease)] <- ""
+res.by.disease[is.na(res.by.disease)] <- 0
 # 成型された表の出力
 library(formattable)
 res.by.organization -> temp
