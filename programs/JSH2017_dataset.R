@@ -6,7 +6,6 @@ setwd("./rawdata")
 jspho <- read.csv("JSPHO_registration_160720_1501.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh <- read.csv("JSH_report_160623_1459.csv", as.is=T, fileEncoding="CP932")
 jsh.rgst <- read.csv("JSH_registration_160623_1459.csv", as.is=T, fileEncoding="CP932")
-jspho <- read.csv("JSPHO_registration_160720_1501.csv", as.is=T, fileEncoding="CP932")
 nhoh <- read.csv("NHOH_report_161018_1705.csv", as.is=T, fileEncoding="CP932")
 nhoh.rgst <- read.csv("NHOH_registration_161018_1705.csv", as.is=T, fileEncoding="CP932")
 
@@ -24,7 +23,7 @@ p.nhoh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-","",p.nhoh.rgst$初発時住
 m.nhoh <- merge(nhoh,p.nhoh.rgst, by="登録コード", all.x= T)
 
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
-nhoh.1 <- m.nhoh[as.integer(substr(m.nhoh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= 2016 & (m.nhoh$field2 < 1000),
+nhoh.1 <- m.nhoh[as.integer(substr(m.nhoh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= 2016 ,
                  c("登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "field2",
                    "確定診断名", "生年月日", "診断年月日")] 
 colnames(nhoh.1)[1:11] <- c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
@@ -38,7 +37,7 @@ p.jsh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-","",p.jsh.rgst$初発時住�
 m.jsh <- merge(jsh, p.jsh.rgst, by="登録コード", all.x= T)
 
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
-jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= 2016 & (m.jsh$field1 < 1000),
+jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= 2016 ,
                c("登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "field1",
                  "確定診断名", "生年月日", "診断日")]
 colnames(jsh.1)[1:11] <- c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
@@ -110,6 +109,7 @@ res.by.organization[is.na(res.by.organization)] <- ""
 res.by.facilities[is.na(res.by.facilities)] <- ""
 res.by.disease[is.na(res.by.disease)] <- 0
 # 成型された表の出力
+setwd("../output")
 library(formattable)
 res.by.organization -> temp
 formattable::formattable(temp)
