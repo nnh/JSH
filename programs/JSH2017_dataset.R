@@ -47,29 +47,6 @@ jsh.1$STUDYID <- "JSH"
 dataset.3org <- rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1)  # 3団体を繋げた基本のデータセットを作成
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
 dxt.dataset.3org.year <- dataset.3org[substr(dataset.3org$MHSTDTC, 1, 4) == 2016, ]  # 診断年のみ抽出
-#詳細集計用に一度出力
-setwd("../output")
-write.csv(dxt.dataset.3org.year, "dataset_3org.csv", row.names = F)
-# 詳細集計用データの作成
-# JSPHO
-ds.jspho <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSPHO", ]
-dxt.jspho <- jspho[, c(15, 39:286)]
-ds.md.jspho <- merge(ds.jspho, dxt.jspho, by.x = "SUBJID", by.y = "登録コード", all.x = T)
-ds.md.jspho[is.na(ds.md.jspho)] <- ""
-#JSH
-ds.jsh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSH", ]
-dxt.jsh <- jsh[, c(15, 31:186)]
-ds.md.jsh <- merge(ds.jsh, dxt.jsh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
-ds.md.jsh[is.na(ds.md.jsh)] <- ""
-#NHOH
-ds.nhoh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "NHOH", ]
-dxt.nhoh <- nhoh[, c(15, 43:292)]
-ds.md.nhoh <- merge(ds.nhoh, dxt.nhoh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
-ds.md.nhoh[is.na(ds.md.nhoh)] <- ""
-
-write.csv(ds.md.jspho, "JSPHO_MoreDetails.csv", row.names = F)
-write.csv(ds.md.jsh, "JSH_MoreDetails.csv", row.names = F)
-write.csv(ds.md.nhoh, "NHOH_MoreDetails.csv", row.names = F)
 
 dxt.dataset.3org.year$count <- 1
 
@@ -140,4 +117,27 @@ formattable::formattable(temp)  # Viewer > Export > Save as WebPage
 res.by.disease -> temp
 formattable::formattable(temp)
 
+#詳細集計用に出力
+setwd("../output")
+write.csv(dxt.dataset.3org.year, "dataset_3org.csv", row.names = F)
+# 詳細集計用データの作成
+# JSPHO
+ds.jspho <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSPHO", ]
+dxt.jspho <- jspho[, c(15, 39:286)]
+ds.md.jspho <- merge(ds.jspho, dxt.jspho, by.x = "SUBJID", by.y = "登録コード", all.x = T)
+ds.md.jspho[is.na(ds.md.jspho)] <- ""
+#JSH
+ds.jsh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSH", ]
+dxt.jsh <- jsh[, c(15, 31:186)]
+ds.md.jsh <- merge(ds.jsh, dxt.jsh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
+ds.md.jsh[is.na(ds.md.jsh)] <- ""
+#NHOH
+ds.nhoh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "NHOH", ]
+dxt.nhoh <- nhoh[, c(15, 43:292)]
+ds.md.nhoh <- merge(ds.nhoh, dxt.nhoh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
+ds.md.nhoh[is.na(ds.md.nhoh)] <- ""
+
+write.csv(ds.md.jspho, "JSPHO_MoreDetails.csv", row.names = F)
+write.csv(ds.md.jsh, "JSH_MoreDetails.csv", row.names = F)
+write.csv(ds.md.nhoh, "NHOH_MoreDetails.csv", row.names = F)
 
