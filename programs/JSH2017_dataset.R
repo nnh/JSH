@@ -4,10 +4,10 @@
 
 setwd("./rawdata")
 jspho <- read.csv("JSPHO_registration_170510_1715.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh <- read.csv("JSH_report_170510_1753.csv", as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv("JSH_registration_170510_1753.csv", as.is=T, fileEncoding="CP932")
-nhoh <- read.csv("NHOH_report_161018_1705.csv", as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv("NHOH_registration_161018_1705.csv", as.is=T, fileEncoding="CP932")
+jsh <- read.csv("JSH_report_170510_1753.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv("JSH_registration_170510_1753.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh <- read.csv("NHOH_report_161018_1705.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv("NHOH_registration_161018_1705.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 setwd("../input")
 disease <- read.csv("disease.csv", fileEncoding="UTF-8-BOM", header=F, as.is=T, na.strings = c(""))  
@@ -50,6 +50,26 @@ dxt.dataset.3org.year <- dataset.3org[substr(dataset.3org$MHSTDTC, 1, 4) == 2016
 #詳細集計用に一度出力
 setwd("../output")
 write.csv(dxt.dataset.3org.year, "dataset_3org.csv", row.names = F)
+# 詳細集計用データの作成
+# JSPHO
+ds.jspho <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSPHO", ]
+dxt.jspho <- jspho[, c(15, 39:286)]
+ds.md.jspho <- merge(ds.jspho, dxt.jspho, by.x = "SUBJID", by.y = "登録コード", all.x = T)
+ds.md.jspho[is.na(ds.md.jspho)] <- ""
+#JSH
+ds.jsh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSH", ]
+dxt.jsh <- jsh[, c(15, 31:186)]
+ds.md.jsh <- merge(ds.jsh, dxt.jsh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
+ds.md.jsh[is.na(ds.md.jsh)] <- ""
+#NHOH
+ds.nhoh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "NHOH", ]
+dxt.nhoh <- nhoh[, c(15, 43:292)]
+ds.md.nhoh <- merge(ds.nhoh, dxt.nhoh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
+ds.md.nhoh[is.na(ds.md.nhoh)] <- ""
+
+write.csv(ds.md.jspho, "JSPHO_MoreDetails.csv", row.names = F)
+write.csv(ds.md.jsh, "JSH_MoreDetails.csv", row.names = F)
+write.csv(ds.md.nhoh, "NHOH_MoreDetails.csv", row.names = F)
 
 dxt.dataset.3org.year$count <- 1
 
@@ -120,10 +140,4 @@ formattable::formattable(temp)  # Viewer > Export > Save as WebPage
 res.by.disease -> temp
 formattable::formattable(temp)
 
-# dxt.jspho <- jspho[, c(15, 39:286)]  # 詳細をくっつける
-# 
-# ads.jspho <- merge(dataset.jspho, dxt.jspho,  by.x = "SUBJID", by.y = "登録コード", all.x = T)
-# ads.jspho[is.na(ads.jspho)] <- ""
-# setwd("../output")
-# write.csv(ads.jspho, "Mappig.data.JSPHO_for_JSH.csv", row.names = F)
-# setwd("..")
+
