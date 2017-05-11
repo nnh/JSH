@@ -3,9 +3,9 @@
 # 2017/4/20
 
 setwd("./rawdata")
-jspho <- read.csv("JSPHO_registration_160720_1501.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh <- read.csv("JSH_report_160623_1459.csv", as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv("JSH_registration_160623_1459.csv", as.is=T, fileEncoding="CP932")
+jspho <- read.csv("JSPHO_registration_170510_1715.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh <- read.csv("JSH_report_170510_1753.csv", as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv("JSH_registration_170510_1753.csv", as.is=T, fileEncoding="CP932")
 nhoh <- read.csv("NHOH_report_161018_1705.csv", as.is=T, fileEncoding="CP932")
 nhoh.rgst <- read.csv("NHOH_registration_161018_1705.csv", as.is=T, fileEncoding="CP932")
 
@@ -46,8 +46,11 @@ jsh.1$STUDYID <- "JSH"
 
 dataset.3org <- rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1)  # 3団体を繋げた基本のデータセットを作成
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
-
 dxt.dataset.3org.year <- dataset.3org[substr(dataset.3org$MHSTDTC, 1, 4) == 2016, ]  # 診断年のみ抽出
+#詳細集計用に一度出力
+setwd("../output")
+write.csv(dxt.dataset.3org.year, "dataset_3org.csv", row.names = F)
+
 dxt.dataset.3org.year$count <- 1
 
 # 団体別登録数
@@ -88,7 +91,7 @@ total <- data.frame(
 res.by.facilities <- rbind(dxt.by.facilities, total)
 
 
-# 疾患滅集計
+# 疾患別集計
 dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, breaks = c(0,20,150),
                                     labels= c("<20", "20 <="), right=FALSE)
 by.disease <- xtabs(count ~ MHDECOD + cat.age.diagnosis, data = dxt.dataset.3org.year)
@@ -109,7 +112,6 @@ res.by.organization[is.na(res.by.organization)] <- ""
 res.by.facilities[is.na(res.by.facilities)] <- ""
 res.by.disease[is.na(res.by.disease)] <- 0
 # 成型された表の出力
-setwd("../output")
 library(formattable)
 res.by.organization -> temp
 formattable::formattable(temp)
