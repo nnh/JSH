@@ -3,11 +3,11 @@
 # 2017/4/20
 
 setwd("./rawdata")
-jspho <- read.csv("JSPHO_registration_170510_1715.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh <- read.csv("JSH_report_170510_1753.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv("JSH_registration_170510_1753.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh <- read.csv("NHOH_report_161018_1705.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv("NHOH_registration_161018_1705.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho <- read.csv("JSPHO_registration_170606_1129.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh <- read.csv("JSH_report_170612_1543.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv("JSH_registration_170612_1543.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh <- read.csv("NHOH_report_170613_1047.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv("NHOH_registration_170613_1047.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 setwd("../input")
 disease <- read.csv("disease.csv", fileEncoding="UTF-8-BOM", header=F, as.is=T, na.strings = c(""))  
