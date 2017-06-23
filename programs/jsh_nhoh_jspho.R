@@ -3,11 +3,11 @@
 # Mamiko Yonejima
 
 setwd("./rawdata")
-jsh <- read.csv("JSH_report_160623_1459.csv", as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv("JSH_registration_160623_1459.csv", as.is=T, fileEncoding="CP932")
-jspho <- read.csv("JSPHO_registration_160720_1501.csv", as.is=T, fileEncoding="CP932")
-nhoh <- read.csv("NHOH_report_161018_1705.csv", as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv("NHOH_registration_161018_1705.csv", as.is=T, fileEncoding="CP932")
+jsh <- read.csv("JSH_report_170612_1543.csv", as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv("JSH_registration_170612_1543.csv", as.is=T, fileEncoding="CP932")
+jspho <- read.csv("JSPHO_registration_170606_1129.csv", as.is=T, fileEncoding="CP932")
+nhoh <- read.csv("NHOH_report_170613_1047.csv", as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv("NHOH_registration_170613_1047.csv", as.is=T, fileEncoding="CP932")
 setwd("../input")
 disease <- read.csv("disease.csv", header=F, as.is=T)  # fileEncoding="UTF-8-BOM"付けると読み込めません、hematologyのみ抽出するコード
 colnames(disease) <- c("大分類", "MHDECOD", "病名略", "MHTERM", "病名英語", "MHDECOD+0", "中分類番号", "中分類略名" ,"中分類名日本語" ,"中分類名英語", "tumor_or_nontumor", "中分類番号")
@@ -19,9 +19,9 @@ m.nhoh <- merge(nhoh,p.nhoh.rgst, by="登録コード", all.x= T)
 
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
 nhoh.1 <- m.nhoh[as.integer(substr(m.nhoh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= 2016 & (m.nhoh$field2 < 1000),
-               c("登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "field2",
+               c("作成日","登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "field2",
                  "確定診断名", "生年月日", "診断年月日")] 
-colnames(nhoh.1)[1:11] <- c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
+colnames(nhoh.1)[1:12] <- c("created.date","SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                           "BRTHDTC", "MHSTDTC")
 
 nhoh.1$STUDYID <- "NHOH"
@@ -33,9 +33,9 @@ m.jsh <- merge(jsh, p.jsh.rgst, by="登録コード", all.x= T)
 
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
 jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= 2016 & (m.jsh$field1 < 1000),
-           c("登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "field1",
+           c("作成日","登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "field1",
              "確定診断名", "生年月日", "診断日")]
-colnames(jsh.1)[1:11] <- c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
+colnames(jsh.1)[1:12] <- c("created.date","SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
 jsh.1$STUDYID <- "JSH"
 

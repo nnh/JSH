@@ -117,9 +117,9 @@ p.disease <- subset(disease, disease$tumor_or_nontumor == "tumor")
 jspho.0 <- merge(df.tumor, p.disease, by="MHDECOD", all.x=T)
 
 # Pick up some jspho using
-WHOjspho <- jspho.0[, c("生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "SCSTRESC", "生死", "死亡日",
+WHOjspho <- jspho.0[, c("作成日","生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "SCSTRESC", "生死", "死亡日",
                         "最終確認日", "field161", "MHTERM", "MHDECOD")]
-colnames(WHOjspho)[1:10] <- c("BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC",
+colnames(WHOjspho)[1:11] <- c("created.date","BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC",
                               "DSSTDTC", "SITEID")
-jspho.1 <- WHOjspho[, c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
+jspho.1 <- WHOjspho[, c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                       "BRTHDTC", "MHSTDTC", "STUDYID")]

@@ -115,11 +115,11 @@ p.disease <- subset(disease, disease$tumor_or_nontumor == "non_tumor")
 jspho.non.t.0 <- merge(df.non.t, p.disease, by="MHDECOD", all.x=T)
 
 # Pick up some jspho using
-WHOjspho.non.t <- jspho.non.t.0 [, c("生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "SCSTRESC", "生死", "死亡日",
+WHOjspho.non.t <- jspho.non.t.0 [, c("作成日","生年月日", "診断年月日", "STUDYID", "登録コード", "性別", "SCSTRESC", "生死", "死亡日",
                         "最終確認日", "field161", "MHTERM", "MHDECOD")]
-colnames(WHOjspho.non.t)[1:10] <- c("BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC",
+colnames(WHOjspho.non.t)[1:11] <- c("created.date","BRTHDTC", "MHSTDTC", "STUDYID", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC",
                               "DSSTDTC", "SITEID")
-jspho.non.t.1 <- WHOjspho.non.t[, c("SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
+jspho.non.t.1 <- WHOjspho.non.t[, c("created.date","SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                         "BRTHDTC", "MHSTDTC", "STUDYID")]
 
 
