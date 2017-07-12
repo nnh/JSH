@@ -100,7 +100,8 @@ df.non.t$MHDECOD2 <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.n
                   　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 1, 1099,
                   　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 2, 1100,
                   　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 3, 1102, 
-                  　ifelse(df.non.t$field7 == 1 & df.non.t$field37 == 8 & df.non.t$field69 == 2, 1102,NA))))))))))))))))))))))))))))))))))))))))))))))))))
+                  　ifelse(df.non.t$field7 == 1 & df.non.t$field37 == 8 & df.non.t$field69 == 2, 1102,
+                  　ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 15, 9004,NA))))))))))))))))))))))))))))))))))))))))))))))))))) #  あてはまらない病名に仮コードを付与 # その他の血液疾患 9004
 
 df.non.t$MHDECOD <- ifelse(is.na(df.non.t$MHDECOD1), df.non.t$MHDECOD2, df.non.t$MHDECOD1)  # 空欄はあてはまらないもの
 

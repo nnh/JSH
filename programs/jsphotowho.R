@@ -102,7 +102,10 @@ df.tumor$MHDECOD2 <-ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.t
                     ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 5, 144,
                     ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 4, 145,
                     ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 2, 154,
-                    ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 3, 155, NA)))))))))))))))))))))))))))))))))))))))))
+                    ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 3, 155, 
+                    ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 5, 9001, #  あてはまらない病名に仮コードを付与 # その他のリンパ増殖性疾患_その他	9001
+                    ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 12, 9002, #  NHL_病理診断_その他			9002 
+                    ifelse(df.tumor$field37 == 9, 9003,NA)))))))))))))))))))))))))))))))))))))))))))) #  その他の造血器腫瘍			9003
 
 
 df.tumor$MHDECOD <- ifelse(is.na(df.tumor$MHDECOD1), df.tumor$MHDECOD2, df.tumor$MHDECOD1)  # 空欄はあてはまらないもの
