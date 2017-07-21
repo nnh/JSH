@@ -2,7 +2,7 @@
 # 2017/2/2
 # Mamiko Yonejima
 
-setwd("./rawdata")
+setwd("../rawdata")
 jsh <- read.csv("JSH_report_170612_1543.csv", as.is=T, fileEncoding="CP932")
 jsh.rgst <- read.csv("JSH_registration_170612_1543.csv", as.is=T, fileEncoding="CP932")
 jspho <- read.csv("JSPHO_registration_170606_1129.csv", as.is=T, fileEncoding="CP932")

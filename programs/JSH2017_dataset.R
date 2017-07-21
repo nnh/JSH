@@ -2,15 +2,18 @@
 # Mamiko Yonejima
 # 2017/4/20
 day.shimekiri <- "20170531"
+jspho_exclusion <- "340212686"  # JSPHO参加施設外の保険医療機関コードを入力
+kYear <- "2016"
+
 setwd("./rawdata")
-jspho <- read.csv("JSPHO_registration_170606_1129.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho <- read.csv("JSPHO_registration_170718_1719.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh <- read.csv("JSH_report_170612_1543.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh.rgst <- read.csv("JSH_registration_170612_1543.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 nhoh <- read.csv("NHOH_report_170613_1047.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 nhoh.rgst <- read.csv("NHOH_registration_170613_1047.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 setwd("../input")
-disease <- read.csv("disease.csv", fileEncoding="UTF-8-BOM", header=F, as.is=T, na.strings = c(""))  
+disease <- read.csv("disease_20170721.csv", fileEncoding="UTF-8-BOM", header=F, as.is=T, na.strings = c(""))  
 colnames(disease) <- c("大分類", "MHDECOD", "病名略", "MHTERM", "病名英語", "MHDECODplus.0", "中分類番号1", "中分類略名" ,"中分類名日本語" ,"中分類名英語", "tumor_or_nontumor", "中分類番号2")
 facilities <- read.csv("facilities.csv", fileEncoding="UTF-8-BOM", header=T, as.is=T)  
 
@@ -33,8 +36,8 @@ nhoh.1$STUDYID <- "NHOH"
 
 #施設コードをマージする処理(JSH)
 p.jsh.rgst <- jsh.rgst[,c("登録コード","初発時住所")]
-p.jsh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-","",p.jsh.rgst$初発時住所))/1000)
-m.jsh <- merge(jsh, p.jsh.rgst, by="登録コード", all.x= T)
+p.jsh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-", "", p.jsh.rgst$初発時住所))/1000)
+m.jsh <- merge(jsh, p.jsh.rgst, by = "登録コード", all.x = T)
 
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
 jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= 2016 ,
@@ -43,10 +46,11 @@ jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integ
 colnames(jsh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
 jsh.1$STUDYID <- "JSH"
-
+# 3団体を繋げた基本のデータセットを作成
+jspho.1 <- jspho.1[jspho.1$SITEID != jspho_exclusion, ]  #JSPHOの参加外施設を除外
 dataset.3org <- rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1)  # 3団体を繋げた基本のデータセットを作成
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
-dxt.dataset.3org.year.0 <- dataset.3org[(format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri) & (substr(dataset.3org$MHSTDTC, 1, 4) == 2016), ] # 診断年のみ抽出
+dxt.dataset.3org.year.0 <- dataset.3org[(format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri) & (substr(dataset.3org$MHSTDTC, 1, 4) == kYear), ] # 診断年のみ抽出
 # BRTHDTC, MHSTDTCが逆転している症例を除く
 dxt.dataset.3org.year <- dxt.dataset.3org.year.0[dxt.dataset.3org.year.0$BRTHDTC <= dxt.dataset.3org.year.0$MHSTDTC, ]
 
