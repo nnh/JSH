@@ -7,8 +7,8 @@ kYear <- "2016"
 
 setwd("./rawdata")
 jspho <- read.csv("JSPHO_registration_170718_1719.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh <- read.csv("JSH_report_170612_1543.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv("JSH_registration_170612_1543.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh <- read.csv("JSH_report_170724_1911.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv("JSH_registration_170724_1911.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 nhoh <- read.csv("NHOH_report_170613_1047.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 nhoh.rgst <- read.csv("NHOH_registration_170613_1047.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
 
