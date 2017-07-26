@@ -19,7 +19,9 @@ facilities <- read.csv("facilities.csv", fileEncoding="UTF-8-BOM", header=T, as.
 
 source("../programs/jsphotowho.R", chdir=F, encoding="UTF-8")
 source("../programs/jsphotowho_nontumor.R", chdir=F, encoding="UTF-8")
-
+# BRTHDTC, MHSTDTCが逆転している症例を除く
+jspho.1 <- jspho.1[(format(as.Date(jspho.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jspho.1$MHSTDTC), "%Y%m%d")), ]
+jspho.non.t.1 <- jspho.non.t.1[(format(as.Date(jspho.non.t.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jspho.non.t.1$MHSTDTC), "%Y%m%d")), ]
 #施設コードをマージする処理(NHOH)
 p.nhoh.rgst <- nhoh.rgst[,c("登録コード","初発時住所")]
 p.nhoh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-","",p.nhoh.rgst$初発時住所))/1000)
@@ -31,7 +33,8 @@ nhoh.1 <- m.nhoh[as.integer(substr(m.nhoh$診断年月日, 1, 4)) > 2011 & as.in
                    "確定診断名", "生年月日", "診断年月日")] 
 colnames(nhoh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                             "BRTHDTC", "MHSTDTC")
-
+# BRTHDTC, MHSTDTCが逆転している症例を除く
+nhoh.1 <- nhoh.1[(format(as.Date(nhoh.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(nhoh.1$MHSTDTC), "%Y%m%d")), ]
 nhoh.1$STUDYID <- "NHOH"
 
 #施設コードをマージする処理(JSH)
@@ -42,18 +45,26 @@ m.jsh <- merge(jsh, p.jsh.rgst, by = "登録コード", all.x = T)
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
 jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= 2016 ,
                c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "field1",
-                 "確定診断名", "生年月日", "診断日")]
+                 "確定診断名", "生年月日", "診断年月日")]
 colnames(jsh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
+# BRTHDTC, MHSTDTCが逆転している症例を除く
+jsh.1 <- jsh.1[(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")), ]
+
 jsh.1$STUDYID <- "JSH"
 # 3団体を繋げた基本のデータセットを作成
-jspho.1 <- jspho.1[jspho.1$SITEID != jspho_exclusion, ]  #JSPHOの参加外施設を除外
-dataset.3org <- rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1)  # 3団体を繋げた基本のデータセットを作成
-dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
-dxt.dataset.3org.year.0 <- dataset.3org[(format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri) & (substr(dataset.3org$MHSTDTC, 1, 4) == kYear), ] # 診断年のみ抽出
-# BRTHDTC, MHSTDTCが逆転している症例を除く
-dxt.dataset.3org.year <- dxt.dataset.3org.year.0[dxt.dataset.3org.year.0$BRTHDTC <= dxt.dataset.3org.year.0$MHSTDTC, ]
+jspho.1$age.diagnosis <- YearDif(jspho.1$BRTHDTC, jspho.1$MHSTDTC)
+jspho.non.t.1$age.diagnosis <- YearDif(jspho.non.t.1$BRTHDTC, jspho.non.t.1$MHSTDTC)
+jsh.1$age.diagnosis <- YearDif(jsh.1$BRTHDTC, jsh.1$MHSTDTC)
+nhoh.1$age.diagnosis <- YearDif(nhoh.1$BRTHDTC, nhoh.1$MHSTDTC)
 
+jspho.1 <- jspho.1[jspho.1$SITEID != jspho_exclusion, ]  #JSPHOの参加外施設を除外
+dataset.3org <-  rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1) 
+# 3団体を繋げた基本のデータセットを作成
+# dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
+dxt.dataset.3org.year <- dataset.3org[(format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri) & (substr(dataset.3org$MHSTDTC, 1, 4) == kYear), ] # 診断年のみ抽出
+# # BRTHDTC, MHSTDTCが逆転している症例を除く
+# dxt.dataset.3org.year <- dxt.dataset.3org.year.0[(format(as.Date(dxt.dataset.3org.year.0$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(dxt.dataset.3org.year.0$MHSTDTC), "%Y%m%d")), ]
 dxt.dataset.3org.year$count <- 1
 
 # 団体別登録数
@@ -96,7 +107,7 @@ res.by.facilities <- rbind(dxt.by.facilities, total)
 
 # 疾患別集計
 dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, breaks = c(0,20,150),
-                                    labels= c("<20", "20 <="), right=FALSE)
+                                               labels= c("<20", "20 <="), right=FALSE)
 by.disease <- xtabs(count ~ MHDECOD + cat.age.diagnosis, data = dxt.dataset.3org.year)
 by.disease.mat <- matrix(by.disease , nrow(by.disease), ncol(by.disease))
 colnames(by.disease.mat) <- c("less than 20y", "over.20y")
@@ -146,4 +157,3 @@ ds.md.nhoh[is.na(ds.md.nhoh)] <- ""
 write.csv(ds.md.jspho, "JSPHO_MoreDetails.csv", row.names = F)
 write.csv(ds.md.jsh, "JSH_MoreDetails.csv", row.names = F)
 write.csv(ds.md.nhoh, "NHOH_MoreDetails.csv", row.names = F)
-
