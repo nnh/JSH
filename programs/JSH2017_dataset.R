@@ -17,6 +17,12 @@ disease <- read.csv("disease_20170721.csv", fileEncoding="UTF-8-BOM", header=F, 
 colnames(disease) <- c("大分類", "MHDECOD", "病名略", "MHTERM", "病名英語", "MHDECODplus.0", "中分類番号1", "中分類略名" ,"中分類名日本語" ,"中分類名英語", "tumor_or_nontumor", "中分類番号2")
 facilities <- read.csv("facilities.csv", fileEncoding="UTF-8-BOM", header=T, as.is=T)  
 
+###########重複データ確認###################################
+duplicate <- jsh$登録コード[duplicated(jsh$登録コード)]  
+grep(duplicate, jsh$登録コード)
+duplicate_line <- "146269" # 上記で重複が確認された場合、その行番号を入力
+jsh <- jsh[-146269, ]
+############################################################
 source("../programs/jsphotowho.R", chdir=F, encoding="UTF-8")
 source("../programs/jsphotowho_nontumor.R", chdir=F, encoding="UTF-8")
 # BRTHDTC, MHSTDTCが逆転している症例を除く
