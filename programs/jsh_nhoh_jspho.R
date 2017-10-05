@@ -2,6 +2,22 @@
 # 2017/2/2
 # Mamiko Yonejima
 # 2017/10/5 mod Mariko Ohtsuka
+RepSex <- function(dst) {
+  dst
+  wk.dst <- dst
+  # 0 -> male, 1 -> female
+  for (i in 1:length(dst)) {
+    if (dst[i] == 0) {
+      strSex <- "male"
+    } else if (dst[i] == 1) {
+      strSex <- "female"
+    } else {
+      strSex <- dst[i]  # 該当なしならそのまま
+    }
+    wk.dst[i] <- strSex
+  }
+  return(wk.dst)
+}
 
 # output,rowdataはaronas上にて入出力する
 prtpath <- "//aronas/Datacenter/Trials/JSH/Registry"
@@ -62,6 +78,9 @@ jsh.1$STUDYID <- "JSH"
 
 source("./programs/jsphotowho.R", chdir=F, encoding="UTF-8")
 ads <- rbind(jsh.1, nhoh.1, jspho.1)
+# 性別が数値ならばmale/femaleに置換
+wk.ads <- ads$SEX
+ads$SEX <- RepSex(wk.ads)
 
 # csv output
 write.csv(ads, outputpath, row.names=F, fileEncoding='CP932', na="")
