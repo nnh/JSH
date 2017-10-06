@@ -6,10 +6,10 @@ RepSex <- function(dst) {
   wk.dst <- dst
   # 0 -> male, 1 -> female
   for (i in 1:length(dst)) {
-    if (dst[i] == 0) {
-      strSex <- "male"
-    } else if (dst[i] == 1) {
-      strSex <- "female"
+    if (dst[i] == "male") {
+      strSex <- 0
+    } else if (dst[i] == "female") {
+      strSex <- 1
     } else {
       strSex <- dst[i]  # 該当なしならそのまま
     }
@@ -78,7 +78,7 @@ jsh.1$STUDYID <- "JSH"
 
 source("./programs/jsphotowho.R", chdir=F, encoding="UTF-8")
 ads <- rbind(jsh.1, nhoh.1, jspho.1)
-# 性別が数値ならばmale/femaleに置換
+# 性別 male->0/female->1に置換
 wk.ads <- ads$SEX
 ads$SEX <- RepSex(wk.ads)
 # MHDECODがNAの行は出力しない
