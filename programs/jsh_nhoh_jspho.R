@@ -3,7 +3,6 @@
 # Mamiko Yonejima
 # 2017/10/5 mod Mariko Ohtsuka
 RepSex <- function(dst) {
-  dst
   wk.dst <- dst
   # 0 -> male, 1 -> female
   for (i in 1:length(dst)) {
@@ -19,33 +18,34 @@ RepSex <- function(dst) {
   return(wk.dst)
 }
 
-# output,rowdataはaronas上にて入出力する
+# output,rawdataはaronas上にて入出力する
 prtpath <- "//aronas/Datacenter/Trials/JSH/Registry"
-# Rowdata path set
-rowdatafld <- "2017年集計用RAWDATA"
-rowdatapath <- paste(prtpath, rowdatafld, sep="/")
+# rawdata path set
+rawdatafld <- "2017年集計用RAWDATA"
+rawdatapath <- paste(prtpath, rawdatafld, sep="/")
 # output path set
 outputfld <- "jsh2017/output"
 outputpath <- paste(prtpath, outputfld, "ads_3_organization.csv", sep="/")
 
-# csvname search
-jsh.csvnm <- list.files(rowdatapath, pattern="JSH_report_")
-jshrgst.csvnm <- list.files(rowdatapath, pattern="JSH_registration_")
-jspho.csvnm <- list.files(rowdatapath, pattern="JSPHO_registration_")
-nhoh.csvnm <- list.files(rowdatapath, pattern="NHOH_report_")
-nhohrgst.csvnm <- list.files(rowdatapath, pattern="NHOH_registration_")
-# csvpath set
-jsh.csvpath <- paste(rowdatapath, jsh.csvnm, sep="/")
-jshrgst.csvpath <- paste(rowdatapath, jshrgst.csvnm, sep="/")
-jspho.csvpath <- paste(rowdatapath, jspho.csvnm, sep="/")
-nhoh.csvpath <- paste(rowdatapath, nhoh.csvnm, sep="/")
-nhohrgst.csvpath <- paste(rowdatapath, nhohrgst.csvnm, sep="/")
+csvnm.lst <- c("JSH_report_","JSH_registration_","JSPHO_registration_","NHOH_report_","NHOH_registration_")
+wk.csvpath <- c("", length = as.integer(length(csvnm.lst)))
+for (i in 1:length(csvnm.lst)){
+  # csvname search
+  wk.csvnm <- list.files(rawdatapath,pattern=csvnm.lst[i])
+  if (length(wk.csvnm) == 1) {
+    # csvpath set
+    wk.csvpath[i] <-  paste(rawdatapath, wk.csvnm, sep="/")
+  } else {
+    warning(paste(cstnm.lst[i],"重複もしくは0件"))
+  }
+}
+
 # csv input
-jsh <- read.csv(jsh.csvpath, as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(jshrgst.csvpath, as.is=T, fileEncoding="CP932")
-jspho <- read.csv(jspho.csvpath, as.is=T, fileEncoding="CP932")
-nhoh <- read.csv(nhoh.csvpath, as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv(nhohrgst.csvpath, as.is=T, fileEncoding="CP932")
+jsh <- read.csv(wk.csvpath[1], as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(wk.csvpath[2], as.is=T, fileEncoding="CP932")
+jspho <- read.csv(wk.csvpath[3], as.is=T, fileEncoding="CP932")
+nhoh <- read.csv(wk.csvpath[4], as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv(wk.csvpath[5], as.is=T, fileEncoding="CP932")
 disease <- read.csv("./input/disease.csv", header=F, as.is=T, fileEncoding="UTF-8-BOM")  # fileEncoding="UTF-8-BOM"付けると読み込めません、hematologyのみ抽出するコード
 colnames(disease) <- c("大分類", "MHDECOD", "病名略", "MHTERM", "病名英語", "MHDECOD+0", "中分類番号", "中分類略名" ,"中分類名日本語" ,"中分類名英語", "tumor_or_nontumor", "中分類番号")
 
@@ -81,6 +81,8 @@ ads <- rbind(jsh.1, nhoh.1, jspho.1)
 # 性別が数値ならばmale/femaleに置換
 wk.ads <- ads$SEX
 ads$SEX <- RepSex(wk.ads)
+# MHDECODがNAの行は出力しない
+wk2.ads <- subset(ads, !is.na(ads$MHDECOD))
 
 # csv output
-write.csv(ads, outputpath, row.names=F, fileEncoding='CP932', na="")
+write.csv(wk2.ads, outputpath, row.names=F, fileEncoding='CP932', na="")
