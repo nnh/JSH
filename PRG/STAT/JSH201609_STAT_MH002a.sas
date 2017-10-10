@@ -48,7 +48,7 @@
     SET  &LIB..&DS.;
     FORMAT _ALL_;
     INFORMAT _ALL_;
-    IF SCAN(MHSTDTC,1,"/") IN("2012","2013","2014","2015");
+    IF SCAN(MHSTDTC,1,"/") IN("2012","2013","2014","2015","2016");
   RUN ;
 %MEND ;
 %DS_READ(LIBADS,ADS);
@@ -396,11 +396,11 @@ RUN ;
 /*   FILE SYS;*/
 /*   PUT "[WORKBOOK.ACTIVATE(""[JSH201609_STAT_RES_&FILE..xlsx]&FILE."")]";*/
 /*   PUT '[SELECT("R1")]';*/
-/*   PUT '[FONT.PROPERTIES("‚l‚r –¾’©",,11)]';*/
+/*   PUT '[FONT.PROPERTIES("ï¿½lï¿½r ï¿½ï¿½ï¿½ï¿½",,11)]';*/
 /*   PUT '[FONT.PROPERTIES("Times New Roman",,11)]';*/
 /**/
 /*   PUT '[SELECT("R2:R1048576")]';*/
-/*   PUT '[FONT.PROPERTIES("‚l‚r –¾’©",,9)]';*/
+/*   PUT '[FONT.PROPERTIES("ï¿½lï¿½r ï¿½ï¿½ï¿½ï¿½",,9)]';*/
 /*   PUT '[FONT.PROPERTIES("Times New Roman",,9)]';*/
 /*RUN;*/
 /**/

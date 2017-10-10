@@ -1,156 +1,156 @@
-MHDECOD,MHGRPCOD,MHTERM_J,MHGRPTERM_J,MHTERM,MHGRPTERM
-1,1,–«‘«”’•a,‘‘B«ξα‡,CML,MPN
-2,1,–«D’†‹…«”’•a,‘‘B«ξα‡,CNL,MPN
-3,1,^«Τ‹…‘‰ΑΗ,‘‘B«ξα‡,PV,MPN
-4,1,΄”­«‘όΫΗ,‘‘B«ξα‡,MF,MPN
-5,1,–{‘Τ«¬”ΒΗ,‘‘B«ξα‡,ET,MPN
-6,1,–«D_‹…«”’•a,‘‘B«ξα‡,CEL,MPN
-7,1,”η•†”μ–Χ–EΗ,‘‘B«ξα‡,CM,MPN
-8,1,‘Sg«”μ–Χ–EΗ,‘‘B«ξα‡,SM,MPN
-9,1,”μ–Χ–E«”’•a,‘‘B«ξα‡,MCL,MPN
-10,1,”μ–Χ–E“χξ,‘‘B«ξα‡,MCS,MPN
-11,1,”η•†O”μ–Χ–Eξ,‘‘B«ξα‡,Extracutaneous mastocytoma,MPN
-12,1,‚»‚Μ‘Ό‚Μ‘‘B«Ύ³,‘‘B«ξα‡,MPD,MPN
-13,2,‚o‚c‚f‚e‚q‚`Δ\¬‘«Eƒƒ“ƒp«ξα‡,‚o‚c‚f‚e‚q‚`A‚o‚c‚f‚e‚q‚aA‚e‚f‚e‚q‚PΩνΗ,PDGFRA,PDGFR/FGFR
-14,2,‚o‚c‚f‚e‚q‚aΔ\¬‘«ξα‡,‚o‚c‚f‚e‚q‚`A‚o‚c‚f‚e‚q‚aA‚e‚f‚e‚q‚PΩνΗ,PDGFRB,PDGFR/FGFR
-15,2,‚e‚f‚e‚q‚PΩν‘«Eƒƒ“ƒp«ξα‡,‚o‚c‚f‚e‚q‚`A‚o‚c‚f‚e‚q‚aA‚e‚f‚e‚q‚PΩνΗ,FGFR1,PDGFR/FGFR
-16,3,–«‘’P‹…«”’•a,‘Ω`¬E‘‘B«ξα‡,CMMoL,MDS/MPN
-17,3,”ρ’θ^–«‘«”’•a,‘Ω`¬E‘‘B«ξα‡,aCML,MDS/MPN
-18,3,α”N«‘’P‹…«”’•a,‘Ω`¬E‘‘B«ξα‡,JMMoL,MDS/MPN
-19,3,‚»‚Μ‘Ό‚Μ‘Ω`¬E‘B«ξα‡,‘Ω`¬E‘‘B«ξα‡,MDS/MPN,MDS/MPN
-20,3,‘Ω`¬ΗσQi‚q‚`‚q‚rjE¬”ΒΗ,‘Ω`¬E‘‘B«ξα‡,RARS-T,MDS/MPN
-21,4,•s‰«•n,‘Ω`¬ΗσQ,MDS(RA),MDS
-22,4,•s‰«D’†‹…Έ­Η,‘Ω`¬ΗσQ,RN,MDS
-23,4,•s‰«¬”ΒΈ­Η,‘Ω`¬ΗσQ,RT,MDS
-24,4,Βσ“S‰θ‹…‚π”Ί‚¤•s‰«•n,‘Ω`¬ΗσQ,MDS(RARS),MDS
-25,4,‘½‹…nΩ`¬‚π”Ί‚¤•s‰«‹…Έ­Η,‘Ω`¬ΗσQ,MDS(RCMD),MDS
-26,4,‰θ‹…‘‰Α‚π”Ί‚¤•s‰«•n,‘Ω`¬ΗσQ,MDS(RAEB),MDS
-27,4,‚T‚‘|ΗσQ,‘Ω`¬ΗσQ,MDS(5q-),MDS
-28,4,•ª—ή•s”\^‘Ω`¬ΗσQ,‘Ω`¬ΗσQ,MDS-U,MDS
-29,4,¬™•s‰«‹…Έ­Η,‘Ω`¬ΗσQ,RCC,MDS
-30,5,‚q‚t‚m‚w‚P|‚q‚t‚m‚w‚P‚s‚P—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(RUNX1-RUNX1T1),AML
-31,5,‚b‚a‚e‚a|‚l‚x‚g‚P‚P—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,"AML(M4Eo, CBFB-MYH11)",AML
-32,5,‹}«‘O‘‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,"APL, AML(M3, M3v)",AML
-33,5,‚l‚k‚k‚s‚R|‚l‚k‚k—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(MLLT3-MLL),AML
-34,5,‚c‚d‚j|‚m‚t‚o‚Q‚P‚S—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(DEK-NUP214),AML
-35,5,‚q‚o‚m‚P|‚d‚u‚h‚P—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(RPN1-EVI1),AML
-36,5,‚q‚a‚l‚P‚T|‚l‚j‚k‚P—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(RBM15-MKL1),AML
-37,5,‚m‚o‚l‚PΩν‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(NPM1),AML
-38,5,‚b‚d‚a‚o‚`Ων‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(CEBPA),AML
-39,5,‘Ω`¬ΦA•Ο‰»”Ί‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML/MRC,AML
-40,5,΅—ΓΦA”’•aE‘Ω`¬ΗσQ,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,t-MN,AML
-41,5,‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML,AML
-42,5,‹}«‘«”’•ai‚l‚Oj,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M0),AML
-43,5,‹}«‘«”’•ai‚l‚Pj,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M1),AML
-44,5,‹}«‘«”’•ai‚l‚Qj,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M2),AML
-45,5,‹}«‘’P‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M4),AML
-46,5,‹}«’P‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M5),AML
-47,5,‹}«Τ”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M6),AML
-48,5,‹}«‹j‰θ‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M7),AML
-49,5,‹}«D‰–ξ‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,Acute basophilic leukemia,AML
-50,5,‹}«‘όΫΗ,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,APMF,AML
-51,5,‘«“χξ,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,MS,AML
-52,5,κ‰ί«Ων‘‘Ά,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,TAM,AML
-53,5,ƒ_ƒEƒ“ΗσQΦA‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,ML-DS,AML
-54,5,‰θ‹…«`ΏΧ–E—lχσΧ–Eξα‡,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,BPDCN,AML
-55,6,–Ά•ª‰»‹}«”’•a,n“•s–Ύ‹}«”’•a,Acute undifferentiated leukaemia,mixed AL
-56,6,‚a‚b‚q|‚`‚a‚k‚P—z«‹}«¬‡^”’•a,n“•s–Ύ‹}«”’•a,MPAL(BCR-ABL1),mixed AL
-57,6,‚l‚k‚kΔ\¬‹}«¬‡«”’•a,n“•s–Ύ‹}«”’•a,MPAL(MLL),mixed AL
-58,6,‚aE‘«‹}«¬‡«”’•a,n“•s–Ύ‹}«”’•a,MPAL(B/M),mixed AL
-59,6,‚sE‘«‹}«¬‡«”’•a,n“•s–Ύ‹}«”’•a,MPAL(T/M),mixed AL
-148,6,‹H‚Θ‹}«¬‡«”’•a,n“•s–Ύ‹}«”’•a,MPAL(NOS),mixed AL
-149,6,n“•s–Ύ”’•a,n“•s–Ύ‹}«”’•a,Other ambiguous lineage leukaemias,mixed AL
-60,6,‚m‚jΧ–E«”’•aEƒƒ“ƒpξ,n“•s–Ύ‹}«”’•a,NK cell LBL,mixed AL
-61,7,‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL,"ALL, LBL"
-62,7,‚a‚b‚q|‚`‚a‚k‚P—z«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(BCR-ABL),"ALL, LBL"
-63,7,‚l‚k‚kΔ\¬^‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(MLL),"ALL, LBL"
-64,7,‚s‚d‚k|‚`‚l‚k‚P—z«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(TEL-AML1),"ALL, LBL"
-65,7,‚‚Q”{‘Μ«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,hyperdiploid B-ALL,"ALL, LBL"
-66,7,’α‚Q”{‘Μ«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,hypodiploid B-ALL,"ALL, LBL"
-67,7,‚h‚k‚R|‚h‚f‚g—z«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(IL3-IGH),"ALL, LBL"
-68,7,‚d‚Q‚`|‚o‚a‚w‚P—z«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(E2A-PBX1),"ALL, LBL"
-69,7,‚sƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,T-ALL/LBL,"ALL, LBL"
-70,8,‚aΧ–E–«ƒƒ“ƒp‹…«”’•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,B-CLL,"B-NHL, MM"
-71,8,‚aΧ–E«‘Oƒƒ“ƒp‹…«”’•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,B-PLL,"B-NHL, MM"
-72,8,δB•Σ‰‘Ρƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,SMZL,"B-NHL, MM"
-73,8,ƒwƒAƒ[Χ–E”’•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,HCL,"B-NHL, MM"
-74,8,δB‚aΧ–E«ƒƒ“ƒpξ^”’•aE•ª—ή•s”\^,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,SpLL-U,"B-NHL, MM"
-75,8,δB‚Ρ‚ά‚ρ«ΤδB‘¬‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,SRPL,"B-NHL, MM"
-76,8,ƒwƒAƒ[Χ–E”’•a^,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,HCL-v,"B-NHL, MM"
-77,8,ƒƒ“ƒp`ΏΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,LPL,"B-NHL, MM"
-78,8,΄”­«ƒ}ƒNƒƒOƒƒuƒƒ“Η,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,WM,"B-NHL, MM"
-79,8,d½•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,HCD,"B-NHL, MM"
-80,8,ƒAƒ‹ƒtƒ@d½•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,ƒΏHCD,"B-NHL, MM"
-81,8,ƒKƒ“ƒ}d½•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,ƒΑHCD,"B-NHL, MM"
-82,8,ƒ~ƒ…[d½•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,ƒΚHCD,"B-NHL, MM"
-150,8,Σ‹`•s–Ύ‚l’`”’Η,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MGUS,"B-NHL, MM"
-83,8,‘½”­«‘ξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MM,"B-NHL, MM"
-84,8,Η”­«`ΏΧ–Eξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,Solitary plasmacytoma of bone,"B-NHL, MM"
-85,8,O«`ΏΧ–Eξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,Extraosseous plasmacytoma,"B-NHL, MM"
-151,8,΄”­«ƒAƒ~ƒƒCƒh[ƒVƒX,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,Primary amyloidosis,"B-NHL, MM"
-152,8,’PƒNƒ[ƒ“«y½d½’Ύ’…Η,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MIDD,"B-NHL, MM"
-153,8,‚o‚n‚d‚l‚rΗσQ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,POEMS,"B-NHL, MM"
-86,8,‚l‚`‚k‚sƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MALT,"B-NHL, MM"
-87,8,ί«•Σ‰‘Ρƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,nodal MZL,"B-NHL, MM"
-88,8,¬™ί«•Σ‰‘Ρƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,paediatric nodal MZL,"B-NHL, MM"
-89,8,ΰh–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,FL,"B-NHL, MM"
-90,8,¬™ΰh–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,paediatric FL,"B-NHL, MM"
-91,8,΄”­«”η•†ΰh–E’†Sƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PCFCL,"B-NHL, MM"
-92,8,ƒ}ƒ“ƒgƒ‹Χ–Eƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MCL,"B-NHL, MM"
-93,8,‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,DLBCL,"B-NHL, MM"
-94,8,‚sΧ–E‘gD‹…–L•x^‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,THRLBCL,"B-NHL, MM"
-95,8,’†•_on΄”­‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,CNS DLBCL,"B-NHL, MM"
-96,8,”η•†΄”­‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–Eƒƒ“ƒpξE‰Ί^,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,"PCLBCL, leg type","B-NHL, MM"
-97,8,‚—ξÒ‚d‚a‚u—z«‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,EBV(+) DLBCL of the elderly,"B-NHL, MM"
-98,8,–«‰ΗΦA‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PAL,"B-NHL, MM"
-99,8,ƒƒ“ƒpξ—l“χ‰θξΗ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,LYG,"B-NHL, MM"
-100,8,cu΄”­‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PMBL,"B-NHL, MM"
-101,8,Η“ΰ‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,IVLBCL,"B-NHL, MM"
-102,8,‚`‚k‚j—z«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,ALK(+) LBCL,"B-NHL, MM"
-103,8,`Ώ‰θ‹…«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PBL,"B-NHL, MM"
-155,8,ƒLƒƒƒbƒXƒ‹ƒ}ƒ“•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,Castleman,"B-NHL, MM"
-104,8,‚g‚g‚u‚W‘½’†S«ƒLƒƒƒbƒXƒ‹ƒ}ƒ“•a”Ί‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,HHV8 MCD LBCL,"B-NHL, MM"
-105,8,΄”­«ψo«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PEL,"B-NHL, MM"
-106,8,ƒo[ƒLƒbƒgƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,BL,"B-NHL, MM"
-107,8,‚Ρ‚ά‚ρ«‘εΧ–E^Eƒo[ƒLƒbƒg’†Τ^•ª—ή•s”\‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,DLBCL-BL,"B-NHL, MM"
-108,8,‚Ρ‚ά‚ρ«‘εΧ–E^EƒzƒWƒLƒ“’†Τ^•ª—ή•s”\‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,DLBCL-CHL,"B-NHL, MM"
-109,9,‚sΧ–E«‘Oƒƒ“ƒp‹…”’•a,¬n‚sE‚m‚jΧ–Eξα‡,T-PLL,"T, NK lymphoma"
-110,9,‚sΧ–E«‘εθχ—±ƒƒ“ƒp‹…”’•a,¬n‚sE‚m‚jΧ–Eξα‡,T-LGL,"T, NK lymphoma"
-111,9,–«‚m‚jΧ–Eƒƒ“ƒp‘B«Ύ³,¬n‚sE‚m‚jΧ–Eξα‡,CLPD-NK,"T, NK lymphoma"
-112,9,ƒAƒOƒƒbƒVƒu‚m‚jΧ–E”’•a,¬n‚sE‚m‚jΧ–Eξα‡,ANKL,"T, NK lymphoma"
-154,9,¬™‚d‚a‚u—z«‚sΧ–Eƒƒ“ƒp‘B«Ύ³,¬n‚sE‚m‚jΧ–Eξα‡,CAEBV,"T, NK lymphoma"
-113,9,¬™‘Sg«‚d‚a‚u—z«‚sΧ–Eƒƒ“ƒp‘B«Ύ³,¬n‚sE‚m‚jΧ–Eξα‡,Systemic EBV(+) T-cell LPD of childhood,"T, NK lymphoma"
-114,9,ν“——l…αvΗ—lƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,Hydroa vacciniforme-like lymphoma,"T, NK lymphoma"
-115,9,¬l‚sΧ–E”’•aƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,ATLL,"T, NK lymphoma"
-116,9,ίO«‚m‚j^‚sΧ–Eƒƒ“ƒpξE•@^,¬n‚sE‚m‚jΧ–Eξα‡,NK/T lymphoma,"T, NK lymphoma"
-117,9,’°ΗΗΦA‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,EATL,"T, NK lymphoma"
-118,9,ΜδB‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,HSTL,"T, NK lymphoma"
-119,9,”η‰Ί‰–bD‰—l‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,SPTCL,"T, NK lymphoma"
-120,9,‹Ϋσ‘§“χΗ,¬n‚sE‚m‚jΧ–Eξα‡,MF,"T, NK lymphoma"
-121,9,ƒZƒUƒ[ΗσQ,¬n‚sE‚m‚jΧ–Eξα‡,SS,"T, NK lymphoma"
-122,9,ƒƒ“ƒpξ—l‹u]Η,¬n‚sE‚m‚jΧ–Eξα‡,LyP,"T, NK lymphoma"
-123,9,”η•†΄”­«–Ά•ª‰»‘εΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,C-ALCL,"T, NK lymphoma"
-124,9,”η•†΄”­«ƒΑƒΒ‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,Cutaneous ƒΑƒΒT,"T, NK lymphoma"
-125,9,‚b‚c‚W—z«”η•†‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,Cutaneous CD8T,"T, NK lymphoma"
-126,9,‚b‚c‚S—z«”η•†‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,Cutaneous CD4T,"T, NK lymphoma"
-127,9,––½«‚sΧ–Eƒƒ“ƒpξEΪΧ•s–Ύ,¬n‚sE‚m‚jΧ–Eξα‡,PTCL NOS,"T, NK lymphoma"
-128,9,Η–Ζ‰u‰θ‹…«‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,AITL,"T, NK lymphoma"
-129,9,‚`‚k‚j—z«–Ά•ª‰»‘εΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,ALCL ALK(+),"T, NK lymphoma"
-130,9,‚`‚k‚j‰A«–Ά•ª‰»‘εΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,ALCL ALK(-),"T, NK lymphoma"
-131,10,‹ί«ƒƒ“ƒp‹…—DΚ^ƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,NLPHL,HD
-132,10,Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,CHL,HD
-133,10,‹ίd‰»^Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,NSCHL,HD
-134,10,ƒƒ“ƒp‹…–L•x^Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,LRCHL,HD
-135,10,¬‡Χ–E^Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,MCCHL,HD
-136,10,ƒƒ“ƒp‹…Έ­^Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,LDCHL,HD
-137,11,‘gD‹…“χξ,‘gD‹…EχσΧ–Eξα‡,Histiocytic sarcoma,"LCH, DC"
-138,11,ƒ‰ƒ“ƒQƒ‹ƒnƒ“ƒXΧ–E‘gD‹…Η,‘gD‹…EχσΧ–Eξα‡,LCH,"LCH, DC"
-139,11,ƒ‰ƒ“ƒQƒ‹ƒnƒ“ƒXΧ–E“χξ,‘gD‹…EχσΧ–Eξα‡,Langerhans cell sarcoma,"LCH, DC"
-140,11,wσ›Ζ“όΧ–E“χξ,‘gD‹…EχσΧ–Eξα‡,IDC sarcoma,"LCH, DC"
-141,11,ΰh–EχσΧ–E“χξ,‘gD‹…EχσΧ–Eξα‡,FDC sarcoma,"LCH, DC"
-142,11,όΫ‰θ‹…«–ΤσΧ–Eξα‡,‘gD‹…EχσΧ–Eξα‡,Fibroblastic reticular cell tumour,"LCH, DC"
-143,11,‚»‚Μ‘Ό‚ΜχσΧ–Eξα‡,‘gD‹…EχσΧ–Eξα‡,Indeterminate dendritic cell tumour,"LCH, DC"
-144,11,”dν«α”N«‰©F“χ‰θξ,‘gD‹…EχσΧ–Eξα‡,JXG,"LCH, DC"
-145,12,ΪAγƒƒ“ƒp‘B«Ύ³i`ΏΧ–E‰ί`¬j,ΪAγƒƒ“ƒp‘B«Ύ³,PTLD(PH),PTLD
-146,12,ΪAγƒƒ“ƒp‘B«Ύ³i“`υ«’Pj‹…Η—l•a•Οj,ΪAγƒƒ“ƒp‘B«Ύ³,IM-like PTLD,PTLD
-147,12,‘½`«ΪAγƒƒ“ƒp‘B«Ύ³,ΪAγƒƒ“ƒp‘B«Ύ³,P-PTLD,PTLD
+MHDECOD,MHGRPCOD,MHTERM_J,MHGRPTERM_J,MHTERM,MHGRPTERM,MHSCAT
+1,1,–«‘«”’•a,‘‘B«ξα‡,CML,MPN,Leukemia
+2,1,–«D’†‹…«”’•a,‘‘B«ξα‡,CNL,MPN,Leukemia
+3,1,^«Τ‹…‘‰ΑΗ,‘‘B«ξα‡,PV,MPN,Others
+4,1,΄”­«‘όΫΗ,‘‘B«ξα‡,MF,MPN,Others
+5,1,–{‘Τ«¬”ΒΗ,‘‘B«ξα‡,ET,MPN,Others
+6,1,–«D_‹…«”’•a,‘‘B«ξα‡,CEL,MPN,Leukemia
+7,1,”η•†”μ–Χ–EΗ,‘‘B«ξα‡,CM,MPN,Lymphoma
+8,1,‘Sg«”μ–Χ–EΗ,‘‘B«ξα‡,SM,MPN,Others
+9,1,”μ–Χ–E«”’•a,‘‘B«ξα‡,MCL,MPN,Leukemia
+10,1,”μ–Χ–E“χξ,‘‘B«ξα‡,MCS,MPN,Lymphoma
+11,1,”η•†O”μ–Χ–Eξ,‘‘B«ξα‡,Extracutaneous mastocytoma,MPN,Lymphoma
+12,1,‚»‚Μ‘Ό‚Μ‘‘B«Ύ³,‘‘B«ξα‡,MPD,MPN,Others
+13,2,‚o‚c‚f‚e‚q‚`Δ\¬‘«Eƒƒ“ƒp«ξα‡,‚o‚c‚f‚e‚q‚`A‚o‚c‚f‚e‚q‚aA‚e‚f‚e‚q‚PΩνΗ,PDGFRA,PDGFR/FGFR,Others
+14,2,‚o‚c‚f‚e‚q‚aΔ\¬‘«ξα‡,‚o‚c‚f‚e‚q‚`A‚o‚c‚f‚e‚q‚aA‚e‚f‚e‚q‚PΩνΗ,PDGFRB,PDGFR/FGFR,Others
+15,2,‚e‚f‚e‚q‚PΩν‘«Eƒƒ“ƒp«ξα‡,‚o‚c‚f‚e‚q‚`A‚o‚c‚f‚e‚q‚aA‚e‚f‚e‚q‚PΩνΗ,FGFR1,PDGFR/FGFR,Others
+16,3,–«‘’P‹…«”’•a,‘Ω`¬E‘‘B«ξα‡,CMMoL,MDS/MPN,Leukemia
+17,3,”ρ’θ^–«‘«”’•a,‘Ω`¬E‘‘B«ξα‡,aCML,MDS/MPN,Leukemia
+18,3,α”N«‘’P‹…«”’•a,‘Ω`¬E‘‘B«ξα‡,JMMoL,MDS/MPN,Leukemia
+19,3,‚»‚Μ‘Ό‚Μ‘Ω`¬E‘B«ξα‡,‘Ω`¬E‘‘B«ξα‡,MDS/MPN,MDS/MPN,Others
+20,3,‘Ω`¬ΗσQi‚q‚`‚q‚rjE¬”ΒΗ,‘Ω`¬E‘‘B«ξα‡,RARS-T,MDS/MPN,Others
+21,4,•s‰«•n,‘Ω`¬ΗσQ,MDS(RA),MDS,Others
+22,4,•s‰«D’†‹…Έ­Η,‘Ω`¬ΗσQ,RN,MDS,Others
+23,4,•s‰«¬”ΒΈ­Η,‘Ω`¬ΗσQ,RT,MDS,Others
+24,4,Βσ“S‰θ‹…‚π”Ί‚¤•s‰«•n,‘Ω`¬ΗσQ,MDS(RARS),MDS,Others
+25,4,‘½‹…nΩ`¬‚π”Ί‚¤•s‰«‹…Έ­Η,‘Ω`¬ΗσQ,MDS(RCMD),MDS,Others
+26,4,‰θ‹…‘‰Α‚π”Ί‚¤•s‰«•n,‘Ω`¬ΗσQ,MDS(RAEB),MDS,Others
+27,4,‚T‚‘|ΗσQ,‘Ω`¬ΗσQ,MDS(5q-),MDS,Others
+28,4,•ª—ή•s”\^‘Ω`¬ΗσQ,‘Ω`¬ΗσQ,MDS-U,MDS,Others
+29,4,¬™•s‰«‹…Έ­Η,‘Ω`¬ΗσQ,RCC,MDS,Others
+30,5,‚q‚t‚m‚w‚P|‚q‚t‚m‚w‚P‚s‚P—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(RUNX1-RUNX1T1),AML,Leukemia
+31,5,‚b‚a‚e‚a|‚l‚x‚g‚P‚P—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,"AML(M4Eo, CBFB-MYH11)",AML,Leukemia
+32,5,‹}«‘O‘‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,"APL, AML(M3, M3v)",AML,Leukemia
+33,5,‚l‚k‚k‚s‚R|‚l‚k‚k—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(MLLT3-MLL),AML,Leukemia
+34,5,‚c‚d‚j|‚m‚t‚o‚Q‚P‚S—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(DEK-NUP214),AML,Leukemia
+35,5,‚q‚o‚m‚P|‚d‚u‚h‚P—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(RPN1-EVI1),AML,Leukemia
+36,5,‚q‚a‚l‚P‚T|‚l‚j‚k‚P—z«‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(RBM15-MKL1),AML,Leukemia
+37,5,‚m‚o‚l‚PΩν‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(NPM1),AML,Leukemia
+38,5,‚b‚d‚a‚o‚`Ων‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(CEBPA),AML,Leukemia
+39,5,‘Ω`¬ΦA•Ο‰»”Ί‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML/MRC,AML,Leukemia
+40,5,΅—ΓΦA”’•aE‘Ω`¬ΗσQ,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,t-MN,AML,Leukemia
+41,5,‹}«‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML,AML,Leukemia
+42,5,‹}«‘«”’•ai‚l‚Oj,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M0),AML,Leukemia
+43,5,‹}«‘«”’•ai‚l‚Pj,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M1),AML,Leukemia
+44,5,‹}«‘«”’•ai‚l‚Qj,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M2),AML,Leukemia
+45,5,‹}«‘’P‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M4),AML,Leukemia
+46,5,‹}«’P‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M5),AML,Leukemia
+47,5,‹}«Τ”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M6),AML,Leukemia
+48,5,‹}«‹j‰θ‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,AML(M7),AML,Leukemia
+49,5,‹}«D‰–ξ‹…«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,Acute basophilic leukemia,AML,Leukemia
+50,5,‹}«‘όΫΗ,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,APMF,AML,Leukemia
+51,5,‘«“χξ,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,MS,AML,Leukemia
+52,5,κ‰ί«Ων‘‘Ά,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,TAM,AML,Leukemia
+53,5,ƒ_ƒEƒ“ΗσQΦA‘«”’•a,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,ML-DS,AML,Leukemia
+54,5,‰θ‹…«`ΏΧ–E—lχσΧ–Eξα‡,‹}«‘«”’•a‚¨‚ζ‚ΡΦAξα‡,BPDCN,AML,Leukemia
+55,6,–Ά•ª‰»‹}«”’•a,n“•s–Ύ‹}«”’•a,Acute undifferentiated leukaemia,mixed AL,Leukemia
+56,6,‚a‚b‚q|‚`‚a‚k‚P—z«‹}«¬‡^”’•a,n“•s–Ύ‹}«”’•a,MPAL(BCR-ABL1),mixed AL,Leukemia
+57,6,‚l‚k‚kΔ\¬‹}«¬‡«”’•a,n“•s–Ύ‹}«”’•a,MPAL(MLL),mixed AL,Leukemia
+58,6,‚aE‘«‹}«¬‡«”’•a,n“•s–Ύ‹}«”’•a,MPAL(B/M),mixed AL,Leukemia
+59,6,‚sE‘«‹}«¬‡«”’•a,n“•s–Ύ‹}«”’•a,MPAL(T/M),mixed AL,Leukemia
+148,6,‹H‚Θ‹}«¬‡«”’•a,n“•s–Ύ‹}«”’•a,MPAL(NOS),mixed AL,Leukemia
+149,6,n“•s–Ύ”’•a,n“•s–Ύ‹}«”’•a,Other ambiguous lineage leukaemias,mixed AL,Leukemia
+60,6,‚m‚jΧ–E«”’•aEƒƒ“ƒpξ,n“•s–Ύ‹}«”’•a,NK cell LBL,mixed AL,Leukemia
+61,7,‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL,"ALL, LBL",Leukemia
+62,7,‚a‚b‚q|‚`‚a‚k‚P—z«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(BCR-ABL),"ALL, LBL",Leukemia
+63,7,‚l‚k‚kΔ\¬^‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(MLL),"ALL, LBL",Leukemia
+64,7,‚s‚d‚k|‚`‚l‚k‚P—z«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(TEL-AML1),"ALL, LBL",Leukemia
+65,7,‚‚Q”{‘Μ«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,hyperdiploid B-ALL,"ALL, LBL",Leukemia
+66,7,’α‚Q”{‘Μ«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,hypodiploid B-ALL,"ALL, LBL",Leukemia
+67,7,‚h‚k‚R|‚h‚f‚g—z«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(IL3-IGH),"ALL, LBL",Leukemia
+68,7,‚d‚Q‚`|‚o‚a‚w‚P—z«‚aƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,B-ALL(E2A-PBX1),"ALL, LBL",Leukemia
+69,7,‚sƒƒ“ƒp‰θ‹…«”’•a^ƒƒ“ƒpξ,‘O‹μƒƒ“ƒp‹…nξα‡,T-ALL/LBL,"ALL, LBL",Leukemia
+70,8,‚aΧ–E–«ƒƒ“ƒp‹…«”’•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,B-CLL,"B-NHL, MM",Leukemia
+71,8,‚aΧ–E«‘Oƒƒ“ƒp‹…«”’•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,B-PLL,"B-NHL, MM",Leukemia
+72,8,δB•Σ‰‘Ρƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,SMZL,"B-NHL, MM",Lymphoma
+73,8,ƒwƒAƒ[Χ–E”’•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,HCL,"B-NHL, MM",Leukemia
+74,8,δB‚aΧ–E«ƒƒ“ƒpξ^”’•aE•ª—ή•s”\^,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,SpLL-U,"B-NHL, MM",Lymphoma
+75,8,δB‚Ρ‚ά‚ρ«ΤδB‘¬‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,SRPL,"B-NHL, MM",Lymphoma
+76,8,ƒwƒAƒ[Χ–E”’•a^,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,HCL-v,"B-NHL, MM",Lymphoma
+77,8,ƒƒ“ƒp`ΏΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,LPL,"B-NHL, MM",Lymphoma
+78,8,΄”­«ƒ}ƒNƒƒOƒƒuƒƒ“Η,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,WM,"B-NHL, MM",Myeloma
+79,8,d½•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,HCD,"B-NHL, MM",Myeloma
+80,8,ƒAƒ‹ƒtƒ@d½•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,ƒΏHCD,"B-NHL, MM",Myeloma
+81,8,ƒKƒ“ƒ}d½•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,ƒΑHCD,"B-NHL, MM",Myeloma
+82,8,ƒ~ƒ…[d½•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,ƒΚHCD,"B-NHL, MM",Myeloma
+150,8,Σ‹`•s–Ύ‚l’`”’Η,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MGUS,"B-NHL, MM",Myeloma
+83,8,‘½”­«‘ξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MM,"B-NHL, MM",Myeloma
+84,8,Η”­«`ΏΧ–Eξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,Solitary plasmacytoma of bone,"B-NHL, MM",Myeloma
+85,8,O«`ΏΧ–Eξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,Extraosseous plasmacytoma,"B-NHL, MM",Myeloma
+151,8,΄”­«ƒAƒ~ƒƒCƒh[ƒVƒX,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,Primary amyloidosis,"B-NHL, MM",Myeloma
+152,8,’PƒNƒ[ƒ“«y½d½’Ύ’…Η,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MIDD,"B-NHL, MM",Others
+153,8,‚o‚n‚d‚l‚rΗσQ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,POEMS,"B-NHL, MM",Myeloma
+86,8,‚l‚`‚k‚sƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MALT,"B-NHL, MM",Lymphoma
+87,8,ί«•Σ‰‘Ρƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,nodal MZL,"B-NHL, MM",Lymphoma
+88,8,¬™ί«•Σ‰‘Ρƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,paediatric nodal MZL,"B-NHL, MM",Lymphoma
+89,8,ΰh–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,FL,"B-NHL, MM",Lymphoma
+90,8,¬™ΰh–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,paediatric FL,"B-NHL, MM",Lymphoma
+91,8,΄”­«”η•†ΰh–E’†Sƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PCFCL,"B-NHL, MM",Lymphoma
+92,8,ƒ}ƒ“ƒgƒ‹Χ–Eƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,MCL,"B-NHL, MM",Lymphoma
+93,8,‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,DLBCL,"B-NHL, MM",Lymphoma
+94,8,‚sΧ–E‘gD‹…–L•x^‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,THRLBCL,"B-NHL, MM",Lymphoma
+95,8,’†•_on΄”­‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,CNS DLBCL,"B-NHL, MM",Lymphoma
+96,8,”η•†΄”­‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–Eƒƒ“ƒpξE‰Ί^,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,"PCLBCL, leg type","B-NHL, MM",Lymphoma
+97,8,‚—ξÒ‚d‚a‚u—z«‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,EBV(+) DLBCL of the elderly,"B-NHL, MM",Lymphoma
+98,8,–«‰ΗΦA‚Ρ‚ά‚ρ«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PAL,"B-NHL, MM",Lymphoma
+99,8,ƒƒ“ƒpξ—l“χ‰θξΗ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,LYG,"B-NHL, MM",Others
+100,8,cu΄”­‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PMBL,"B-NHL, MM",Lymphoma
+101,8,Η“ΰ‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,IVLBCL,"B-NHL, MM",Lymphoma
+102,8,‚`‚k‚j—z«‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,ALK(+) LBCL,"B-NHL, MM",Lymphoma
+103,8,`Ώ‰θ‹…«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PBL,"B-NHL, MM",Lymphoma
+155,8,ƒLƒƒƒbƒXƒ‹ƒ}ƒ“•a,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,Castleman,"B-NHL, MM",Lymphoma
+104,8,‚g‚g‚u‚W‘½’†S«ƒLƒƒƒbƒXƒ‹ƒ}ƒ“•a”Ί‘εΧ–E^‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,HHV8 MCD LBCL,"B-NHL, MM",Lymphoma
+105,8,΄”­«ψo«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,PEL,"B-NHL, MM",Lymphoma
+106,8,ƒo[ƒLƒbƒgƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,BL,"B-NHL, MM",Lymphoma
+107,8,‚Ρ‚ά‚ρ«‘εΧ–E^Eƒo[ƒLƒbƒg’†Τ^•ª—ή•s”\‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,DLBCL-BL,"B-NHL, MM",Lymphoma
+108,8,‚Ρ‚ά‚ρ«‘εΧ–E^EƒzƒWƒLƒ“’†Τ^•ª—ή•s”\‚aΧ–E«ƒƒ“ƒpξ,¬n‚aΧ–Eξα‡iƒƒ“ƒpξE‘ξj,DLBCL-CHL,"B-NHL, MM",Lymphoma
+109,9,‚sΧ–E«‘Oƒƒ“ƒp‹…”’•a,¬n‚sE‚m‚jΧ–Eξα‡,T-PLL,"T, NK lymphoma",Leukemia
+110,9,‚sΧ–E«‘εθχ—±ƒƒ“ƒp‹…”’•a,¬n‚sE‚m‚jΧ–Eξα‡,T-LGL,"T, NK lymphoma",Leukemia
+111,9,–«‚m‚jΧ–Eƒƒ“ƒp‘B«Ύ³,¬n‚sE‚m‚jΧ–Eξα‡,CLPD-NK,"T, NK lymphoma",Leukemia
+112,9,ƒAƒOƒƒbƒVƒu‚m‚jΧ–E”’•a,¬n‚sE‚m‚jΧ–Eξα‡,ANKL,"T, NK lymphoma",Leukemia
+154,9,¬™‚d‚a‚u—z«‚sΧ–Eƒƒ“ƒp‘B«Ύ³,¬n‚sE‚m‚jΧ–Eξα‡,CAEBV,"T, NK lymphoma",Lymphoma
+113,9,¬™‘Sg«‚d‚a‚u—z«‚sΧ–Eƒƒ“ƒp‘B«Ύ³,¬n‚sE‚m‚jΧ–Eξα‡,Systemic EBV(+) T-cell LPD of childhood,"T, NK lymphoma",Lymphoma
+114,9,ν“——l…αvΗ—lƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,Hydroa vacciniforme-like lymphoma,"T, NK lymphoma",Lymphoma
+115,9,¬l‚sΧ–E”’•aƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,ATLL,"T, NK lymphoma",Lymphoma
+116,9,ίO«‚m‚j^‚sΧ–Eƒƒ“ƒpξE•@^,¬n‚sE‚m‚jΧ–Eξα‡,NK/T lymphoma,"T, NK lymphoma",Lymphoma
+117,9,’°ΗΗΦA‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,EATL,"T, NK lymphoma",Lymphoma
+118,9,ΜδB‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,HSTL,"T, NK lymphoma",Lymphoma
+119,9,”η‰Ί‰–bD‰—l‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,SPTCL,"T, NK lymphoma",Lymphoma
+120,9,‹Ϋσ‘§“χΗ,¬n‚sE‚m‚jΧ–Eξα‡,MF,"T, NK lymphoma",Lymphoma
+121,9,ƒZƒUƒ[ΗσQ,¬n‚sE‚m‚jΧ–Eξα‡,SS,"T, NK lymphoma",Lymphoma
+122,9,ƒƒ“ƒpξ—l‹u]Η,¬n‚sE‚m‚jΧ–Eξα‡,LyP,"T, NK lymphoma",Lymphoma
+123,9,”η•†΄”­«–Ά•ª‰»‘εΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,C-ALCL,"T, NK lymphoma",Lymphoma
+124,9,”η•†΄”­«ƒΑƒΒ‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,Cutaneous ƒΑƒΒT,"T, NK lymphoma",Lymphoma
+125,9,‚b‚c‚W—z«”η•†‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,Cutaneous CD8T,"T, NK lymphoma",Lymphoma
+126,9,‚b‚c‚S—z«”η•†‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,Cutaneous CD4T,"T, NK lymphoma",Lymphoma
+127,9,––½«‚sΧ–Eƒƒ“ƒpξEΪΧ•s–Ύ,¬n‚sE‚m‚jΧ–Eξα‡,PTCL NOS,"T, NK lymphoma",Lymphoma
+128,9,Η–Ζ‰u‰θ‹…«‚sΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,AITL,"T, NK lymphoma",Lymphoma
+129,9,‚`‚k‚j—z«–Ά•ª‰»‘εΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,ALCL ALK(+),"T, NK lymphoma",Lymphoma
+130,9,‚`‚k‚j‰A«–Ά•ª‰»‘εΧ–Eƒƒ“ƒpξ,¬n‚sE‚m‚jΧ–Eξα‡,ALCL ALK(-),"T, NK lymphoma",Lymphoma
+131,10,‹ί«ƒƒ“ƒp‹…—DΚ^ƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,NLPHL,HD,Lymphoma
+132,10,Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,CHL,HD,Lymphoma
+133,10,‹ίd‰»^Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,NSCHL,HD,Lymphoma
+134,10,ƒƒ“ƒp‹…–L•x^Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,LRCHL,HD,Lymphoma
+135,10,¬‡Χ–E^Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,MCCHL,HD,Lymphoma
+136,10,ƒƒ“ƒp‹…Έ­^Γ“T“IƒzƒWƒLƒ“ƒƒ“ƒpξ,ƒzƒWƒLƒ“ƒƒ“ƒpξ,LDCHL,HD,Lymphoma
+137,11,‘gD‹…“χξ,‘gD‹…EχσΧ–Eξα‡,Histiocytic sarcoma,"LCH, DC",Others
+138,11,ƒ‰ƒ“ƒQƒ‹ƒnƒ“ƒXΧ–E‘gD‹…Η,‘gD‹…EχσΧ–Eξα‡,LCH,"LCH, DC",Others
+139,11,ƒ‰ƒ“ƒQƒ‹ƒnƒ“ƒXΧ–E“χξ,‘gD‹…EχσΧ–Eξα‡,Langerhans cell sarcoma,"LCH, DC",Others
+140,11,wσ›Ζ“όΧ–E“χξ,‘gD‹…EχσΧ–Eξα‡,IDC sarcoma,"LCH, DC",Others
+141,11,ΰh–EχσΧ–E“χξ,‘gD‹…EχσΧ–Eξα‡,FDC sarcoma,"LCH, DC",Others
+142,11,όΫ‰θ‹…«–ΤσΧ–Eξα‡,‘gD‹…EχσΧ–Eξα‡,Fibroblastic reticular cell tumour,"LCH, DC",Others
+143,11,‚»‚Μ‘Ό‚ΜχσΧ–Eξα‡,‘gD‹…EχσΧ–Eξα‡,Indeterminate dendritic cell tumour,"LCH, DC",Others
+144,11,”dν«α”N«‰©F“χ‰θξ,‘gD‹…EχσΧ–Eξα‡,JXG,"LCH, DC",Others
+145,12,ΪAγƒƒ“ƒp‘B«Ύ³i`ΏΧ–E‰ί`¬j,ΪAγƒƒ“ƒp‘B«Ύ³,PTLD(PH),PTLD,Others
+146,12,ΪAγƒƒ“ƒp‘B«Ύ³i“`υ«’Pj‹…Η—l•a•Οj,ΪAγƒƒ“ƒp‘B«Ύ³,IM-like PTLD,PTLD,Others
+147,12,‘½`«ΪAγƒƒ“ƒp‘B«Ύ³,ΪAγƒƒ“ƒp‘B«Ύ³,P-PTLD,PTLD,Others

@@ -40,7 +40,7 @@
 %INCLUDE "&_PATH2.\JSH201609_STAT_LIBNAME.sas";
 
 /*** Template Open ***/
-%XLSOPEN(JSH201609_STAT_RES_&FILE..xlsx);
+/*%XLSOPEN(JSH201609_STAT_RES_&FILE..xlsx);*/
 
 /*** ADS read ***/
 %MACRO DS_READ(LIB,DS);
@@ -48,7 +48,7 @@
     SET  &LIB..&DS.;
     FORMAT _ALL_;
     INFORMAT _ALL_;
-    IF SCAN(MHSTDTC,1,"/") IN("2012","2013","2014","2015");
+    IF SCAN(MHSTDTC,1,"/") IN("2012","2013","2014","2015","2016");
   RUN ;
 %MEND ;
 %DS_READ(LIBADS,ADS);
@@ -215,75 +215,75 @@ RUN ;
 
 /*** Excel Output ***/
 
-FILENAME SYS DDE "EXCEL | SYSTEM " ;
-DATA _NULL_;
-  FILE SYS;
-  PUT '[SELECT("R4C1")]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.0.png"")]";
-  PUT '[SELECT("R27C1")]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.1.png"")]";
-  PUT '[SELECT("R50C1")]';PUT '[SET.PAGE.BREAK()]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.2.png"")]";
-  PUT '[SELECT("R73C1")]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.3.png"")]";
-  PUT '[SELECT("R96C1")]';PUT '[SET.PAGE.BREAK()]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.4.png"")]";
-  PUT '[SELECT("R119C1")]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.5.png"")]";
-  PUT '[SELECT("R142C1")]';PUT '[SET.PAGE.BREAK()]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.6.png"")]";
-  PUT '[SELECT("R165C1")]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.7.png"")]";
-  PUT '[SELECT("R188C1")]';PUT '[SET.PAGE.BREAK()]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.8.png"")]";
-  PUT '[SELECT("R211C1")]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.9.png"")]";
-  PUT '[SELECT("R234C1")]';PUT '[SET.PAGE.BREAK()]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.10.png"")]";
-  PUT '[SELECT("R257C1")]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.11.png"")]";
-  PUT '[SELECT("R280C1")]';PUT '[SET.PAGE.BREAK()]';
-  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.12.png"")]";
-RUN;
-
-*** Font;
-FILENAME SYS DDE 'EXCEL|SYSTEM';
-
-DATA _NULL_;
-   FILE SYS;
-   PUT "[WORKBOOK.ACTIVATE(""[JSH201609_STAT_RES_&FILE..xlsx]&FILE."")]";
-   PUT '[SELECT("R1")]';
-   PUT '[FONT.PROPERTIES("‚l‚r –¾’©",,11)]';
-   PUT '[FONT.PROPERTIES("Times New Roman",,11)]';
-
-   PUT '[SELECT("R2:R1048576")]';
-   PUT '[FONT.PROPERTIES("‚l‚r –¾’©",,9)]';
-   PUT '[FONT.PROPERTIES("Times New Roman",,9)]';
-RUN;
-
-*** Footnote;
-DATA TMP;
-   RUNTIME = TRIM(TRANSLATE(PUT(DATE(),YYMMDD10.),"/","-"));
-RUN;
-
-DATA _NULL_;
-   FILE SYS;
-   SET TMP ;
-   PUT "[WORKBOOK.ACTIVATE(%BQUOTE("[JSH201609_STAT_RES_&FILE..xlsx]&FILE."))]";
-   PUT '[PAGE.SETUP(, "&C &""Times New Roman"" &8 &P/&N &R &""Times New Roman"" &8 ' RUNTIME '")]';
-   PUT '[SELECT("R1C1")]';
-RUN;
-
-*** Close;
-DATA _NULL_;
-   FILE SYS;
-   PUT "[WORKBOOK.ACTIVATE(""[JSH201609_STAT_RES_&FILE..xlsx]&FILE."")]";
-   PUT '[SELECT("R1C1")]';
-   PUT '[ERROR(FALSE)]';
-   PUT "[SAVE.AS(""&OUT.\JSH201609_STAT_RES_&FILE..xlsx"")]";
-   PUT '[CLOSE("FALSE")]';
-   PUT '[QUIT()]';
-RUN;
+/*FILENAME SYS DDE "EXCEL | SYSTEM " ;*/
+/*DATA _NULL_;*/
+/*  FILE SYS;*/
+/*  PUT '[SELECT("R4C1")]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.0.png"")]";*/
+/*  PUT '[SELECT("R27C1")]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.1.png"")]";*/
+/*  PUT '[SELECT("R50C1")]';PUT '[SET.PAGE.BREAK()]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.2.png"")]";*/
+/*  PUT '[SELECT("R73C1")]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.3.png"")]";*/
+/*  PUT '[SELECT("R96C1")]';PUT '[SET.PAGE.BREAK()]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.4.png"")]";*/
+/*  PUT '[SELECT("R119C1")]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.5.png"")]";*/
+/*  PUT '[SELECT("R142C1")]';PUT '[SET.PAGE.BREAK()]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.6.png"")]";*/
+/*  PUT '[SELECT("R165C1")]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.7.png"")]";*/
+/*  PUT '[SELECT("R188C1")]';PUT '[SET.PAGE.BREAK()]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.8.png"")]";*/
+/*  PUT '[SELECT("R211C1")]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.9.png"")]";*/
+/*  PUT '[SELECT("R234C1")]';PUT '[SET.PAGE.BREAK()]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.10.png"")]";*/
+/*  PUT '[SELECT("R257C1")]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.11.png"")]";*/
+/*  PUT '[SELECT("R280C1")]';PUT '[SET.PAGE.BREAK()]';*/
+/*  PUT "[INSERT.PICTURE(""&OUTG.\BUTTERFLY\&FILE.12.png"")]";*/
+/*RUN;*/
+/**/
+/**** Font;*/
+/*FILENAME SYS DDE 'EXCEL|SYSTEM';*/
+/**/
+/*DATA _NULL_;*/
+/*   FILE SYS;*/
+/*   PUT "[WORKBOOK.ACTIVATE(""[JSH201609_STAT_RES_&FILE..xlsx]&FILE."")]";*/
+/*   PUT '[SELECT("R1")]';*/
+/*   PUT '[FONT.PROPERTIES("ï¿½lï¿½r ï¿½ï¿½ï¿½ï¿½",,11)]';*/
+/*   PUT '[FONT.PROPERTIES("Times New Roman",,11)]';*/
+/**/
+/*   PUT '[SELECT("R2:R1048576")]';*/
+/*   PUT '[FONT.PROPERTIES("ï¿½lï¿½r ï¿½ï¿½ï¿½ï¿½",,9)]';*/
+/*   PUT '[FONT.PROPERTIES("Times New Roman",,9)]';*/
+/*RUN;*/
+/**/
+/**** Footnote;*/
+/*DATA TMP;*/
+/*   RUNTIME = TRIM(TRANSLATE(PUT(DATE(),YYMMDD10.),"/","-"));*/
+/*RUN;*/
+/**/
+/*DATA _NULL_;*/
+/*   FILE SYS;*/
+/*   SET TMP ;*/
+/*   PUT "[WORKBOOK.ACTIVATE(%BQUOTE("[JSH201609_STAT_RES_&FILE..xlsx]&FILE."))]";*/
+/*   PUT '[PAGE.SETUP(, "&C &""Times New Roman"" &8 &P/&N &R &""Times New Roman"" &8 ' RUNTIME '")]';*/
+/*   PUT '[SELECT("R1C1")]';*/
+/*RUN;*/
+/**/
+/**** Close;*/
+/*DATA _NULL_;*/
+/*   FILE SYS;*/
+/*   PUT "[WORKBOOK.ACTIVATE(""[JSH201609_STAT_RES_&FILE..xlsx]&FILE."")]";*/
+/*   PUT '[SELECT("R1C1")]';*/
+/*   PUT '[ERROR(FALSE)]';*/
+/*   PUT "[SAVE.AS(""&OUT.\JSH201609_STAT_RES_&FILE..xlsx"")]";*/
+/*   PUT '[CLOSE("FALSE")]';*/
+/*   PUT '[QUIT()]';*/
+/*RUN;*/
 
 %STAT_FIN;
 
