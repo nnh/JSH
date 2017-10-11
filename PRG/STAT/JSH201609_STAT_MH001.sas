@@ -49,7 +49,7 @@
       SET  &LIB..&DS.;
       FORMAT _ALL_;
       INFORMAT _ALL_;
-      IF SCAN(MHSTDTC,1,"/") IN("2012","2013","2014","2015");
+      IF SCAN(MHSTDTC,1,"/") IN("2012","2013","2014","2015","2016");
       %IF  &AGECAT=1 %THEN %DO;
         IF  AGECAT2N IN(1,2,3,4);
       %END ;
