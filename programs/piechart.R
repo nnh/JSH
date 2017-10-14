@@ -14,10 +14,10 @@ kRainbow <- rainbow(12)
 # rainbowから1赤、4緑、8ロイヤルブルー、3黄、12マゼンタ、6緑、9青、2オレンジ、11赤紫、5緑、7水色、10青紫
 kGraph_color <- c(kRainbow[1], kRainbow[4], kRainbow[8], kRainbow[3], kRainbow[12], kRainbow[6], kRainbow[9], kRainbow[2], kRainbow[11], kRainbow[5], kRainbow[7], kRainbow[10])
 
-if (grep(getenv_platform, pattern="apple") == 1) {
-  basepath <- "/Volumes/Stat/Trials/JSH2017"   # Mac
-  } else {
+if (Sys.getenv("R_PLATFORM") == "") {
   basepath <- "//aronas/Stat/Trials/JSH2017"   # Windows
+  } else {
+  basepath <- "/Volumes/Stat/Trials/JSH2017"   # Mac
 }
 
 # InputData path
