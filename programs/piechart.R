@@ -22,103 +22,99 @@ if (Sys.getenv("R_PLATFORM") == "") {
 
 # InputData path
 ads_folder_name <- "ADS"
-output_folder_name <-"output"
 sasdat_name <- "ads.sas7bdat"
 sasdat_path <- paste(basepath, ads_folder_name, sasdat_name, sep="/")
 
 # OutputData path
+output_folder_name <-"output"
 output_path <- paste(basepath, output_folder_name, sep="/")
 
 # READ SAS analysis data set (ADS)
 sasdat <- read.sas7bdat(sasdat_path)
 
 # 疾患大分類リスト作成
-mhscat_lst <- levels(factor(sasdat$MHSCAT))
-for (p in 1:length(mhscat_lst)) {
-  wk_cat <- subset(sasdat, MHSCAT == mhscat_lst[p])   # MHSCATは使わないはず
-  mhgrpterm_lst <- levels(factor(wk_cat$MHGRPTERM))
-  for (i in 1:length(mhgrpterm_lst)) {
-    # 疾患群ごとにデータ分け
-    wk_sasdat <- subset(wk_cat, MHGRPTERM == mhgrpterm_lst[i])
-    # 疾患群ごとに詳細病名リストが変更になるので入れなおす
-    mhterm_lst <- levels(factor(wk_sasdat$MHTERM))
-    # 世代ごとの列を作成した空のデータフレームを作成
-    dst_gene_mhterm <- data.frame(matrix(rep(NA, gene_cnt), nrow=1))[numeric(0), ]
-    colnames(dst_gene_mhterm) <- kGenelst
-    # 世代ごとに集計
-    for (k in 1:gene_cnt) {
-      # 詳細病名ごとに件数集計
-      for (j in 1:length(mhterm_lst)) {
-        wk_disease <- mhterm_lst[j]
-        if (k!=gene_cnt) {
-          # 各世代の列は世代ごとに集計
-          dst_wk_sum <- subset(wk_sasdat, ((MHTERM == wk_disease) & (AGECAT2N == k)))
-        } else {
-          # ALL列に合計を格納
-          dst_wk_sum <- subset(wk_sasdat, MHTERM == wk_disease)
-        }
-        dst_gene_mhterm[wk_disease, kGenelst[k]] <- nrow(dst_wk_sum)
+mhgrpterm_lst <- levels(factor(sasdat$MHGRPTERM))
+for (i in 1:length(mhgrpterm_lst)) {
+  # 疾患群ごとにデータ分け
+  wk_sasdat <- subset(sasdat, MHGRPTERM == mhgrpterm_lst[i])
+  # 疾患群ごとに詳細病名リストが変更になるので入れなおす
+  mhterm_lst <- levels(factor(wk_sasdat$MHTERM))
+  # 世代ごとの列を作成した空のデータフレームを作成
+  dst_gene_mhterm <- data.frame(matrix(rep(NA, gene_cnt), nrow=1))[numeric(0), ]
+  colnames(dst_gene_mhterm) <- kGenelst
+  # 世代ごとに集計
+  for (k in 1:gene_cnt) {
+    # 詳細病名ごとに件数集計
+    for (j in 1:length(mhterm_lst)) {
+      wk_disease <- mhterm_lst[j]
+      if (k!=gene_cnt) {
+        # 各世代の列は世代ごとに集計
+        dst_wk_sum <- subset(wk_sasdat, ((MHTERM == wk_disease) & (AGECAT2N == k)))
+      } else {
+        # ALL列に合計を格納
+        dst_wk_sum <- subset(wk_sasdat, MHTERM == wk_disease)
       }
+      dst_gene_mhterm[wk_disease, kGenelst[k]] <- nrow(dst_wk_sum)
     }
-    # 世代ALLの詳細病名件数の降順にソートし、色を決定
-    # 上位11＋その合計の表を作成
-    sort_key <- kGenelst[gene_cnt]
-    wk_sortlist <- order(dst_gene_mhterm[[sort_key]], decreasing=T)
-    dst_piechart <- dst_gene_mhterm[wk_sortlist, ]
-    if (nrow(dst_piechart) > 11) {
-      dst_piechart <- dst_piechart[c(1:11), ]
-    }
-    # パイチャート設定色をセット
-    dst_piechart$graph_color <- kGraph_color[1:nrow(dst_piechart)]
+  }
+  # 世代ALLの詳細病名件数の降順にソートし、色を決定
+  # 上位11＋その合計の表を作成
+  sort_key <- kGenelst[gene_cnt]
+  wk_sortlist <- order(dst_gene_mhterm[[sort_key]], decreasing=T)
+  dst_piechart <- dst_gene_mhterm[wk_sortlist, ]
+  if (nrow(dst_piechart) > 11) {
+    dst_piechart <- dst_piechart[c(1:11), ]
+  }
+  # パイチャート設定色をセット
+  dst_piechart$graph_color <- kGraph_color[1:nrow(dst_piechart)]
 
-    # 各項目のパーセンテージラベル作成作業用列
-    dst_piechart$wk_per <- NA
-    dst_piechart$wk_lbl <- NA
-    # グラフ生成
-    graphics.off()
-    for (m in 1:gene_cnt) {
-      # 0件ならスキップ
-      if (sum(dst_piechart[ ,m]) > 0 ) {
-        wk_disease_list <- rownames(dst_piechart)
-        # 疾患群名+連番でファイル名を生成
-        # 禁止文字の除去
-        # todo 正規表現でまとめる
-        wk_catname <- gsub("/", "", mhscat_lst[p])
-        wk_filename <- gsub("/", "", mhgrpterm_lst[i])
-        wk_filename <- gsub("-", "", wk_filename)
-        output_filename <- paste(wk_catname, "_", wk_filename, "_", m, output_ext, sep="")
-        output_filepath <- paste(output_path, output_filename, sep="/")
-        # win.metafile(filename=output_filename)
-        png(output_filepath)
-        # setEPS()
-        # postscript(output_filename)
-        # 各項目のパーセンテージラベル作成
-        wk_denom <- sum(dst_piechart[,m])
-        dst_piechart$wk_per <- floor(((dst_piechart[ ,m] / wk_denom) * 100) + 0.5)
-        dst_piechart$wk_lbl <- paste(dst_piechart$wk_per, "%")
-        # todo 0%ならラベル出力しない
-        # dst_piechart$wk_lbl <- gsub("^0/%$", "", dst_piechart$wk_lbl)
-        # パイチャート出力
-        # todo legendの出力行数によって余白と円グラフの大きさを調整する
-        par(mar=c(8, 0.2, 1.2, 0.2))
-        pie(dst_piechart[ ,m], label=dst_piechart$wk_lbl, main=colnames(dst_piechart[m]), col=dst_piechart$graph_color, radius=0.8, cex=3, cex.main=3)
-        par(xpd=T) # グラフの外を指定する
-        # legendの列数を計算、1行20文字までとする
-        # 一番長い文字数で20を割り、切り捨て
-        wk_name_length <- sapply(wk_disease_list, nchar)
-        max_length <- max(wk_name_length)
-        if (max_length < 20) {
-          column.count <- trunc(20 / max_length)
-        } else {
-          column.count <- 1
-        }
-        if (column.count > length(wk_disease_list)) {
-          column.count <- length(wk_disease_list)
-        }
-        legend(x=par()$usr[1], y=par()$usr[3], legend=wk_disease_list, fill=dst_piechart$graph_color, cex=2, ncol=column.count)
-        par(xpd=F) # グラフの中を指定する
-        dev.off()
+  # 各項目のパーセンテージラベル作成作業用列
+  dst_piechart$wk_per <- NA
+  dst_piechart$wk_lbl <- NA
+  # グラフ生成
+  graphics.off()
+  for (m in 1:gene_cnt) {
+    # 0件ならスキップ
+    if (sum(dst_piechart[ ,m]) > 0 ) {
+      wk_disease_list <- rownames(dst_piechart)
+      # 疾患群名+連番でファイル名を生成
+      # 禁止文字の除去
+      # todo 正規表現でまとめる
+#      wk_catname <- gsub("/", "", mhscat_lst[p])
+      wk_filename <- gsub("/", "", mhgrpterm_lst[i])
+      wk_filename <- gsub("-", "", wk_filename)
+      output_filename <- paste0(wk_filename, "_", m, output_ext)
+      output_filepath <- paste(output_path, output_filename, sep="/")
+      # win.metafile(filename=output_filename)
+      png(output_filepath)
+      # setEPS()
+      # postscript(output_filename)
+      # 各項目のパーセンテージラベル作成
+      wk_denom <- sum(dst_piechart[,m])
+      dst_piechart$wk_per <- floor(((dst_piechart[ ,m] / wk_denom) * 100) + 0.5)
+      dst_piechart$wk_lbl <- paste(dst_piechart$wk_per, "%")
+      # todo 0%ならラベル出力しない
+      # dst_piechart$wk_lbl <- gsub("^0/%$", "", dst_piechart$wk_lbl)
+      # パイチャート出力
+      # todo legendの出力行数によって余白と円グラフの大きさを調整する
+      par(mar=c(8, 0.2, 1.2, 0.2))
+      pie(dst_piechart[ ,m], label=dst_piechart$wk_lbl, main=colnames(dst_piechart[m]), col=dst_piechart$graph_color, radius=0.8, cex=3, cex.main=3)
+      par(xpd=T) # グラフの外を指定する
+      # legendの列数を計算、1行20文字までとする
+      # 一番長い文字数で20を割り、切り捨て
+      wk_name_length <- sapply(wk_disease_list, nchar)
+      max_length <- max(wk_name_length)
+      if (max_length < 20) {
+        column.count <- trunc(20 / max_length)
+      } else {
+        column.count <- 1
       }
+      if (column.count > length(wk_disease_list)) {
+        column.count <- length(wk_disease_list)
+      }
+      legend(x=par()$usr[1], y=par()$usr[3], legend=wk_disease_list, fill=dst_piechart$graph_color, cex=2, ncol=column.count)
+      par(xpd=F) # グラフの中を指定する
+      dev.off()
     }
   }
 }
