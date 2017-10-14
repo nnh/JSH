@@ -1,14 +1,11 @@
-# pie chart
-# Mariko Ohtsuka
-# 2017/10/10
-# package : sas7bdat
 # Import library
 library(sas7bdat)
 
 # Constant section
 # 出力デバイス
+output_ext <- ".png"
+
 # 使用する関数名を指定
-kOut_device <- "eps"
 # 世代(AGECAT2N)  1:child,2:aya,3:adult,4:old, all列に合計を入れる
 kGenelst <- c("child","aya","adult","old","all")
 gene_cnt <- length(kGenelst)
@@ -16,42 +13,29 @@ gene_cnt <- length(kGenelst)
 kRainbow <- rainbow(12)
 # rainbowから1赤、4緑、8ロイヤルブルー、3黄、12マゼンタ、6緑、9青、2オレンジ、11赤紫、5緑、7水色、10青紫
 kGraph_color <- c(kRainbow[1], kRainbow[4], kRainbow[8], kRainbow[3], kRainbow[12], kRainbow[6], kRainbow[9], kRainbow[2], kRainbow[11], kRainbow[5], kRainbow[7], kRainbow[10])
-# 実行環境がmacかwindowsか
-kOs_mac <- 0
-kBasepath_mac <- "/Volumes"   # Mac
-kOs_win <- 1
-kBasepath_win <- "//aronas"   # Windows
 
-platform_f <- kOs_win
-basepath <- kBasepath_win
-# output_ext <- ".xmf"
-output_ext <- ".eps"
-
-getenv_platform <- Sys.getenv("R_PLATFORM")
-if (getenv_platform != "") {
-  if (grep(getenv_platform, pattern="apple") == 1) {
-    # mac
-    platform_f <- kOs_mac
-    basepath <- kBasepath_mac
-    output_ext = ""
-  }
+if (grep(getenv_platform, pattern="apple") == 1) {
+  basepath <- "/Volumes/Stat/Trials/JSH2017"   # Mac
+  } else {
+  basepath <- "//aronas/Stat/Trials/JSH2017"   # Windows
 }
 
 # InputData path
-sasdat_parent_path <- basepath
-sasdat_ads.folder <- "Stat/Trials/JSH2017/ADS"
+ads_folder_name <- "ADS"
+output_folder_name <-"output"
 sasdat_name <- "ads.sas7bdat"
-sasdat_path <- paste(sasdat_parent_path, sasdat_ads.folder, sasdat_name, sep="/")
-# OutputData path
-output_path <- "C:/Users/MarikoOhtsuka/Desktop/plot/"
+sasdat_path <- paste(basepath, ads_folder_name, sasdat_name, sep="/")
 
-# READ SASOutputData
+# OutputData path
+output_path <- paste(basepath, output_folder_name, sep="/")
+
+# READ SAS analysis data set (ADS)
 sasdat <- read.sas7bdat(sasdat_path)
 
 # 疾患大分類リスト作成
 mhscat_lst <- levels(factor(sasdat$MHSCAT))
 for (p in 1:length(mhscat_lst)) {
-  wk_cat <- subset(sasdat, MHSCAT == mhscat_lst[p])
+  wk_cat <- subset(sasdat, MHSCAT == mhscat_lst[p])   # MHSCATは使わないはず
   mhgrpterm_lst <- levels(factor(wk_cat$MHGRPTERM))
   for (i in 1:length(mhgrpterm_lst)) {
     # 疾患群ごとにデータ分け
@@ -102,12 +86,12 @@ for (p in 1:length(mhscat_lst)) {
         wk_catname <- gsub("/", "", mhscat_lst[p])
         wk_filename <- gsub("/", "", mhgrpterm_lst[i])
         wk_filename <- gsub("-", "", wk_filename)
-        output_filename <- paste(output_path, wk_catname, "_", wk_filename, "_", m, output_ext, sep="")
-        # メタファイルに出力
+        output_filename <- paste(wk_catname, "_", wk_filename, "_", m, output_ext, sep="")
+        output_filepath <- paste(output_path, output_filename, sep="/")
         # win.metafile(filename=output_filename)
-        # png(filename=output_filename)
-        setEPS()
-        postscript(output_filename)
+        png(output_filepath)
+        # setEPS()
+        # postscript(output_filename)
         # 各項目のパーセンテージラベル作成
         wk_denom <- sum(dst_piechart[,m])
         dst_piechart$wk_per <- floor(((dst_piechart[ ,m] / wk_denom) * 100) + 0.5)

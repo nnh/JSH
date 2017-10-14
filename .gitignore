@@ -6,15 +6,12 @@
 /RESULT/
 !/RAWDATA/EXT/
 /output/
-JSH2016.Rproj
-
+*.Rproj
 ### R ###
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-JSH2016.Rproj
-
 ### Windows ###
 # Windows image file caches
 Thumbs.db
@@ -67,3 +64,4 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+*.png
