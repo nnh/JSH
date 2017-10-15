@@ -15,7 +15,7 @@ kGraph_color <- c("#66ccff", "#0041ff", "#35a16b", "#faf500", "#ff9900", "#ff280
                   "#9a0079", "#cbf266", "#663300", "#c8c8cb")
 if (Sys.getenv("R_PLATFORM") == "") {
   basepath <- "//aronas/Stat/Trials/JSH2017"   # Windows
-  } else {
+} else {
   basepath <- "/Volumes/Stat/Trials/JSH2017"   # Mac
 }
 
@@ -76,7 +76,7 @@ for (i in 1:length(mhgrpterm_lst)) {
   graphics.off()
   for (m in 1:gene_cnt) {
     # 0件ならスキップ
-    if (sum(dst_piechart[ ,m]) > 0 ) {
+    if (sum(dst_piechart[, m]) > 0 ) {
       wk_disease_list <- rownames(dst_piechart)
       # 疾患群名+連番でファイル名を生成
       # 禁止文字の除去
@@ -92,17 +92,16 @@ for (i in 1:length(mhgrpterm_lst)) {
       # 3%以上の場合のみラベルを出力する
       dst_piechart$wk_lbl <- ifelse(dst_piechart$wk_per > 2, paste(dst_piechart$wk_per, "%"), "")
       # パイチャート出力
-      # todo legendの出力行数によって余白と円グラフの大きさを調整する
       par(mar=c(8, 0.2, 1.2, 0.2))
-      pie(dst_piechart[ ,m], label=dst_piechart$wk_lbl, main=colnames(dst_piechart[m]),
-          col=dst_piechart$graph_color, radius=0.8, cex=3, cex.main=3, clockwise=TRUE, border="white")
+      pie(dst_piechart[, m], label=dst_piechart$wk_lbl, main=mhgrpterm_lst[i],
+          col=dst_piechart$graph_color, radius=0.8, cex=2.7, cex.main=1.5, clockwise=TRUE, border="white")
       # ドーナッツグラフにする https://ladder-consulting.com/r-graphic-circle/
-      # TODO(Ohtsuka): "ALL, n = 12333"などの文字の大きさを大きくする
       par(new=TRUE)
       pie(1, radius=0.5, col='white', border='white', labels='')
-      text(0, 0, labels=paste(colnames(dst_piechart[m]), "\nn =", sum(dst_piechart[, m]), "\n"), cex=3,
+      text(0, 0, labels=paste(colnames(dst_piechart[m]), "\nn =", sum(dst_piechart[, m]), "\n"), cex=2.7,
            col=par('col.main'), font=par('font.main'))
       par(xpd=T) # グラフの外を指定する
+      # TODO(Ohtsuka): 5つのパイグラフ毎に1つ、横長のlegendはを出力する
       # legendの列数を計算、1行20文字までとする
       # 一番長い文字数で20を割り、切り捨て
       wk_name_length <- sapply(wk_disease_list, nchar)
@@ -115,7 +114,7 @@ for (i in 1:length(mhgrpterm_lst)) {
       if (column.count > length(wk_disease_list)) {
         column.count <- length(wk_disease_list)
       }
-      legend(x=par()$usr[1], y=par()$usr[3], legend=wk_disease_list, fill=dst_piechart$graph_color, cex=2, ncol=column.count)
+      legend(x=par()$usr[1], y=par()$usr[3], legend=wk_disease_list, fill=dst_piechart$graph_color, cex=1.7, ncol=column.count)
       par(xpd=F) # グラフの中を指定する
       dev.off()
     }
