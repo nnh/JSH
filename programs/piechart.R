@@ -10,7 +10,7 @@ output_ext <- ".png"
 kGenelst <- c("child","aya","adult","old","all")
 gene_cnt <- length(kGenelst)
 # グラフの色をセット 上位11病名+合計 https://oku.edu.mie-u.ac.jp/~okumura/stat/colors.html
-# 1空色、2青、3緑、4黄色、5オレンジ、6赤、7明るいピンク、8紫、9明るい黄緑、10 DarkBroan、11明るいグレー
+# 1空色、2青、3緑、4黄色、5オレンジ、6赤、7明るいピンク、8紫、9明るい黄緑、10 DarkBrown、11明るいグレー
 kGraph_color <- c("#66ccff", "#0041ff", "#35a16b", "#faf500", "#ff9900", "#ff2800", "#ffd1d1",
                   "#9a0079", "#cbf266", "#191714", "#c8c8cb")
 if (Sys.getenv("R_PLATFORM") == "") {
@@ -25,7 +25,7 @@ sasdat_name <- "ads.sas7bdat"
 sasdat_path <- paste(basepath, ads_folder_name, sasdat_name, sep="/")
 
 # OutputData path
-output_folder_name <-"output"
+output_folder_name <- "output"
 output_path <- paste(basepath, output_folder_name, sep="/")
 # output_path <- "C:/Users/MarikoOhtsuka/Desktop/plot/"
 # output_path <- "/Users/tosh/Desktop/tempJSH2017/output"
@@ -60,7 +60,7 @@ for (i in 1:length(mhgrpterm_lst)) {
     }
   }
   # 世代ALLの詳細病名件数の降順にソートし、色を決定
-  # 上位11＋その合計の表を作成
+  # 上位11＋その合計の表を作成, TODO(Ohtsuka): 上位10と残りの疾患合計の11に分ける
   sort_key <- kGenelst[gene_cnt]
   wk_sortlist <- order(dst_gene_mhterm[[sort_key]], decreasing=T)
   dst_piechart <- dst_gene_mhterm[wk_sortlist, ]
@@ -76,11 +76,8 @@ for (i in 1:length(mhgrpterm_lst)) {
   graphics.off()
   for (m in 1:gene_cnt) {
     # 0件ならスキップ
-    if (sum(dst_piechart[, m]) > 0 ) {
+    if (sum(dst_piechart[, m]) > 0) {
       wk_disease_list <- rownames(dst_piechart)
-      # 疾患群名+連番でファイル名を生成
-      # 禁止文字の除去
-      # todo 正規表現でまとめる
       output_filename <- paste0(gsub("[-/]", "", mhgrpterm_lst[i]), "_", m, output_ext)
       output_filepath <- paste(output_path, output_filename, sep="/")
       png(output_filepath)
