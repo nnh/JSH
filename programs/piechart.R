@@ -27,7 +27,7 @@ sasdat_path <- paste(basepath, ads_folder_name, sasdat_name, sep="/")
 # OutputData path
 output_folder_name <-"output"
 output_path <- paste(basepath, output_folder_name, sep="/")
-# output_path <- "/Users/tosh/Desktop/tempJSH2017"
+# output_path <- "/Users/tosh/Desktop/tempJSH2017/output"
 
 # READ SAS analysis data set (ADS)
 sasdat <- read.sas7bdat(sasdat_path)
@@ -81,25 +81,27 @@ for (i in 1:length(mhgrpterm_lst)) {
       # 疾患群名+連番でファイル名を生成
       # 禁止文字の除去
       # todo 正規表現でまとめる
-      wk_filename <- gsub("/", "", mhgrpterm_lst[i])
-      wk_filename <- gsub("-", "", wk_filename)
-      output_filename <- paste0(wk_filename, "_", m, output_ext)
+      output_filename <- paste0(gsub("[-/]", "", mhgrpterm_lst[i]), "_", m, output_ext)
       output_filepath <- paste(output_path, output_filename, sep="/")
-      # win.metafile(filename=output_filename)
       png(output_filepath)
+      # win.metafile(filename=output_filename)
       # setEPS()
       # postscript(output_filename)
       # 各項目のパーセンテージラベル作成
-      wk_denom <- sum(dst_piechart[,m])
-      dst_piechart$wk_per <- floor(((dst_piechart[ ,m] / wk_denom) * 100) + 0.5)
-      dst_piechart$wk_lbl <- paste(dst_piechart$wk_per, "%")
-      # todo 0%ならラベル出力しない
-      # dst_piechart$wk_lbl <- gsub("^0/%$", "", dst_piechart$wk_lbl)
+      dst_piechart$wk_per <- floor(((dst_piechart[, m] / sum(dst_piechart[, m])) * 100) + 0.5)
+      # 3%以上の場合のみラベルを出力する
+      dst_piechart$wk_lbl <- ifelse(dst_piechart$wk_per > 2, paste(dst_piechart$wk_per, "%"), "")
       # パイチャート出力
       # todo legendの出力行数によって余白と円グラフの大きさを調整する
       par(mar=c(8, 0.2, 1.2, 0.2))
       pie(dst_piechart[ ,m], label=dst_piechart$wk_lbl, main=colnames(dst_piechart[m]),
           col=dst_piechart$graph_color, radius=0.8, cex=3, cex.main=3, clockwise=TRUE, border="white")
+      # ドーナッツグラフにする https://ladder-consulting.com/r-graphic-circle/
+      # TODO(Ohtsuka): "ALL, n = 12333"などの文字の大きさを大きくする
+      par(new=TRUE)
+      pie(1, radius=0.5, col='white', border='white', labels='')
+      text(0, 0, labels=paste(colnames(dst_piechart[m]), "\nn =", sum(dst_piechart[, m]), "\n"), cex=3,
+           col=par('col.main'), font=par('font.main'))
       par(xpd=T) # グラフの外を指定する
       # legendの列数を計算、1行20文字までとする
       # 一番長い文字数で20を割り、切り捨て
