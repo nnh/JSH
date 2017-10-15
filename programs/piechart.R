@@ -9,11 +9,10 @@ output_ext <- ".png"
 # 世代(AGECAT2N)  1:child,2:aya,3:adult,4:old, all列に合計を入れる
 kGenelst <- c("child","aya","adult","old","all")
 gene_cnt <- length(kGenelst)
-# グラフの色をセット 上位11病名+合計
-kRainbow <- rainbow(12)
-# rainbowから1赤、4緑、8ロイヤルブルー、3黄、12マゼンタ、6緑、9青、2オレンジ、11赤紫、5緑、7水色、10青紫
-kGraph_color <- c(kRainbow[1], kRainbow[4], kRainbow[8], kRainbow[3], kRainbow[12], kRainbow[6], kRainbow[9], kRainbow[2], kRainbow[11], kRainbow[5], kRainbow[7], kRainbow[10])
-
+# グラフの色をセット 上位11病名+合計 https://oku.edu.mie-u.ac.jp/~okumura/stat/colors.html
+# 1空色、2青、3緑、4黄色、5オレンジ、6赤、7明るいピンク、8紫、9明るい黄緑、10茶、11明るいグレー
+kGraph_color <- c("#66ccff", "#0041ff", "#35a16b", "#faf500", "#ff9900", "#ff2800", "#ffd1d1",
+                  "#9a0079", "#cbf266", "#663300", "#c8c8cb")
 if (Sys.getenv("R_PLATFORM") == "") {
   basepath <- "//aronas/Stat/Trials/JSH2017"   # Windows
   } else {
@@ -28,12 +27,14 @@ sasdat_path <- paste(basepath, ads_folder_name, sasdat_name, sep="/")
 # OutputData path
 output_folder_name <-"output"
 output_path <- paste(basepath, output_folder_name, sep="/")
+# output_path <- "/Users/tosh/Desktop/tempJSH2017"
 
 # READ SAS analysis data set (ADS)
 sasdat <- read.sas7bdat(sasdat_path)
 
 # 疾患大分類リスト作成
 mhgrpterm_lst <- levels(factor(sasdat$MHGRPTERM))
+# mhgrpterm_lst1 <- levels(factor(paste(sasdat$MHGRPCOD,sasdat$MHGRPTERM,sep="_")))
 for (i in 1:length(mhgrpterm_lst)) {
   # 疾患群ごとにデータ分け
   wk_sasdat <- subset(sasdat, MHGRPTERM == mhgrpterm_lst[i])
@@ -80,7 +81,6 @@ for (i in 1:length(mhgrpterm_lst)) {
       # 疾患群名+連番でファイル名を生成
       # 禁止文字の除去
       # todo 正規表現でまとめる
-#      wk_catname <- gsub("/", "", mhscat_lst[p])
       wk_filename <- gsub("/", "", mhgrpterm_lst[i])
       wk_filename <- gsub("-", "", wk_filename)
       output_filename <- paste0(wk_filename, "_", m, output_ext)
@@ -98,7 +98,8 @@ for (i in 1:length(mhgrpterm_lst)) {
       # パイチャート出力
       # todo legendの出力行数によって余白と円グラフの大きさを調整する
       par(mar=c(8, 0.2, 1.2, 0.2))
-      pie(dst_piechart[ ,m], label=dst_piechart$wk_lbl, main=colnames(dst_piechart[m]), col=dst_piechart$graph_color, radius=0.8, cex=3, cex.main=3)
+      pie(dst_piechart[ ,m], label=dst_piechart$wk_lbl, main=colnames(dst_piechart[m]),
+          col=dst_piechart$graph_color, radius=0.8, cex=3, cex.main=3, clockwise=TRUE, border="white")
       par(xpd=T) # グラフの外を指定する
       # legendの列数を計算、1行20文字までとする
       # 一番長い文字数で20を割り、切り捨て
