@@ -10,9 +10,9 @@ output_ext <- ".png"
 kGenelst <- c("child","aya","adult","old","all")
 gene_cnt <- length(kGenelst)
 # グラフの色をセット 上位11病名+合計 https://oku.edu.mie-u.ac.jp/~okumura/stat/colors.html
-# 1空色、2青、3緑、4黄色、5オレンジ、6赤、7明るいピンク、8紫、9明るい黄緑、10茶、11明るいグレー
+# 1空色、2青、3緑、4黄色、5オレンジ、6赤、7明るいピンク、8紫、9明るい黄緑、10 DarkBroan、11明るいグレー
 kGraph_color <- c("#66ccff", "#0041ff", "#35a16b", "#faf500", "#ff9900", "#ff2800", "#ffd1d1",
-                  "#9a0079", "#cbf266", "#663300", "#c8c8cb")
+                  "#9a0079", "#cbf266", "#191714", "#c8c8cb")
 if (Sys.getenv("R_PLATFORM") == "") {
   basepath <- "//aronas/Stat/Trials/JSH2017"   # Windows
 } else {
@@ -27,6 +27,7 @@ sasdat_path <- paste(basepath, ads_folder_name, sasdat_name, sep="/")
 # OutputData path
 output_folder_name <-"output"
 output_path <- paste(basepath, output_folder_name, sep="/")
+# output_path <- "C:/Users/MarikoOhtsuka/Desktop/plot/"
 # output_path <- "/Users/tosh/Desktop/tempJSH2017/output"
 
 # READ SAS analysis data set (ADS)
@@ -68,7 +69,6 @@ for (i in 1:length(mhgrpterm_lst)) {
   }
   # パイチャート設定色をセット
   dst_piechart$graph_color <- kGraph_color[1:nrow(dst_piechart)]
-
   # 各項目のパーセンテージラベル作成作業用列
   dst_piechart$wk_per <- NA
   dst_piechart$wk_lbl <- NA
