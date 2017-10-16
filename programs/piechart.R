@@ -3,7 +3,7 @@ library(sas7bdat)
 
 # Constant section
 # 出力デバイス
-output_ext <- ".png"
+output_ext <- ".eps"
 
 # 使用する関数名を指定
 # 世代(AGECAT2N)  1:child,2:aya,3:adult,4:old, all列に合計を入れる
@@ -27,7 +27,7 @@ sasdat_path <- paste(basepath, ads_folder_name, sasdat_name, sep="/")
 # OutputData path
 output_folder_name <- "output"
 output_path <- paste(basepath, output_folder_name, sep="/")
-# output_path <- "C:/Users/MarikoOhtsuka/Desktop/plot/"
+# output_path <- "C:/Users/MarikoOhtsuka/Desktop/plot"
 # output_path <- "/Users/tosh/Desktop/tempJSH2017/output"
 
 # READ SAS analysis data set (ADS)
@@ -35,8 +35,8 @@ sasdat <- read.sas7bdat(sasdat_path)
 
 # 疾患大分類リスト作成
 mhgrpterm_lst <- levels(factor(sasdat$MHGRPTERM))
-# mhgrpterm_lst1 <- levels(factor(paste(sasdat$MHGRPCOD,sasdat$MHGRPTERM,sep="_")))
-for (i in 1:length(mhgrpterm_lst)) {
+# for (i in 1:length(mhgrpterm_lst)) {
+i <- 2  # test
   # 疾患群ごとにデータ分け
   wk_sasdat <- subset(sasdat, MHGRPTERM == mhgrpterm_lst[i])
   # 疾患群ごとに詳細病名リストが変更になるので入れなおす
@@ -64,8 +64,13 @@ for (i in 1:length(mhgrpterm_lst)) {
   sort_key <- kGenelst[gene_cnt]
   wk_sortlist <- order(dst_gene_mhterm[[sort_key]], decreasing=T)
   dst_piechart <- dst_gene_mhterm[wk_sortlist, ]
-  if (nrow(dst_piechart) > 11) {
-    dst_piechart <- dst_piechart[c(1:11), ]
+  if (nrow(dst_piechart) > 10) {
+    # 残りの疾患合計
+    wk_dst_piechart_others <- dst_piechart[c(11:nrow(dst_piechart)), ]
+    wk_others <- data.frame(lapply(wk_dst_piechart_others,  sum))
+    rownames(wk_others) <- "others"
+    dst_piechart <- dst_piechart[c(1:10), ]
+    dst_piechart <- rbind(dst_piechart, wk_others)
   }
   # パイチャート設定色をセット
   dst_piechart$graph_color <- kGraph_color[1:nrow(dst_piechart)]
@@ -80,10 +85,8 @@ for (i in 1:length(mhgrpterm_lst)) {
       wk_disease_list <- rownames(dst_piechart)
       output_filename <- paste0(gsub("[-/]", "", mhgrpterm_lst[i]), "_", m, output_ext)
       output_filepath <- paste(output_path, output_filename, sep="/")
-      png(output_filepath)
-      # win.metafile(filename=output_filename)
-      # setEPS()
-      # postscript(output_filename)
+      setEPS()
+      postscript(output_filename)
       # 各項目のパーセンテージラベル作成
       dst_piechart$wk_per <- floor(((dst_piechart[, m] / sum(dst_piechart[, m])) * 100) + 0.5)
       # 3%以上の場合のみラベルを出力する
@@ -97,23 +100,9 @@ for (i in 1:length(mhgrpterm_lst)) {
       pie(1, radius=0.5, col='white', border='white', labels='')
       text(0, 0, labels=paste(colnames(dst_piechart[m]), "\nn =", sum(dst_piechart[, m]), "\n"), cex=2.7,
            col=par('col.main'), font=par('font.main'))
-      par(xpd=T) # グラフの外を指定する
-      # TODO(Ohtsuka): 5つのパイグラフ毎に1つ、横長のlegendはを出力する
-      # legendの列数を計算、1行20文字までとする
-      # 一番長い文字数で20を割り、切り捨て
-      wk_name_length <- sapply(wk_disease_list, nchar)
-      max_length <- max(wk_name_length)
-      if (max_length < 20) {
-        column.count <- trunc(20 / max_length)
-      } else {
-        column.count <- 1
-      }
-      if (column.count > length(wk_disease_list)) {
-        column.count <- length(wk_disease_list)
-      }
-      legend(x=par()$usr[1], y=par()$usr[3], legend=wk_disease_list, fill=dst_piechart$graph_color, cex=1.7, ncol=column.count)
-      par(xpd=F) # グラフの中を指定する
+      # 凡例を1項目ずつ出す
       dev.off()
     }
   }
-}
+
+#}
