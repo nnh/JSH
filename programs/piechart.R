@@ -28,7 +28,8 @@ SortDisease <- function(optdst, sort_key){
 
 # Constant section
 # 出力デバイス
-output_ext <- ".eps"
+output_ext <- "png"
+# output_ext <- "eps"
 
 # 使用する関数名を指定
 # 世代(AGECAT2N)  1:child,2:aya,3:adult,4:old, all列に合計を入れる
@@ -51,9 +52,9 @@ sasdat_path <- paste(basepath, ads_folder_name, sasdat_name, sep="/")
 
 # OutputData path
 output_folder_name <- "output"
-output_path <- paste(basepath, output_folder_name, sep="/")
-# output_path <- "C:/Users/MarikoOhtsuka/Desktop/plot"
-# output_path <- "/Users/tosh/Desktop/tempJSH2017/output"
+output_path <- paste(basepath, output_folder_name, output_ext, sep="/")
+# output_path <- paste("C:/Users/MarikoOhtsuka/Desktop/plot", output_ext, sep="/")
+# output_path <- paste("/Users/tosh/Desktop/tempJSH2017/output", output_ext, sep="/")
 
 # READ SAS analysis data set (ADS)
 sasdat <- read.sas7bdat(sasdat_path)
@@ -185,10 +186,14 @@ for (i in 1:length(mhgrpterm_lst)) {
     wk_sum <- sum(as.numeric((dst_piechart[ ,m])))
     if (wk_sum > 0) {
       wk_disease_list <- dst_piechart$diseasename
-      output_filename <- paste0(gsub("[-/]", "", mhgrpterm_lst[i]), "_", m, output_ext)
+      output_filename <- paste0(gsub("[-/]", "", mhgrpterm_lst[i]), "_", m, ".", output_ext)
       output_filepath <- paste(output_path, output_filename, sep="/")
-      setEPS()
-      postscript(output_filename)
+      if (output_ext == "eps") {
+        setEPS()
+        postscript(output_filepath)
+      } else if (output_ext == "png") {
+        png(output_filepath)
+      }
       # 各項目のパーセンテージラベル作成
       dst_piechart$wk_per <- floor(((as.numeric(dst_piechart[, m]) / wk_sum) * 100) + 0.5)
       # 3%以上の場合のみラベルを出力する
