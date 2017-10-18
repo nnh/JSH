@@ -1,9 +1,11 @@
 # Import library
 library(sas7bdat)
 
+# function section
 SortDisease <- function(optdst, sort_key){
   # 病名件数降順でソート
-  wk_sortlist <- order(optdst[[sort_key]], decreasing=T)
+  wk_sortclm <- as.numeric(optdst[[sort_key]])
+  wk_sortlist <- order(wk_sortclm, decreasing=T)
   optdst <- optdst[wk_sortlist, ]
   # 行ラベルの再セット
   rownames(optdst) <- c(1:nrow(optdst))
@@ -16,10 +18,36 @@ ResPercentage <- function(intcnt){
   return(wk_per)
 }
 
+EditLegend <- function(intseq, legend_lst){
+  # 凡例出力
+  # 項目数取得
+  wk_cnt <- length(legend_lst)
+  if (wk_cnt > m) {
+    wk_row <- 1
+    if (wk_cnt == 11) {
+      # 3行
+      wk_row <- 3
+    } else if (wk_cnt > 5) {
+      # 2行
+      wk_row <- 2
+    }
+    wk_lst <- legend_lst[intseq]
+    for (i in 2:wk_row) {
+      optclm <- intseq + (5 * (i -1))
+      if (optclm <= 11) {
+        wk_lst <- c(wk_lst, legend_lst[optclm])
+      }
+    }
+  } else {
+    wk_lst <- NA
+  }
+  return(wk_lst)
+}
+
 # Constant section
 # 出力デバイス
-output_ext <- "png"
-# output_ext <- "eps"
+# output_ext <- "png"
+output_ext <- "eps"
 
 # 使用する関数名を指定
 # 世代(AGECAT2N)  1:child,2:aya,3:adult,4:old, all列に合計を入れる
@@ -65,8 +93,6 @@ output_path <- paste(basepath, output_folder_name, output_ext, sep="/")
 # READ SAS analysis data set (ADS)
 sasdat <- read.sas7bdat(sasdat_path)
 
-# ************************************************
-
 # 疾患大分類リスト作成
 mhgrpterm_lst <- levels(factor(sasdat$MHGRPTERM))
 for (i in 1:length(mhgrpterm_lst)) {
@@ -96,8 +122,6 @@ for (i in 1:length(mhgrpterm_lst)) {
   dst_gene_mhterm$diseasename <- mhterm_lst
   # 作業用オブジェクトの削除
   rm(dst_wk_sum)
-
-# ************************************************
 
   # 世代ALLの詳細病名件数の降順にソートし、色を決定
   # 上位11＋その合計の表を作成, TODO(Ohtsuka): 上位10と残りの疾患合計の11に分ける
@@ -164,7 +188,8 @@ for (i in 1:length(mhgrpterm_lst)) {
     dst_piechart <- dst_gene_mhterm
   }
   # 世代合計の件数で再ソート
-  dst_piechart <- SortDisease(dst_piechart, kGeneTotal_colname)
+  # Othersは最後のままにする
+  dst_piechart[1:(nrow(dst_piechart) - 1), ]<- SortDisease(dst_piechart[1:(nrow(dst_piechart) - 1), ], kGeneTotal_colname)
 
     # パイチャート設定色をセット
   dst_piechart$graph_color <- kGraph_color[1:nrow(dst_piechart)]
@@ -174,9 +199,6 @@ for (i in 1:length(mhgrpterm_lst)) {
   # グラフ生成
   graphics.off()
   for (m in 1:gene_cnt) { #todo 出力順変更
-    # 0件ならスキップ
-    wk_sum <- sum(as.numeric((dst_piechart[ ,m])))
-    if (wk_sum > 0) {
       wk_disease_list <- dst_piechart$diseasename
       output_filename <- paste0(gsub("[-/]", "", mhgrpterm_lst[i]), "_", kOutputSeq[m], ".", output_ext)
       output_filepath <- paste(output_path, output_filename, sep="/")
@@ -186,6 +208,8 @@ for (i in 1:length(mhgrpterm_lst)) {
       } else if (output_ext == "png") {
         png(output_filepath)
       }
+    wk_sum <- sum(as.numeric((dst_piechart[ ,m])))
+    if (wk_sum > 0) {
       # 各項目のパーセンテージラベル作成
       dst_piechart$wk_per <- ResPercentage(as.numeric(dst_piechart[, m]))
       # 3%以上の場合のみラベルを出力する
@@ -199,9 +223,22 @@ for (i in 1:length(mhgrpterm_lst)) {
       pie(1, radius=0.5, col='white', border='white', labels='')
       text(0, 0, labels=paste(colnames(dst_piechart[m]), "\nn =", wk_sum, "\n"), cex=2.7,
            col=par('col.main'), font=par('font.main'))
-      # todo 凡例を1項目ずつ出す
-      legend("bottom", legend=wk_disease_list, fill=dst_piechart$graph_color)
-      dev.off()
+    } else {
+      # 0件の場合はダミー出力
+      # 各項目のパーセンテージラベル作成
+      dummy_data <- c(1:10)
+      # パイチャート出力
+      par(mar=c(8, 0.2, 1.2, 0.2))
+      pie(dummy_data, col="white", radius=0.8, cex=2.7, cex.main=1.5, clockwise=TRUE, border="white", labels = "")
     }
+    # todo 凡例を1項目ずつ出す
+    wk_legend <- EditLegend(kOutputSeq[m], wk_disease_list)
+    wk_fill <- EditLegend(kOutputSeq[m], dst_piechart$graph_color)
+    if (!is.na(wk_legend[1])) {
+      par(xpd=T)
+      legend(-0.4, -1.3, legend=wk_legend, fill=wk_fill, bty="n")
+      par(xpd=F)
+    }
+    dev.off()
   }
 }
