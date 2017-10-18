@@ -34,7 +34,7 @@ EditLegend <- function(intseq, legend_lst){
     wk_lst <- legend_lst[intseq]
     for (i in 2:wk_row) {
       optclm <- intseq + (5 * (i -1))
-      if (optclm <= 11) {
+      if (optclm <= wk_cnt)  {
         wk_lst <- c(wk_lst, legend_lst[optclm])
       }
     }
@@ -180,17 +180,16 @@ for (i in 1:length(mhgrpterm_lst)) {
     }
     # NA行があれば除去
     dst_others_piechart <- subset(dst_others_piechart, !is.na(dst_others_piechart$diseasename))
+    # 世代合計の件数で再ソート
+    # Othersは最終行に
+    dst_piechart <- SortDisease(dst_piechart, kGeneTotal_colname)
     dst_piechart[other_disease_start, ] <- c(apply(dst_others_piechart[ ,1:gene_cnt], 2, sum), kOthers_colname)
     # 作業用オブジェクトの削除
     rm(dst_others_piechart)
   } else {
     # 10件以下ならそのまま格納
-    dst_piechart <- dst_gene_mhterm
+    dst_piechart <- SortDisease(dst_gene_mhterm, kGeneTotal_colname)
   }
-  # 世代合計の件数で再ソート
-  # Othersは最後のままにする
-  dst_piechart[1:(nrow(dst_piechart) - 1), ]<- SortDisease(dst_piechart[1:(nrow(dst_piechart) - 1), ], kGeneTotal_colname)
-
     # パイチャート設定色をセット
   dst_piechart$graph_color <- kGraph_color[1:nrow(dst_piechart)]
   # 各項目のパーセンテージラベル作成作業用列
