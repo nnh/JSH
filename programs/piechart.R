@@ -18,30 +18,14 @@ ResPercentage <- function(intcnt){
   return(wk_per)
 }
 
-EditLegend <- function(intseq, legend_lst){
-  # 凡例出力
-  # 項目数取得
-  wk_cnt <- length(legend_lst)
-  if (wk_cnt > m) {
-    wk_row <- 1
-    if (wk_cnt == 11) {
-      # 3行
-      wk_row <- 3
-    } else if (wk_cnt > 5) {
-      # 2行
-      wk_row <- 2
-    }
-    wk_lst <- legend_lst[intseq]
-    for (i in 2:wk_row) {
-      optclm <- intseq + (5 * (i -1))
-      if (optclm <= wk_cnt)  {
-        wk_lst <- c(wk_lst, legend_lst[optclm])
-      }
-    }
-  } else {
-    wk_lst <- NA
+Open_Outputdevice <- function(extension, filepath){
+  # 出力デバイスオープン
+  if (extension == "eps") {
+    setEPS()
+    postscript(filepath)
+  } else if (extension == "png") {
+    png(filepath)
   }
-  return(wk_lst)
 }
 
 # Constant section
@@ -59,14 +43,14 @@ kGeneTotal_colname <- kGenelst[length(kGenelst)]  # 合計でソートする
 # ↓
 # 2:child,3:aya,4:adult,5:old,1:total
 kOutputSeq <- c(2 ,3 ,4 ,5 ,1)
-# グラフの色をセット 上位11病名+合計 https://oku.edu.mie-u.ac.jp/~okumura/stat/colors.html
+# グラフの色をセット 上位10病名+その他合計 https://oku.edu.mie-u.ac.jp/~okumura/stat/colors.html
 # 1空色、2青、3緑、4黄色、5オレンジ、6赤、7明るいピンク、8紫、9明るい黄緑、10 DarkBrown、11明るいグレー
 kGraph_color <- c("#66ccff", "#0041ff", "#35a16b", "#faf500", "#ff9900", "#ff2800", "#ffd1d1",
                   "#9a0079", "#cbf266", "#191714", "#c8c8cb")
-# 病名上位何位まで出力するか
-kOutput_disease_count <- 10
-# その他開始病名数
-other_disease_start <- kOutput_disease_count + 1
+# その他病名は明るいグレーに集約
+kOther_disease_start <- length(kGraph_color)
+# 病名上位件数
+kOutput_disease_count <- kOther_disease_start - 1
 # 病名件数ソート用データフレーム列名
 kDisease_colname <- "diseasename"
 kSortkey_per <- "per"  # ソートキー：パーセンテージ
@@ -93,8 +77,65 @@ output_path <- paste(basepath, output_folder_name, output_ext, sep="/")
 # READ SAS analysis data set (ADS)
 sasdat <- read.sas7bdat(sasdat_path)
 
-# 疾患大分類リスト作成
+# 疾患分類毎合計を集計
 mhgrpterm_lst <- levels(factor(sasdat$MHGRPTERM))
+
+# 世代毎合計を集計
+wk_sum_lst <- addmargins(table(sasdat$MHGRPTERM, sasdat$AGECAT2N))
+# replace "sum" -> 5
+colnames(wk_sum_lst)[ncol(wk_sum_lst)] <- 5
+# 集約用空のデータフレームを作成
+# 世代ごとの列＋病名格納列を作成した空のデータフレームを作成
+wk_dst_colname <- c(kGenelst, kDisease_colname)
+dst_total <- data.frame(matrix("", length(rownames(wk_sum_lst)), length(wk_dst_colname)))
+colnames(dst_total) <- wk_dst_colname
+for (i in 1:gene_cnt) {
+  dst_total[ ,i] <- wk_sum_lst[ ,i]
+}
+dst_total[ ,kDisease_colname] <- rownames(wk_sum_lst)
+# 合計と病名毎計を分離
+# ALLの件数降順でソート
+dst_total <- SortDisease(subset(dst_total, diseasename != "Sum"), kGeneTotal_colname)
+# パイチャート設定色をセット　暫定でレインボーをセット
+dst_total$graph_color <- rainbow(nrow(dst_total))
+# 各項目のパーセンテージラベル作成作業用列
+dst_total$wk_per <- NA
+dst_total$wk_lbl <- NA
+
+# 世代毎にパイチャートを出力
+for (m in 1:gene_cnt) {
+  output_filename <- paste0("total_", kOutputSeq[m], ".", output_ext)
+  output_filepath <- paste(output_path, output_filename, sep="/")
+  # 出力デバイスオープン
+  Open_Outputdevice(output_ext, output_filepath)
+  # 各項目のパーセンテージ計算
+  dst_total$wk_per <- ResPercentage(as.numeric(dst_total[, m]))
+  # 3%以上の場合のみラベルを出力する
+  dst_total$wk_lbl <- ifelse(dst_total$wk_per > 2, paste(dst_total$wk_per, "%"), "")
+  # 余白の設定（下、左、上、右）
+  par(mar=c(0, 2.2, 0, 2.2))
+  pie(as.numeric(dst_total[, m]), label=dst_total$wk_lbl,
+      col=dst_total$graph_color, radius=0.8, cex=2.7, clockwise=TRUE, border="white")
+  # ドーナッツグラフにする https://ladder-consulting.com/r-graphic-circle/
+  par(new=TRUE)
+  pie(1, radius=0.5, col='white', border='white', labels='')
+  text(0, 0, labels=paste(colnames(dst_total[m]), "\nn =", sum(as.numeric((dst_total[ ,m]))), "\n"), cex=2.7,
+       col=par('col.main'), font=par('font.main'))
+  # 出力デバイスクローズ
+  dev.off()
+}
+# ダミーグラフ内にlegend出力
+output_filename <- paste0("total_legend",  ".", output_ext)
+output_filepath <- paste(output_path, output_filename, sep="/")
+# 出力デバイスオープン
+Open_Outputdevice(output_ext, output_filepath)
+# 余白の設定（下、左、上、右）
+par(mar=c(0, 0, 0, 0))
+pie(1, col="white", radius=0.1, clockwise=TRUE, border="white", labels = "")
+legend("center", legend=dst_total$diseasename, cex=2.7, fill=dst_total$graph_color, ncol=1)
+# 出力デバイスクローズ
+dev.off()
+
 for (i in 1:length(mhgrpterm_lst)) {
   # 疾患群ごとにデータ分け
   wk_sasdat <- subset(sasdat, MHGRPTERM == mhgrpterm_lst[i])
@@ -122,9 +163,10 @@ for (i in 1:length(mhgrpterm_lst)) {
   dst_gene_mhterm$diseasename <- mhterm_lst
   # 作業用オブジェクトの削除
   rm(dst_wk_sum)
+  rm(wk_sasdat)
 
   # 世代ALLの詳細病名件数の降順にソートし、色を決定
-  # 上位11＋その合計の表を作成, TODO(Ohtsuka): 上位10と残りの疾患合計の11に分ける
+  # 上位10と残りの疾患合計の11に分ける
 
   # 世代毎テーブルを作成し、データをソート
   # 集約用空のデータフレームを作成
@@ -161,7 +203,7 @@ for (i in 1:length(mhgrpterm_lst)) {
   if (length(dis_disease) > kOutput_disease_count){
     # 病名が10件以上の場合、上位10件＋その他に集約する
     top10_disease <- dis_disease[1:kOutput_disease_count]
-    other_disease <- dis_disease[other_disease_start:length(dis_disease)]
+    other_disease <- dis_disease[kOther_disease_start:length(dis_disease)]
     for (p in 1:length(top10_disease)){
       if (!is.na(top10_disease[p])){
         # 該当病名行を抽出して格納
@@ -183,7 +225,7 @@ for (i in 1:length(mhgrpterm_lst)) {
     # 世代合計の件数で再ソート
     # Othersは最終行に
     dst_piechart <- SortDisease(dst_piechart, kGeneTotal_colname)
-    dst_piechart[other_disease_start, ] <- c(apply(dst_others_piechart[ ,1:gene_cnt], 2, sum), kOthers_colname)
+    dst_piechart[kOther_disease_start, ] <- c(apply(dst_others_piechart[ ,1:gene_cnt], 2, sum), kOthers_colname)
     # 作業用オブジェクトの削除
     rm(dst_others_piechart)
   } else {
@@ -197,47 +239,42 @@ for (i in 1:length(mhgrpterm_lst)) {
   dst_piechart$wk_lbl <- NA
   # グラフ生成
   graphics.off()
-  for (m in 1:gene_cnt) { #todo 出力順変更
-      wk_disease_list <- dst_piechart$diseasename
-      output_filename <- paste0(gsub("[-/]", "", mhgrpterm_lst[i]), "_", kOutputSeq[m], ".", output_ext)
-      output_filepath <- paste(output_path, output_filename, sep="/")
-      if (output_ext == "eps") {
-        setEPS()
-        postscript(output_filepath)
-      } else if (output_ext == "png") {
-        png(output_filepath)
-      }
+  for (m in 1:gene_cnt) {
+    # 件数0なら出力しない
     wk_sum <- sum(as.numeric((dst_piechart[ ,m])))
     if (wk_sum > 0) {
-      # 各項目のパーセンテージラベル作成
+      output_filename <- paste0(gsub("[-/]", "", mhgrpterm_lst[i]), "_", kOutputSeq[m], ".", output_ext)
+      output_filepath <- paste(output_path, output_filename, sep="/")
+      # 出力デバイスオープン
+      Open_Outputdevice(output_ext, output_filepath)
+      # 各項目のパーセンテージ計算
       dst_piechart$wk_per <- ResPercentage(as.numeric(dst_piechart[, m]))
       # 3%以上の場合のみラベルを出力する
       dst_piechart$wk_lbl <- ifelse(dst_piechart$wk_per > 2, paste(dst_piechart$wk_per, "%"), "")
-      # パイチャート出力
-      par(mar=c(8, 0.2, 1.2, 0.2))
-      pie(as.numeric(dst_piechart[, m]), label=dst_piechart$wk_lbl, main=mhgrpterm_lst[i],
-          col=dst_piechart$graph_color, radius=0.8, cex=2.7, cex.main=1.5, clockwise=TRUE, border="white")
+      # 余白の設定（下、左、上、右）
+      par(mar=c(0, 2.2, 0, 2.2))
+      pie(as.numeric(dst_piechart[, m]), label=dst_piechart$wk_lbl,
+          col=dst_piechart$graph_color, radius=0.8, cex=2.7, clockwise=TRUE, border="white")
       # ドーナッツグラフにする https://ladder-consulting.com/r-graphic-circle/
       par(new=TRUE)
       pie(1, radius=0.5, col='white', border='white', labels='')
       text(0, 0, labels=paste(colnames(dst_piechart[m]), "\nn =", wk_sum, "\n"), cex=2.7,
            col=par('col.main'), font=par('font.main'))
-    } else {
-      # 0件の場合はダミー出力
-      # 各項目のパーセンテージラベル作成
-      dummy_data <- c(1:10)
-      # パイチャート出力
-      par(mar=c(8, 0.2, 1.2, 0.2))
-      pie(dummy_data, col="white", radius=0.8, cex=2.7, cex.main=1.5, clockwise=TRUE, border="white", labels = "")
+      # 出力デバイスクローズ
+      dev.off()
     }
-    # todo 凡例を1項目ずつ出す
-    wk_legend <- EditLegend(kOutputSeq[m], wk_disease_list)
-    wk_fill <- EditLegend(kOutputSeq[m], dst_piechart$graph_color)
-    if (!is.na(wk_legend[1])) {
-      par(xpd=T)
-      legend(-0.4, -1.3, legend=wk_legend, fill=wk_fill, bty="n")
-      par(xpd=F)
-    }
-    dev.off()
   }
+  # ダミーグラフ内にlegend出力
+  output_filename <- paste0(gsub("[-/]", "", mhgrpterm_lst[i]), "_legend",  ".", output_ext)
+  output_filepath <- paste(output_path, output_filename, sep="/")
+  # 出力デバイスオープン
+  Open_Outputdevice(output_ext, output_filepath)
+  # 余白の設定（下、左、上、右）
+  par(mar=c(0, 0, 0, 0))
+  pie(1, col="white", radius=0.1, clockwise=TRUE, border="white", labels = "")
+  legend("center", legend=dst_piechart$diseasename, cex=2, fill=dst_piechart$graph_color, ncol=1)
+  # 出力デバイスクローズ
+  dev.off()
 }
+
+
