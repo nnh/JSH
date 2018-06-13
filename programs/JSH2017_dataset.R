@@ -169,7 +169,7 @@ write.csv(ds.md.jspho, "JSPHO_MoreDetails.csv", row.names = F)
 write.csv(ds.md.jsh, "JSH_MoreDetails.csv", row.names = F)
 write.csv(ds.md.nhoh, "NHOH_MoreDetails.csv", row.names = F)
 
-jsh.1 <- jsh.1[(format(as.Date(jsh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(jsh.1$MHSTDTC, 1, 4) == kYear), ] 
-nhoh.1 <- nhoh.1[(format(as.Date(nhoh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(nhoh.1$MHSTDTC, 1, 4) == kYear), ] # 診断年のみ抽出
-result <- rbind(jsh.1, nhoh.1)
-write.csv(result, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
+# jsh.1 <- jsh.1[(format(as.Date(jsh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(jsh.1$MHSTDTC, 1, 4) == kYear), ] 
+# nhoh.1 <- nhoh.1[(format(as.Date(nhoh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(nhoh.1$MHSTDTC, 1, 4) == kYear), ] # 診断年のみ抽出
+# result <- rbind(jsh.1, nhoh.1)
+# write.csv(result, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
