@@ -1,61 +1,66 @@
 # JSPHO to WHO mapping 2017年集計用
 # Mamiko Yonejima
 # 2017/4/20
-day.shimekiri <- "20170531"
-jspho_exclusion <- "340212686"  # JSPHO参加施設外の保険医療機関コードを入力
-kYear <- "2016"
+day.shimekiri <- "20180531"
+# jspho_exclusion <- "340212686"  # JSPHO参加施設外の保険医療機関コードを入力
+kYear <- "2017"
 
-setwd("./rawdata")
-jspho <- read.csv("JSPHO_registration_170718_1719.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh <- read.csv("JSH_report_170724_1911.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv("JSH_registration_170724_1911.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh <- read.csv("NHOH_report_170613_1047.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv("NHOH_registration_170613_1047.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
-
-setwd("../input")
-disease <- read.csv("disease_20170721.csv", fileEncoding="UTF-8-BOM", header=F, as.is=T, na.strings = c(""))  
-colnames(disease) <- c("大分類", "MHDECOD", "病名略", "MHTERM", "病名英語", "MHDECODplus.0", "中分類番号1", "中分類略名" ,"中分類名日本語" ,"中分類名英語", "tumor_or_nontumor", "中分類番号2")
-facilities <- read.csv("facilities.csv", fileEncoding="UTF-8-BOM", header=T, as.is=T)  
+setwd("//192.168.200.222/Datacenter/学会事務/130_日本血液学会/データ集計/2018/201806")
+# jspho <- read.csv("./rawdata/JSPHO_registration_170718_1719.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv("./rawdata/JSH_report_180611_1911.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv("./rawdata/JSH_registration_180611_1911.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_outcome <- read.csv("./rawdata/JSH_180611_1911.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_report <- read.csv("./rawdata/NHOH_report_180601_1142.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv("./rawdata/NHOH_registration_180601_1142.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_outcome <- read.csv("./rawdata/NHOH_180601_1142.csv", na.strings = c(""), as.is=T, fileEncoding="CP932")
+# setwd("../input")
+# disease <- read.csv("disease_20170721.csv", fileEncoding="UTF-8-BOM", header=F, as.is=T, na.strings = c(""))  
+# colnames(disease) <- c("大分類", "MHDECOD", "病名略", "MHTERM", "病名英語", "MHDECODplus.0", "中分類番号1", "中分類略名" ,"中分類名日本語" ,"中分類名英語", "tumor_or_nontumor", "中分類番号2")
+# facilities <- read.csv("facilities.csv", fileEncoding="UTF-8-BOM", header=T, as.is=T)  
 
 ###########重複データ確認###################################
-duplicate <- jsh$登録コード[duplicated(jsh$登録コード)]  
-grep(duplicate, jsh$登録コード)
-duplicate_line <- "146269" # 上記で重複が確認された場合、その行番号を入力
-jsh <- jsh[-146269, ]
+duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]  
+grep(duplicate, jsh_report$登録コード)
+duplicate_line <- "184381" 
+jsh_report <- jsh_report[- 184381, ]  # 上記で重複が確認された場合、その行番号を入力
 ############################################################
-source("../programs/jsphotowho.R", chdir=F, encoding="UTF-8")
-source("../programs/jsphotowho_nontumor.R", chdir=F, encoding="UTF-8")
-# BRTHDTC, MHSTDTCが逆転している症例を除く
-jspho.1 <- jspho.1[(format(as.Date(jspho.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jspho.1$MHSTDTC), "%Y%m%d")), ]
-jspho.non.t.1 <- jspho.non.t.1[(format(as.Date(jspho.non.t.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jspho.non.t.1$MHSTDTC), "%Y%m%d")), ]
+# source("../programs/jsphotowho.R", chdir=F, encoding="UTF-8")
+# source("../programs/jsphotowho_nontumor.R", chdir=F, encoding="UTF-8")
+# # BRTHDTC, MHSTDTCが逆転している症例を除く
+# jspho.1 <- jspho.1[(format(as.Date(jspho.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jspho.1$MHSTDTC), "%Y%m%d")), ]
+# jspho.non.t.1 <- jspho.non.t.1[(format(as.Date(jspho.non.t.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jspho.non.t.1$MHSTDTC), "%Y%m%d")), ]
 #施設コードをマージする処理(NHOH)
-p.nhoh.rgst <- nhoh.rgst[,c("登録コード","初発時住所")]
+p.nhoh.rgst <- nhoh.rgst[,c("登録コード", "初発時住所", "生年月日", "性別")]
 p.nhoh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-","",p.nhoh.rgst$初発時住所))/1000)
-m.nhoh <- merge(nhoh,p.nhoh.rgst, by="登録コード", all.x= T)
+dxt_nhoh_outcome <- nhoh_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
+m.nhoh_0 <- merge(nhoh_report,p.nhoh.rgst, by="登録コード", all.x= T)
+m.nhoh <- merge(m.nhoh_0, dxt_nhoh_outcome, by="登録コード", all.x= T)
 
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
-nhoh.1 <- m.nhoh[as.integer(substr(m.nhoh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= 2016 ,
-                 c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "field2",
-                   "確定診断名", "生年月日", "診断年月日")] 
+nhoh.1 <- m.nhoh[as.integer(substr(m.nhoh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= 2017 ,
+                 c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日.y", "最終確認日", "シート作成時施設コード", "field2",
+                   "確定診断名", "生年月日", "診断年月日")]
 colnames(nhoh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                             "BRTHDTC", "MHSTDTC")
 # BRTHDTC, MHSTDTCが逆転している症例を除く
-nhoh.1 <- nhoh.1[(format(as.Date(nhoh.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(nhoh.1$MHSTDTC), "%Y%m%d")), ]
+# nhoh.1 <- nhoh.1[(format(as.Date(nhoh.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(nhoh.1$MHSTDTC), "%Y%m%d")), ]
 nhoh.1$STUDYID <- "NHOH"
 
 #施設コードをマージする処理(JSH)
-p.jsh.rgst <- jsh.rgst[,c("登録コード","初発時住所")]
+p.jsh.rgst <- jsh.rgst[, c("登録コード", "初発時住所", "生年月日", "性別")]
 p.jsh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-", "", p.jsh.rgst$初発時住所))/1000)
-m.jsh <- merge(jsh, p.jsh.rgst, by = "登録コード", all.x = T)
+dxt_jsh_outcome <- jsh_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
+m.jsh_0 <- merge(jsh_report, p.jsh.rgst, by = "登録コード", all.x = T)
+m.jsh <- merge(m.jsh_0, dxt_jsh_outcome, by = "登録コード", all.x = T)
 
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
-jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= 2016 ,
+jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= 2017 ,
                c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "field1",
                  "確定診断名", "生年月日", "診断年月日")]
 colnames(jsh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
 # BRTHDTC, MHSTDTCが逆転している症例を除く
-jsh.1 <- jsh.1[(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")), ]
+# jsh.1 <- jsh.1[(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")), ]
 
 jsh.1$STUDYID <- "JSH"
 # 3団体を繋げた基本のデータセットを作成
@@ -163,3 +168,8 @@ ds.md.nhoh[is.na(ds.md.nhoh)] <- ""
 write.csv(ds.md.jspho, "JSPHO_MoreDetails.csv", row.names = F)
 write.csv(ds.md.jsh, "JSH_MoreDetails.csv", row.names = F)
 write.csv(ds.md.nhoh, "NHOH_MoreDetails.csv", row.names = F)
+
+jsh.1 <- jsh.1[(format(as.Date(jsh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(jsh.1$MHSTDTC, 1, 4) == kYear), ] 
+nhoh.1 <- nhoh.1[(format(as.Date(nhoh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(nhoh.1$MHSTDTC, 1, 4) == kYear), ] # 診断年のみ抽出
+result <- rbind(jsh.1, nhoh.1)
+write.csv(result, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
