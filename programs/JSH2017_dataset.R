@@ -20,9 +20,11 @@ nhoh_outcome <- read.csv("./rawdata/NHOH_180601_1142.csv", na.strings = c(""), a
 
 ###########重複データ確認###################################
 duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]  
-grep(duplicate, jsh_report$登録コード)
-duplicate_line <- "184381" 
-jsh_report <- jsh_report[- 184381, ]  # 上記で重複が確認された場合、その行番号を入力
+grep(191414, jsh_report$登録コード) #重複している登録番号を記載
+grep(191417, jsh_report$登録コード)
+grep(191422, jsh_report$登録コード)
+grep(196549, jsh_report$登録コード)
+jsh_report <- jsh_report[- c(184381, 184384, 184390, 190452), ]  # 重複が確認された場合、その行番号を入力
 ############################################################
 # source("../programs/jsphotowho.R", chdir=F, encoding="UTF-8")
 # source("../programs/jsphotowho_nontumor.R", chdir=F, encoding="UTF-8")
@@ -169,7 +171,7 @@ write.csv(ds.md.jspho, "JSPHO_MoreDetails.csv", row.names = F)
 write.csv(ds.md.jsh, "JSH_MoreDetails.csv", row.names = F)
 write.csv(ds.md.nhoh, "NHOH_MoreDetails.csv", row.names = F)
 
-# jsh.1 <- jsh.1[(format(as.Date(jsh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(jsh.1$MHSTDTC, 1, 4) == kYear), ] 
-# nhoh.1 <- nhoh.1[(format(as.Date(nhoh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(nhoh.1$MHSTDTC, 1, 4) == kYear), ] # 診断年のみ抽出
-# result <- rbind(jsh.1, nhoh.1)
-# write.csv(result, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
+jsh.1 <- jsh.1[(format(as.Date(jsh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(jsh.1$MHSTDTC, 1, 4) == kYear), ]
+nhoh.1 <- nhoh.1[(format(as.Date(nhoh.1$created.date), "%Y%m%d") <= day.shimekiri) & (substr(nhoh.1$MHSTDTC, 1, 4) == kYear), ] # 診断年のみ抽出
+result <- rbind(jsh.1, nhoh.1)
+write.csv(result, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
