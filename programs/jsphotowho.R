@@ -10,7 +10,7 @@ Sys.setlocale("LC_TIME", "C") #必須：日本時間にコンピュータ設定�
 
 # 2012年診断以降,2016年診断
 jspho$year <- substr(jspho$診断年月日, 1, 4)
-jspho <- jspho[!is.na(jspho$year) & jspho$year >= 2012 &  jspho$year <= 2016, ]
+jspho <- jspho[!is.na(jspho$year) & jspho$year >= 2012 &  jspho$year <= 2017, ]
 
 # Cut jspho /age diagnosis is over　20
 jspho$age_diagnosis <- YearDif(jspho$生年月日, jspho$診断年月日)

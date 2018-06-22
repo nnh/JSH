@@ -5,7 +5,7 @@
 
 # Make a group of non tumor
 df.non.t <- subset(jspho, jspho$flag == "non_tumor")
-df.non.t <- df.non.t[, c(1:298)]
+df.non.t <- df.non.t[, c(1:411)]
 
 #
 df.non.t$MHDECOD1 <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 4, 1001,
