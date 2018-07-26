@@ -4,18 +4,18 @@
 day.shimekiri <- "20180531"
 # jspho_exclusion <- "340212686"  # JSPHO参加施設外の保険医療機関コードを入力
 kYear <- "2017"
-prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/データ集計/2018/201806"
+prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/データ集計/2018/201807"
 
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jspho.rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_180601_1022.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_180601_1022.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_180611_1911.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_180611_1911.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_180611_1911.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_180601_1142.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_180601_1142.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_180601_1142.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho.rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_180726_1506.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_180726_1506.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_180717_1530.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_180717_1530.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_180717_1530.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_180726_1459.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_180726_1459.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_180726_1459.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 disease <- read.csv(paste0(prtpath, "./input/disease_20170721.csv"), fileEncoding="UTF-8-BOM", header=F, as.is=T, na.strings = c(""))  
 colnames(disease) <- c("大分類", "MHDECOD", "病名略", "MHTERM", "病名英語", "MHDECODplus.0", "中分類番号1", "中分類略名" ,"中分類名日本語" ,"中分類名英語", "tumor_or_nontumor", "中分類番号2")
@@ -23,11 +23,13 @@ facilities <- read.csv(paste0(prtpath, "./input/facilities.csv"), fileEncoding="
 
 ###########重複データ確認###################################
 duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]  
-grep(191414, jsh_report$登録コード) #重複している登録番号を記載
-grep(191417, jsh_report$登録コード)
-grep(191422, jsh_report$登録コード)
-grep(196549, jsh_report$登録コード)
-jsh_report <- jsh_report[- c(184381, 184384, 184390, 190452), ]  # 重複が確認された場合、その行番号を入力
+# grep(191414, jsh_report$登録コード) #重複している登録番号を記載
+# grep(191417, jsh_report$登録コード)
+# grep(191422, jsh_report$登録コード)
+# grep(196549, jsh_report$登録コード)
+# jsh_report <- jsh_report[- c(184381, 184384, 184390, 190452), ]  # 重複が確認された場合、その行番号を入力
+# インシデントにより削除され代理入力した症例
+add_data <- 164062
 ############################################################
 #性別、転帰をマージする処理(JSPHO)
 dxt_jspho_outcome <- jspho_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
@@ -82,14 +84,19 @@ nhoh.1$age.diagnosis <- YearDif(nhoh.1$BRTHDTC, nhoh.1$MHSTDTC)
 dataset.3org <-  rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1) 
 # 3団体を繋げた基本のデータセットを作成
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
-dxt.dataset.3org.year.0 <- dataset.3org[format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri , ] 
+dxt.dataset.3org.year.0 <- dataset.3org[format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri, ] 
 dxt.dataset.3org.year.1 <- subset(dxt.dataset.3org.year.0, substr(dxt.dataset.3org.year.0$MHSTDTC, 1, 4) == kYear)  # 診断年のみ抽出
 # # BRTHDTC, MHSTDTCが逆転している症例を除く
 dxt.dataset.3org.year <- subset(dxt.dataset.3org.year.1, as.Date(dxt.dataset.3org.year.1$BRTHDTC) <= as.Date(dxt.dataset.3org.year.1$MHSTDTC))
+## incidentの症例を追加
+add <- dataset.3org[dataset.3org$SUBJID == add_data, ]
+dxt.dataset.3org.year <- rbind(dxt.dataset.3org.year, add)
+
+
 dxt.dataset.3org.year$count <- 1
 
 #詳細集計用に出力
-write.csv(dxt.dataset.3org.year.0, paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
+write.csv(dxt.dataset.3org.year,  paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
 
 # 団体別登録数
 # 施設数
