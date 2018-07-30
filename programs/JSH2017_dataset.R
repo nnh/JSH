@@ -27,7 +27,7 @@ duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 # grep(191417, jsh_report$登録コード)
 # grep(191422, jsh_report$登録コード)
 # grep(196549, jsh_report$登録コード)
-# jsh_report <- jsh_report[- c(184381, 184384, 184390, 190452), ]  # 重複が確認された場合、その行番号を入力
+jsh_report <- jsh_report[- c(184381, 184384, 184390, 190449), ]  # 重複が確認された場合、その行番号を入力
 # インシデントにより削除され代理入力した症例
 add_data <- 164062
 ############################################################
@@ -83,14 +83,14 @@ nhoh.1$age.diagnosis <- YearDif(nhoh.1$BRTHDTC, nhoh.1$MHSTDTC)
 # jspho.1 <- jspho.1[jspho.1$SITEID != jspho_exclusion, ]  #JSPHOの参加外施設を除外
 dataset.3org <-  rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1) 
 # 3団体を繋げた基本のデータセットを作成
-dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
-dxt.dataset.3org.year.0 <- dataset.3org[format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri, ] 
+# dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
+dxt.dataset.3org.year.0 <- dataset.3org[(format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri) && dataset.3org$SUBJID != add_data , ] 
 dxt.dataset.3org.year.1 <- subset(dxt.dataset.3org.year.0, substr(dxt.dataset.3org.year.0$MHSTDTC, 1, 4) == kYear)  # 診断年のみ抽出
 # # BRTHDTC, MHSTDTCが逆転している症例を除く
 dxt.dataset.3org.year <- subset(dxt.dataset.3org.year.1, as.Date(dxt.dataset.3org.year.1$BRTHDTC) <= as.Date(dxt.dataset.3org.year.1$MHSTDTC))
 ## incidentの症例を追加
-add <- dataset.3org[dataset.3org$SUBJID == add_data, ]
-dxt.dataset.3org.year <- rbind(dxt.dataset.3org.year, add)
+# add <- dataset.3org[dataset.3org$SUBJID == add_data, ]
+# dxt.dataset.3org.year <- rbind(dxt.dataset.3org.year, add)
 
 
 dxt.dataset.3org.year$count <- 1
