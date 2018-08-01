@@ -84,7 +84,9 @@ nhoh.1$age.diagnosis <- YearDif(nhoh.1$BRTHDTC, nhoh.1$MHSTDTC)
 dataset.3org <-  rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1) 
 # 3団体を繋げた基本のデータセットを作成
 # dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
-dxt.dataset.3org.year.0 <- subset(dataset.3org, format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri & dataset.3org$SUBJID != add_data)
+dxt.dataset.3org.year.3 <- subset(dataset.3org, format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri)
+add <- subset(dataset.3org, dataset.3org$SUBJID == add_data)
+dxt.dataset.3org.year.0 <- rbind(dxt.dataset.3org.year.3, add)
 dxt.dataset.3org.year.1 <- subset(dxt.dataset.3org.year.0, substr(dxt.dataset.3org.year.0$MHSTDTC, 1, 4) == kYear)  # 診断年のみ抽出
 # # BRTHDTC, MHSTDTCが逆転している症例を除く
 dxt.dataset.3org.year <- subset(dxt.dataset.3org.year.1, as.Date(dxt.dataset.3org.year.1$BRTHDTC) <= as.Date(dxt.dataset.3org.year.1$MHSTDTC))
