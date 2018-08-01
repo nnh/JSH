@@ -84,7 +84,7 @@ nhoh.1$age.diagnosis <- YearDif(nhoh.1$BRTHDTC, nhoh.1$MHSTDTC)
 dataset.3org <-  rbind(jsh.1, nhoh.1, jspho.1, jspho.non.t.1) 
 # 3団体を繋げた基本のデータセットを作成
 # dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
-dxt.dataset.3org.year.0 <- dataset.3org[(format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri) && dataset.3org$SUBJID != add_data , ] 
+dxt.dataset.3org.year.0 <- subset(dataset.3org, format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri & dataset.3org$SUBJID != add_data)
 dxt.dataset.3org.year.1 <- subset(dxt.dataset.3org.year.0, substr(dxt.dataset.3org.year.0$MHSTDTC, 1, 4) == kYear)  # 診断年のみ抽出
 # # BRTHDTC, MHSTDTCが逆転している症例を除く
 dxt.dataset.3org.year <- subset(dxt.dataset.3org.year.1, as.Date(dxt.dataset.3org.year.1$BRTHDTC) <= as.Date(dxt.dataset.3org.year.1$MHSTDTC))
@@ -167,17 +167,17 @@ formattable::formattable(temp)
 
 # 詳細集計用データの作成
 # JSPHO
-ds.jspho <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSPHO", c(2:16)]
+ds.jspho <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSPHO", c(1:16)]
 dxt.jspho <- jspho[, c(1, 146, 147, 150:393)]
 ds.md.jspho <- merge(ds.jspho, dxt.jspho, by.x = "SUBJID", by.y = "登録コード", all.x = T)
 ds.md.jspho[is.na(ds.md.jspho)] <- ""
 #JSH
-ds.jsh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSH", c(2:16)]
+ds.jsh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSH", c(1:16)]
 dxt.jsh <- m.jsh[, c(1, 16:178)]
 ds.md.jsh <- merge(ds.jsh, dxt.jsh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
 ds.md.jsh[is.na(ds.md.jsh)] <- ""
 #NHOH
-ds.nhoh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "NHOH", c(2:16)]
+ds.nhoh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "NHOH", c(1:16)]
 dxt.nhoh <- m.nhoh[, c(1, 28:277)]
 ds.md.nhoh <- merge(ds.nhoh, dxt.nhoh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
 ds.md.nhoh[is.na(ds.md.nhoh)] <- ""
