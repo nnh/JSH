@@ -97,6 +97,10 @@ dxt.dataset.3org.year <- subset(dxt.dataset.3org.year.1, as.Date(dxt.dataset.3or
 
 dxt.dataset.3org.year$count <- 1
 
+# WHO2016をWHO2008にマッピングする(2017年診断例、2018年集計用)
+dxt.dataset.3org.year$mapping_2008 <- ifelse(nchar(dxt.dataset.3org.year$MHDECOD)==5, round((dxt.dataset.3org.year$MHDECOD - 10000) / 10, digits = 0),
+                                             dxt.dataset.3org.year$MHDECOD)
+
 #詳細集計用に出力
 write.csv(dxt.dataset.3org.year,  paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
 
