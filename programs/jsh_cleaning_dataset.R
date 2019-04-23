@@ -3,12 +3,14 @@
 # 2019/4/11
 day.shimekiri <- "20190531"
 kYear <- "2018"
-prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2019/クリーニング"
+FileNameOutput <- "NHOH_cleaning_DS.csv"
+prtpath <- "//192.168.200.222/Datacenter/学会事務/120_血液ネット疾患登録/04.03.02 データ集計/日本血液学会へ提出/2019年/クリーニング"
 
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_190411_1039.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_190411_1039.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "NHOH_report_190411_1230.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_190411_1230.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+
 ###########重複データ確認###################################
 duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]  
 # grep(191414, jsh_report$登録コード) #重複している登録番号を記載
@@ -25,4 +27,4 @@ colnames(jsh.rgst) <- paste0("registration_", colnames(jsh.rgst))
 cleaning_ds <- merge(jsh.rgst, dxt2_jsh_report, by.x = "registration_登録コード", by.y = "登録コード", all.y = T)
 cleaning_ds[is.na(cleaning_ds)] <- ""
 outputpath <- paste0(prtpath, "/output/")
-write.csv(cleaning_ds, paste0(outputpath, "JSH_cleaning_DS.csv"), row.names = F)
+write.csv(cleaning_ds, paste0(outputpath, FileNameOutput), row.names = F)
