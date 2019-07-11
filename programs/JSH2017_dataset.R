@@ -116,11 +116,13 @@ dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC
 dataset.3org$count <- 1
 
 #詳細集計用に出力
-write.csv(dataset.3org,  paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
+dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == 2018, ]
+
+write.csv(dataset.3org_yyyy,  paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
 
 # 団体別登録数
 # 施設数
-dataset.3org -> dxt.dataset.3org.year
+dxt.dataset.3org.year <- dataset.3org_yyyy
 by.org.c.facilities <- xtabs( ~ SITEID + STUDYID , data = dxt.dataset.3org.year )
 by.org.c.facilities.df <- as.data.frame(by.org.c.facilities)
 by.org.c.facilities.df$count <- ifelse(by.org.c.facilities.df$Freq == 0, 0, 1)
@@ -158,11 +160,11 @@ res.by.organization <- data.frame(apply(by.organization, 2, function(d){ c(d, su
 
 
 # 疾患別集計
-dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, breaks = c(0,20,150),
-                                               labels= c("20歳未満", "20歳以上"), right=FALSE)
+dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
+                                               labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
 by.disease <- xtabs(count ~ MHDECOD + cat.age.diagnosis, data = dxt.dataset.3org.year)
 by.disease.mat <- matrix(by.disease , nrow(by.disease), ncol(by.disease))
-colnames(by.disease.mat) <- c("20歳未満", "20歳以上")
+colnames(by.disease.mat) <- c("0-14", "15-19", "20-29", "30-39", "40-")
 rownames(by.disease.mat) <- rownames(by.disease)
 sum <- apply(by.disease.mat, 1, sum)
 wip.by.disease <- as.data.frame(cbind(by.disease.mat, sum))
@@ -199,3 +201,4 @@ write.csv(ds.md.nhoh, paste0(prtpath, "/output/NHOH_MoreDetails.csv"), row.names
 
 
 # write.csv(result, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
+
