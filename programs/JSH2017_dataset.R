@@ -11,9 +11,9 @@ prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.
 rawdatapath <- paste0(prtpath, "/rawdata/")
 jspho.rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_190611_1505.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_190611_1505.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_190603_1127.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_190603_1127.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_190603_1127.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_190711_1616.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_190711_1616.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_190711_1616.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_190702_1917.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_190702_1917.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_190702_1917.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
@@ -57,6 +57,8 @@ jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = 
 
 # 診断年月日2012年以降、必要変数を抽出
 jspho <- jspho[!(is.na(as.integer(jspho$year))), ]
+jspho$age.diagnosis <- YearDif(jspho$生年月日, jspho$診断年月日)
+jspho <- jspho[jspho$age.diagnosis < 20 , ]
 jspho_ads <- jspho[as.integer(jspho$year) > 2011 & as.integer(jspho$year) <= kYear ,
                  c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "MHDECOD",
                    "name_ja", "生年月日", "診断年月日", "STUDYID")]
@@ -105,13 +107,14 @@ jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integ
 colnames(jsh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
 # BRTHDTC, MHSTDTCが逆転している症例を除く
-jsh.1 <- jsh.1[(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")), ]
-
+# jsh.1 <- jsh.1[(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d")) <= (format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")), ]
+jsh.1 <- subset(jsh.1, as.integer(as.integer(format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")) - as.integer(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d"))) >= 0)
 # 3団体を繋げた基本のデータセットを作成
 dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
 
 # age diagnosis
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
+
 # count用に"1"を入力
 dataset.3org$count <- 1
 
@@ -199,6 +202,6 @@ write.csv(ds.md.jspho, paste0(prtpath, "/output/JSPHO_MoreDetails.csv"), row.nam
 write.csv(ds.md.jsh, paste0(prtpath, "/output/JSH_MoreDetails.csv"), row.names = F)
 write.csv(ds.md.nhoh, paste0(prtpath, "/output/NHOH_MoreDetails.csv"), row.names = F)
 
-
-# write.csv(result, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
+#write.csv(jsh.1, paste0(prtpath, "/output/test.csv"), row.names = F)
+# write.csv(jspho_ads, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
 
