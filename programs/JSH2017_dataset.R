@@ -5,18 +5,18 @@
 
 day.shimekiri <- "20190531"
 kYear <- "2018"
-prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2019/集計/準備"
+prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2019/集計/20190717"
 
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jspho.rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_190611_1505.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_190611_1505.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho.rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_190716_1118.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_190716_1118.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_190711_1616.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_190711_1616.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_190711_1616.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_190702_1917.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_190702_1917.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_190702_1917.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_190716_1720.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_190716_1720.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_190716_1720.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 list <- list.files(paste0(prtpath, "/input"))
 df.name <- sub(".csv.*", "", list)  
@@ -124,25 +124,25 @@ dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%
 write.csv(dataset.3org_yyyy,  paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
 
 # 団体別登録数
-# 施設数
+# # 施設数
 dxt.dataset.3org.year <- dataset.3org_yyyy
-by.org.c.facilities <- xtabs( ~ SITEID + STUDYID , data = dxt.dataset.3org.year )
-by.org.c.facilities.df <- as.data.frame(by.org.c.facilities)
-by.org.c.facilities.df$count <- ifelse(by.org.c.facilities.df$Freq == 0, 0, 1)
-by.org.facilities <- xtabs( ~ STUDYID + count , data = by.org.c.facilities.df )
-by.org.facilities.mat <- matrix(by.org.facilities , nrow(by.org.facilities), ncol(by.org.facilities))
-rownames(by.org.facilities.mat) <- rownames(by.org.facilities)
-colnames(by.org.facilities.mat) <- c("登録なし", "施設数")
-# 登録数
-by.org.np <- xtabs( ~ STUDYID + count , data = dxt.dataset.3org.year )
-by.org.mat <- matrix(by.org.np, nrow(by.org.np), ncol(by.org.np))
-rownames(by.org.mat) <- rownames(by.org.np)
-colnames(by.org.mat) <- "登録数"
-# 施設数と登録数をつなぐ
-by.org <- cbind(by.org.facilities.mat, by.org.mat)
-by.organization <- by.org[, c(2,3)]
-
-res.by.organization <- data.frame(apply(by.organization, 2, function(d){ c(d, sum(d))}))  # 総計の行追加
+# by.org.c.facilities <- xtabs( ~ SITEID + STUDYID , data = dxt.dataset.3org.year )
+# by.org.c.facilities.df <- as.data.frame(by.org.c.facilities)
+# by.org.c.facilities.df$count <- ifelse(by.org.c.facilities.df$Freq == 0, 0, 1)
+# by.org.facilities <- xtabs( ~ STUDYID + count , data = by.org.c.facilities.df )
+# by.org.facilities.mat <- matrix(by.org.facilities , nrow(by.org.facilities), ncol(by.org.facilities))
+# rownames(by.org.facilities.mat) <- rownames(by.org.facilities)
+# colnames(by.org.facilities.mat) <- c("登録なし", "施設数")
+# # 登録数
+# by.org.np <- xtabs( ~ STUDYID + count , data = dxt.dataset.3org.year )
+# by.org.mat <- matrix(by.org.np, nrow(by.org.np), ncol(by.org.np))
+# rownames(by.org.mat) <- rownames(by.org.np)
+# colnames(by.org.mat) <- "登録数"
+# # 施設数と登録数をつなぐ
+# by.org <- cbind(by.org.facilities.mat, by.org.mat)
+# by.organization <- by.org[, c(2,3)]
+# 
+# res.by.organization <- data.frame(apply(by.organization, 2, function(d){ c(d, sum(d))}))  # 総計の行追加
 
 # # 施設別登録数
 # by.facilities <- xtabs( ~ SITEID + count , data = dxt.dataset.3org.year)
@@ -175,10 +175,10 @@ wip.by.disease$MHDECOD <- rownames(by.disease)
 
 #　病名コードとマージ
 # dxt.disease <- disease[disease$大分類 == "hematology", ]  # 血液疾患のみ抽出
-res.by.disease<- merge(wip.by.disease, Disease_Name_v2, , by.x = "MHDECOD", by.y = "code", all.x = T )
+res.by.disease<- merge(wip.by.disease, Disease_Name_v2, , by.x = "MHDECOD", by.y = "code", all = T )
 
 # NA処理
-res.by.disease[is.na(res.by.disease)] <- ""
+res.by.disease[is.na(res.by.disease)] <- 0
 write.csv(res.by.disease, paste0(prtpath, "/output/result_disease.csv"), row.names = F)
 
 # 詳細集計用データの作成
