@@ -109,8 +109,8 @@ colnames(jsh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL",
 # BRTHDTC, MHSTDTCが逆転している症例を除く
 # jsh.1 <- jsh.1[(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d")) <= (format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")), ]
 jsh.1 <- subset(jsh.1, as.integer(as.integer(format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")) - as.integer(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d"))) >= 0)
-# 3団体を繋げた基本のデータセットを作成
-dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
+# # 3団体を繋げた基本のデータセットを作成
+# dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
 
 # age diagnosis
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
@@ -118,10 +118,10 @@ dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC
 # count用に"1"を入力
 dataset.3org$count <- 1
 
-#詳細集計用に出力
-dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == 2018, ]
+# 集計対象年のみ抽出
+dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == kYear, ]
 
-write.csv(dataset.3org_yyyy,  paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
+# write.csv(dataset.3org_yyyy,  paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
 
 # 団体別登録数
 # # 施設数
@@ -175,33 +175,148 @@ wip.by.disease$MHDECOD <- rownames(by.disease)
 
 #　病名コードとマージ
 # dxt.disease <- disease[disease$大分類 == "hematology", ]  # 血液疾患のみ抽出
-res.by.disease<- merge(wip.by.disease, Disease_Name_v2, , by.x = "MHDECOD", by.y = "code", all = T )
+res.by.disease<- merge(wip.by.disease, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all = T )
 
 # NA処理
 res.by.disease[is.na(res.by.disease)] <- 0
 write.csv(res.by.disease, paste0(prtpath, "/output/result_disease.csv"), row.names = F)
 
 # 詳細集計用データの作成
-# JSPHO
-ds.jspho <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSPHO", c(1:16)]
+
+## JSPHO
 dxt.jspho <- jspho[, c(1, 2, 17:420)]
-ds.md.jspho <- merge(ds.jspho, dxt.jspho, by.x = "SUBJID", by.y = "登録コード", all.x = T)
-ds.md.jspho[is.na(ds.md.jspho)] <- ""
-#JSH
-ds.jsh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "JSH", c(1:16)]
+dxt.jspho$MDS染色体 <- "取得なし"
+dxt.jspho$骨髄異形成関連変化随伴急性骨髄性白血病 <- "取得なし"
+dxt.jspho$急性赤白血病 <- "取得なし"
+dxt.jspho$AML詳細 <- "取得なし"
+dxt.jspho$FAB分類 <- "取得なし"
+dxt.jspho$ヘアリー細胞白血病 <- "取得なし"
+dxt.jspho$多発性骨髄腫 <- "取得なし"
+dxt.jspho$濾胞性リンパ腫 <- "取得なし"
+dxt.jspho$濾胞性リンパ腫国際予後因子..FLIPI <- "取得なし"
+dxt.jspho$びまん性大細胞型Ｂ細胞性リンパ腫 <- "取得なし"
+dxt.jspho$血管内大細胞型Ｂ細胞性リンパ腫 <- "取得なし"
+dxt.jspho$キャッスルマン <- "取得なし"
+dxt.jspho$成人Ｔ細胞白血病リンパ腫 <- "取得なし"
+dxt.jspho$腸管症関連Ｔ細胞リンパ腫 <- "取得なし"
+dxt.jspho$末梢性Ｔ細胞リンパ腫 <- "取得なし"
+dxt.jspho$HL付加事項 <- "取得なし"
+dxt.jspho$HL.国際予後スコア.IPS. <- "取得なし"
+dxt.jspho$免疫不全関連リンパ腫の場合 <- "取得なし"
+dxt.jspho$二次性寒冷凝集素症 <- "取得なし"
+dxt.jspho$ITP血小板数 <- "取得なし"
+dxt.jspho$ITP.抗リン脂質抗体 <- "取得なし"
+dxt.jspho$ヘパリン起因性血小板減少症 <- "取得なし"
+dxt.jspho$ヘパリン起因性血小板減少症.抗HIT抗体. <- "取得なし"
+dxt.jspho$凝固異常症.血友病A.インヒビター合併. <- "取得なし"
+dxt.jspho$凝固異常症.血友病B.インヒビター合併. <- "取得なし"
+dxt.jspho1 <- dxt.jspho[, c("登録コード", "CMLの細分類", "MDS染色体", "AML.染色体遺伝子",
+                            "骨髄異形成関連変化随伴急性骨髄性白血病", "AML.FAB分類", "急性赤白血病",
+                            "AML詳細", "血液腫瘍性.疾患名", "FAB分類", "ヘアリー細胞白血病", 
+                            "多発性骨髄腫", "濾胞性リンパ腫", "濾胞性リンパ腫国際予後因子..FLIPI",
+                            "びまん性大細胞型Ｂ細胞性リンパ腫", "血管内大細胞型Ｂ細胞性リンパ腫", "キャッスルマン", 
+                            "成人Ｔ細胞白血病リンパ腫", "腸管症関連Ｔ細胞リンパ腫", 
+                            "末梢性Ｔ細胞リンパ腫", "HL.Stage.Ann.Arbor.", "HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
+                            "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
+                            "寒冷凝集素症", "二次性寒冷凝集素症",  "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
+                            "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "慢性特発性血小板減少性紫斑病.診断時の血小板数", "慢性特発性血小板減少性紫斑病の場合.抗リン脂質抗体の有無",
+                            "ヘパリン起因性血小板減少症",  "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
+                            "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因")]
+colnames(dxt.jspho1) <- c("登録コード", "CMLの細分類", "MDS染色体", "急性前骨髄球性白血病_染色体遺伝子","骨髄異形成関連変化随伴急性骨髄性白血病_詳細",
+                          "AML.FAB分類", "急性赤白血病_詳細", "AML_詳細", "Tリンパ芽球性白血病_リンパ腫" ,"FAB分類", "ヘアリー細胞白血病",
+                          "多発性骨髄腫_詳細",  "濾胞性リンパ腫_詳細","濾胞性リンパ腫国際予後因子_FLIPI", "びまん性大細胞型Ｂ細胞性リンパ腫_詳細",
+                          "血管内大細胞型Ｂ細胞性リンパ腫_詳細", "キャッスルマン_詳細", "成人Ｔ細胞白血病リンパ腫_詳細" , "腸管症関連Ｔ細胞リンパ腫_詳細",
+                          "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合" ,
+                          "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
+                          "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合", 
+                          "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数", 
+                          "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症", 
+                          "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.", 
+                          "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因")
+syousai_jspho <- merge(jspho_ads, dxt.jspho1, by.x = "SUBJID", by.y = "登録コード", all.x = T)             
+# ds.md.jspho[is.na(ds.md.jspho)] <- ""
+
+## JSH
 dxt.jsh <- m.jsh[, c(1, 2, 13:188)]
-ds.md.jsh <- merge(ds.jsh, dxt.jsh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
-ds.md.jsh[is.na(ds.md.jsh)] <- ""
-#NHOH
-ds.nhoh <- dxt.dataset.3org.year[dxt.dataset.3org.year$STUDYID == "NHOH", c(1:16)]
+dxt.jsh$AML詳細 <- "取得なし"
+dxt.jsh1 <- dxt.jsh[, c("登録コード", "CML病期", "MDS染色体", "APL", 
+                        "AML.MRC", "AML.M5.", "AML.M6.",
+                        "AML詳細", "Tリンパ芽球性白血病.リンパ腫", "FAB分類", "ヘアリーセル白血病.HCL.",
+                        "多発性骨髄腫", "濾胞性リンパ腫", "濾胞性リンパ腫国際予後因子..FLIPI.",
+                        "国際予後因子.IPI", "血管内B細胞リンパ腫.IVLBCL.", "キャッスルマン病", 
+                        "ATLL", "EATL", 
+                        "T.NK細胞腫瘍.PTCL", "Ann.Arbor.分類病期", "付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
+                        "再生不良性貧血の重症度", "続発性赤芽球癆.原疾患.", "サラセミア.細分類.", "自己免疫性溶血性貧血AIHA", "その他の貧血.二次性自己免疫性溶血性貧血AIHAの詳細_その他の詳細",
+                        "寒冷凝集素症", "二次性寒冷凝集素症", "巨赤芽球性貧血.ビタミンB12欠乏", "巨赤芽球性貧血.ビタミンB12欠乏.内因子の欠乏",
+                        "巨赤芽球性貧血.葉酸欠乏" , "鉄芽球性貧血..Sideroblastic.anemia.SA.", "ITP..血小板数..μL.", "ITP.抗リン脂質抗体.",
+                        "ヘパリン起因性血小板減少症",  "ヘパリン起因性血小板減少症.抗HIT抗体.",  "凝固異常症.血友病A.インヒビター合併.","凝固異常症.血友病B.インヒビター合併.",
+                        "抗リン脂質抗体症候群", "抗リン脂質抗体症候群.合併症.", "無顆粒球症")]
+colnames(dxt.jsh1) <- c("登録コード", "CMLの細分類", "MDS染色体", "急性前骨髄球性白血病_染色体遺伝子","骨髄異形成関連変化随伴急性骨髄性白血病_詳細",
+                          "AML.FAB分類", "急性赤白血病_詳細", "AML_詳細", "Tリンパ芽球性白血病_リンパ腫" ,"FAB分類", "ヘアリー細胞白血病",
+                          "多発性骨髄腫_詳細",  "濾胞性リンパ腫_詳細","濾胞性リンパ腫国際予後因子_FLIPI", "びまん性大細胞型Ｂ細胞性リンパ腫_詳細",
+                          "血管内大細胞型Ｂ細胞性リンパ腫_詳細", "キャッスルマン_詳細", "成人Ｔ細胞白血病リンパ腫_詳細" , "腸管症関連Ｔ細胞リンパ腫_詳細",
+                          "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
+                        "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
+                        "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合", 
+                        "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数", 
+                        "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症", 
+                        "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.", 
+                        "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" )
+syousai_jsh <- merge(jsh.1, dxt.jsh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)    
+# ds.md.jsh[is.na(ds.md.jsh)] <- ""
+
+## NHOH
 dxt.nhoh <- m.nhoh[, c(1, 2, 13:294)]
-ds.md.nhoh <- merge(ds.nhoh, dxt.nhoh, by.x = "SUBJID", by.y = "登録コード", all.x = T)
-ds.md.nhoh[is.na(ds.md.nhoh)] <- ""
+dxt.nhoh$骨髄異形成関連変化随伴急性骨髄性白血病 <- "取得なし"
+dxt.nhoh$FAB分類 <- "取得なし"
+dxt.nhoh$続発性赤芽球癆.原疾患. <- "取得なし"
+dxt.nhoh$サラセミア <- "取得なし"
+dxt.nhoh$自己免疫性溶血性貧血AIHA <- "取得なし"
+dxt.nhoh$AIHA_二次性の場合の原因 <- "取得なし"
+dxt.nhoh$寒冷凝集素症 <- "取得なし"
+dxt.nhoh$二次性寒冷凝集素症 <- "取得なし"
+dxt.nhoh$巨赤芽球性貧血.ビタミンB12欠乏 <- "取得なし"  
+dxt.nhoh$巨赤芽球性貧血.ビタミンB12欠乏.内因子の欠乏 <- "取得なし"
+dxt.nhoh$葉酸欠乏性貧血の場合の原因 <- "取得なし"
+dxt.nhoh$鉄芽球性貧血 <- "取得なし"
+dxt.nhoh$ヘパリン起因性血小板減少症 <- "取得なし"
+dxt.nhoh$ヘパリン起因性血小板減少症.抗HIT抗体. <- "取得なし"
+dxt.nhoh1 <- dxt.nhoh[, c("登録コード", "慢性骨髄増殖性白血病.CML...病期..MPN_4","骨髄異形成症候群..染色体.", "急性骨髄性白血病.APL.with.t.15.17..and.variantsの詳細" ,
+                          "骨髄異形成関連変化随伴急性骨髄性白血病", "急性骨髄性白血病.FAB分類", "急性骨髄性白血病.Acute.erythroid.leukemiaの詳細",
+                          "急性骨髄性白血病.染色体.遺伝子解析が不可能.発病形式.", "Tリンパ芽球性白血病.リンパ腫", "FAB分類", "Mature.B.cell.neoplasms.有毛細胞白血病.Variant.",
+                          "Mature.B.cell.neoplasms.多発性骨髄腫の詳細.MB_4_3","Mature.B.cell.neoplasms.濾胞性リンパ腫.組織型.", "濾胞性リンパ腫国際予後因子..FLIPI.",
+                          "国際予後因子.全年齢..International.Prognostic.Index.IPI.","Mature.B.cell.neoplasms.血管内B細胞リンパ腫.Variant.",  "Mature.B.cell.neoplasms.Castleman病.細分類.",
+                          "T.NK細胞腫瘍.成人T細胞白血病.リンパ腫.病型..TNK_5_1", "T.NK細胞腫瘍.Enteropathy.associated.T.cell.lymphoma.病型.",
+                          "T.NK細胞腫瘍.末梢性T細胞リンパ腫.特定不能.Variant.", "Ann.Arbor.分類病期", "付加事項", "HL.国際予後スコア.International.Prognostic.Score.IPS.", "Mature.B.cell.neoplasms.免疫不全関連リンパ腫の詳細",
+                          "Aplastic.anemia.の重症度", "続発性赤芽球癆.原疾患.", "サラセミア", "自己免疫性溶血性貧血AIHA", "AIHA_二次性の場合の原因",
+                          "寒冷凝集素症", "二次性寒冷凝集素症", "巨赤芽球性貧血.ビタミンB12欠乏", "巨赤芽球性貧血.ビタミンB12欠乏.内因子の欠乏",
+                          "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "血小板減少症.特発性血小板減少性紫斑病.血小板数.", "血小板減少症.特発性血小板減少性紫斑病.抗リン脂質抗体.",
+                          "ヘパリン起因性血小板減少症",  "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併.", "凝固異常症.血友病B.インヒビター合併.",
+                          "血栓傾向.抗リン脂質抗体症候群.分類.",  "血栓傾向.抗リン脂質抗体症候群.合併症.","好中球減少症.無顆粒球症の詳細")]
+colnames(dxt.nhoh1) <- c("登録コード", "CMLの細分類", "MDS染色体", "急性前骨髄球性白血病_染色体遺伝子","骨髄異形成関連変化随伴急性骨髄性白血病_詳細",
+                        "AML.FAB分類", "急性赤白血病_詳細", "AML_詳細", "Tリンパ芽球性白血病_リンパ腫" ,"FAB分類", "ヘアリー細胞白血病",
+                        "多発性骨髄腫_詳細",  "濾胞性リンパ腫_詳細","濾胞性リンパ腫国際予後因子_FLIPI", "びまん性大細胞型Ｂ細胞性リンパ腫_詳細",
+                        "血管内大細胞型Ｂ細胞性リンパ腫_詳細", "キャッスルマン_詳細", "成人Ｔ細胞白血病リンパ腫_詳細" , "腸管症関連Ｔ細胞リンパ腫_詳細",
+                        "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
+                        "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
+                        "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合", 
+                        "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数", 
+                        "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症", 
+                        "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.", 
+                        "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" )
+syousai_nhoh <- merge(nhoh.1, dxt.nhoh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)   
+#バインド
+dataset.3org.syousai <- rbind(syousai_jspho, syousai_jsh, syousai_nhoh)
 
-write.csv(ds.md.jspho, paste0(prtpath, "/output/JSPHO_MoreDetails.csv"), row.names = F)
-write.csv(ds.md.jsh, paste0(prtpath, "/output/JSH_MoreDetails.csv"), row.names = F)
-write.csv(ds.md.nhoh, paste0(prtpath, "/output/NHOH_MoreDetails.csv"), row.names = F)
+# 集計対象年のみ抽出
+dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org.syousai$MHSTDTC, 1, 4)) == kYear, ]
 
-#write.csv(jsh.1, paste0(prtpath, "/output/test.csv"), row.names = F)
+dataset.3org.syousai[is.na(dataset.3org.syousai)] <- ""
+
+write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F)
+# write.csv(ds.md.jsh, paste0(prtpath, "/output/JSH_MoreDetails.csv"), row.names = F)
+# write.csv(ds.md.nhoh, paste0(prtpath, "/output/NHOH_MoreDetails.csv"), row.names = F)
+
+#write.csv(dataset.3org.syousai, paste0(prtpath, "/output/test.csv"), row.names = F)
 # write.csv(jspho_ads, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
 
