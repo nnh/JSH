@@ -271,10 +271,14 @@ colnames(dxt.nhoh1) <- c("登録コード", "CMLの細分類", "MDS染色体", "
 syousai_nhoh <- merge(nhoh.1, dxt.nhoh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)   
 #バインド
 dataset.3org.syousai <- rbind(syousai_jspho, syousai_jsh, syousai_nhoh)
-
+# age diagnosis
+dataset.3org.syousai$age.diagnosis <- YearDif(dataset.3org.syousai$BRTHDTC, dataset.3org.syousai$MHSTDTC)
+dataset.3org.syousai$cat.age.diagnosis <- cut(dataset.3org.syousai$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
+                                               labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
 # 集計対象年のみ抽出
 dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org.syousai$MHSTDTC, 1, 4)) == kYear, ]
 # 
+dataset.3org.syousai <- merge(dataset.3org.syousai, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 dataset.3org.syousai[is.na(dataset.3org.syousai)] <- ""
 
 write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F)
