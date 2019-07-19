@@ -110,7 +110,7 @@ colnames(jsh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL",
 # jsh.1 <- jsh.1[(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d")) <= (format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")), ]
 jsh.1 <- subset(jsh.1, as.integer(as.integer(format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")) - as.integer(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d"))) >= 0)
 # # 3団体を繋げた基本のデータセットを作成
-# dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
+dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
 
 # age diagnosis
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
@@ -123,46 +123,10 @@ dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%
 
 # write.csv(dataset.3org_yyyy,  paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
 
-# 団体別登録数
-# # 施設数
-dxt.dataset.3org.year <- dataset.3org_yyyy
-# by.org.c.facilities <- xtabs( ~ SITEID + STUDYID , data = dxt.dataset.3org.year )
-# by.org.c.facilities.df <- as.data.frame(by.org.c.facilities)
-# by.org.c.facilities.df$count <- ifelse(by.org.c.facilities.df$Freq == 0, 0, 1)
-# by.org.facilities <- xtabs( ~ STUDYID + count , data = by.org.c.facilities.df )
-# by.org.facilities.mat <- matrix(by.org.facilities , nrow(by.org.facilities), ncol(by.org.facilities))
-# rownames(by.org.facilities.mat) <- rownames(by.org.facilities)
-# colnames(by.org.facilities.mat) <- c("登録なし", "施設数")
-# # 登録数
-# by.org.np <- xtabs( ~ STUDYID + count , data = dxt.dataset.3org.year )
-# by.org.mat <- matrix(by.org.np, nrow(by.org.np), ncol(by.org.np))
-# rownames(by.org.mat) <- rownames(by.org.np)
-# colnames(by.org.mat) <- "登録数"
-# # 施設数と登録数をつなぐ
-# by.org <- cbind(by.org.facilities.mat, by.org.mat)
-# by.organization <- by.org[, c(2,3)]
-# 
-# res.by.organization <- data.frame(apply(by.organization, 2, function(d){ c(d, sum(d))}))  # 総計の行追加
-
-# # 施設別登録数
-# by.facilities <- xtabs( ~ SITEID + count , data = dxt.dataset.3org.year)
-# by.facilities.df <- as.data.frame(by.facilities)
-# by.facilities.df <- by.facilities.df[, c(1, 3)]
-# colnames(by.facilities.df)[2] <- "登録数"
-# by.facilities.np <- merge(by.facilities.df, facilities, by.x = "SITEID", by.y = "施設CD", all.x = T)
-# dxt.by.facilities <- by.facilities.np[, c(1, 3, 2)]
-# colnames(dxt.by.facilities)[2] <- "施設名"
-# 
-# total <- data.frame(
-#   SITEID = "00000",
-#   施設名 = "合計", 
-#   登録数 = sum(dxt.by.facilities$登録数)
-# )  # 合計の計算
-# 
-# res.by.facilities <- rbind(dxt.by.facilities, total)
 
 
 # 疾患別集計
+dxt.dataset.3org.year <- dataset.3org_yyyy
 dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
                                                labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
 by.disease <- xtabs(count ~ MHDECOD + cat.age.diagnosis, data = dxt.dataset.3org.year)
@@ -310,7 +274,7 @@ dataset.3org.syousai <- rbind(syousai_jspho, syousai_jsh, syousai_nhoh)
 
 # 集計対象年のみ抽出
 dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org.syousai$MHSTDTC, 1, 4)) == kYear, ]
-
+# 
 dataset.3org.syousai[is.na(dataset.3org.syousai)] <- ""
 
 write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F)
