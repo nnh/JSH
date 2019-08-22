@@ -60,7 +60,7 @@ jspho <- jspho[!(is.na(as.integer(jspho$year))), ]
 jspho$age.diagnosis <- YearDif(jspho$生年月日, jspho$診断年月日)
 jspho <- jspho[jspho$age.diagnosis < 20 , ]
 jspho_ads <- jspho[as.integer(jspho$year) > 2011 & as.integer(jspho$year) <= kYear ,
-                 c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "MHDECOD",
+                 c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "field161", "MHDECOD",
                    "name_ja", "生年月日", "診断年月日", "STUDYID")]
 colnames(jspho_ads)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                             "BRTHDTC", "MHSTDTC")
