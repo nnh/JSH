@@ -1,6 +1,6 @@
 # JSH, NHOH, JSPHO 団体集計 プログラム
 # Mamiko Yonejima
-# 2017/4/20
+# 2017/4/20　作成
 # 2019/7/10 更新
 
 day.shimekiri <- "20190531"
