@@ -1,4 +1,4 @@
-# JSPHO to WHO mapping 2017年集計用
+# JSH, NHOH, JSPHO 団体集計 プログラム
 # Mamiko Yonejima
 # 2017/4/20
 # 2019/7/10 更新
