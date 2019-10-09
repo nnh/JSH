@@ -5,7 +5,7 @@
 
 day.shimekiri <- "20190531"
 kYear <- "2018"
-prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2019/集計/20190806"
+prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2012_2018"
 
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
@@ -43,9 +43,11 @@ duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 #------JSPHO---------
 #性別、転帰をマージする処理(JSPHO)
 dxt_jspho_outcome <- jspho_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
+
 jspho  <- merge(jspho.rgst, dxt_jspho_outcome, by = "登録コード", all.x = T)
 jspho$year <- substr(jspho$診断年月日, 1, 4)  
 jspho$SCSTRESC <- floor(as.integer(sub("^.*.-","",jspho$field173))/1000)
+# 俊樹先生
 
 # STUDYID
 jspho$STUDYID <- "JSPHO"
@@ -59,7 +61,8 @@ jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = 
 jspho <- jspho[!(is.na(as.integer(jspho$year))), ]
 jspho$age.diagnosis <- YearDif(jspho$生年月日, jspho$診断年月日)
 jspho <- jspho[jspho$age.diagnosis < 20 , ]
-jspho_ads <- jspho[as.integer(jspho$year) > 2011 & as.integer(jspho$year) <= kYear ,
+
+jspho_ads <- jspho[as.integer(jspho$year) > 2011 & as.integer(jspho$year) <= kYear ,  
                  c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "field161", "MHDECOD",
                    "name_ja", "生年月日", "診断年月日", "STUDYID")]
 colnames(jspho_ads)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
@@ -112,6 +115,17 @@ jsh.1 <- subset(jsh.1, as.integer(as.integer(format(as.Date(jsh.1$MHSTDTC), "%Y%
 # # 3団体を繋げた基本のデータセットを作成
 dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
 
+# 俊樹先生 
+dataset.3org$SEX <- ifelse(dataset.3org$SEX == "男性", 0, 1)
+dataset.3org$DTHFL <- ifelse(dataset.3org$DTHFL == "yes", TRUE,
+                      ifelse(dataset.3org$DTHFL == "no", FALSE, NA))
+dataset.3org <- dataset.3org[format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri, ]
+
+dataset.3org[is.na(dataset.3org)] <- ""
+write.csv(dataset.3org,  paste0(prtpath, "/output/dataset_3org_20191009.csv"), row.names = F)
+
+
+
 # age diagnosis
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
 
@@ -121,7 +135,7 @@ dataset.3org$count <- 1
 # 集計対象年のみ抽出
 dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == kYear, ]
 
-# write.csv(dataset.3org_yyyy,  paste0(prtpath, "/output/dataset_3org.csv"), row.names = F)
+
 
 
 
