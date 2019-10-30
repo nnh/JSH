@@ -313,16 +313,16 @@ jsh.1 <- subset(jsh.1, as.integer(as.integer(format(as.Date(jsh.1$MHSTDTC), "%Y%
 # # 3団体を繋げた基本のデータセットを作成
 dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
 
-# 俊樹先生 
-dataset.3org$SEX <- ifelse(dataset.3org$SEX == "男性", 0, 1)
-dataset.3org$DTHFL <- ifelse(dataset.3org$DTHFL == "yes", TRUE,
-                      ifelse(dataset.3org$DTHFL == "no", FALSE, NA))
-dataset.3org <- dataset.3org[format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri, ]
-
-dataset.3org[is.na(dataset.3org)] <- ""
-write.csv(dataset.3org,  paste0(prtpath, "/output/dataset_3org_20191010.csv"), row.names = F)
-
-
+# # 俊樹先生 
+# dataset.3org$SEX <- ifelse(dataset.3org$SEX == "男性", 0, 1)
+# dataset.3org$DTHFL <- ifelse(dataset.3org$DTHFL == "yes", TRUE,
+#                       ifelse(dataset.3org$DTHFL == "no", FALSE, NA))
+# dataset.3org <- dataset.3org[format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri, ]
+# 
+# dataset.3org[is.na(dataset.3org)] <- ""
+# write.csv(dataset.3org,  paste0(prtpath, "/output/dataset_3org_20191010.csv"), row.names = F)
+# 
+# 
 
 # age diagnosis
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
@@ -332,10 +332,6 @@ dataset.3org$count <- 1
 
 # 集計対象年のみ抽出
 dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == kYear, ]
-
-
-
-
 
 # 疾患別集計
 dxt.dataset.3org.year <- dataset.3org_yyyy
