@@ -1,6 +1,7 @@
 # Import library
 library(sas7bdat)
-
+library(dplyr)
+library(stringr)
 # function section
 SortDisease <- function(input_dataframe, sort_key){
   # input_dataframeをsort_key列の降順でソートして返す
@@ -72,7 +73,7 @@ EditLegend <- function(filepath, extension, legend_text, legend_cex, legend_fill
 # Constant section
 # 出力デバイス
 # output_extensionension <- "png"
-output_extensionension <- "eps"
+output_extension <- "eps"
 
 # 世代(AGECAT2N)  1:child,2:aya,3:adult,4:old
 # 5:allに1～4の合計を格納
@@ -96,7 +97,10 @@ kTotalGraph_color <- c(kGraph_color, kTotalGraph_color_add)
 kOther_disease_start <- length(kGraph_color)
 # 病名TOP10
 kOutput_disease_count <- kOther_disease_start - 1
-
+# 対象疾患分類
+kALL_LBL <- "ALL, LBL"
+kTarget_disease <- c(kALL_LBL, "AML", "B-NHL, MM", "HD", "LCH, DC", "MDS", "MDS/MPN", "mixed AL", "MPN", "PDGFR/FGFR/PCM1-JAK2",
+                     "PTLD", "T,NK lymphoma")
 # データフレーム列名定義
 kSum_colname <- "Sum"  # addmargins関数の合計行列名
 kDisease_colname <- "diseasename"  # 病名
@@ -112,9 +116,9 @@ kSortall_colname <- c(kDisease_colname, kGeneration_colname, kCount_colname)
 
 # OS毎パス切り分け
 if (Sys.getenv("R_PLATFORM") == "") {
-  basepath <- "//aronas/Stat/Trials/JSH2017"   # Windows
+  basepath <- "//aronas/Stat/Trials/JSH/JSH2019"   # Windows
 } else {
-  basepath <- "/Volumes/Stat/Trials/JSH2017"   # Mac
+  basepath <- "/Volumes/Stat/Trials/JSH/JSH2019"   # Mac
 }
 
 # InputData path
@@ -124,21 +128,42 @@ sasdat_path <- paste(basepath, ads_folder_name, sasdat_name, sep="/")
 
 # OutputData path
 output_folder_name <- "output"
-# output_path <- paste(basepath, output_folder_name, output_extension, sep="/")
-output_path <- "C:/Users/MarikoOhtsuka/Desktop/plot/test"
+#output_path <- paste(basepath, output_folder_name, output_extension, sep="/")
+output_path <- "/Users/admin/Documents/GitHub/JSH/output"
 
 # READ SAS analysis data set (ADS)
-sasdat <- read.sas7bdat(sasdat_path)
+sasdat2019 <- read.sas7bdat(sasdat_path)
 
 # ******************
 # * TOTAL Piechart *
 # ******************
+# ALL/LBLをまとめる
+all_lbl_flag <- str_extract(levels(sasdat2019$MHGRPTERM), pattern="ALL.LBL$")
+all_lbl_list <- levels(sasdat2019$MHGRPTERM)[!is.na(all_lbl_flag)]
+sasdat2019$rawMHGRPTERM <- sasdat2019$MHGRPTERM
+sasdat2019$MHGRPTERM <- as.character(sasdat2019$MHGRPTERM)
+for (i in 1:nrow(sasdat2019)){
+  if (sasdat2019[i, "MHGRPTERM"] %in% all_lbl_list){
+    sasdat2019[i, "MHGRPTERM"] <- kALL_LBL
+  }
+}
+sasdat2019$MHGRPTERM <- as.factor(sasdat2019$MHGRPTERM)
+sasdat <- subset(sasdat2019, sasdat2019$MHGRPTERM %in% kTarget_disease)
 # 世代・疾患分類毎の件数合計
 sum_table <- addmargins(table(sasdat$MHGRPTERM, sasdat$AGECAT2N))
 # 世代名、病名のデータフレームを作成
 sum_table <- cbind(sum_table, rownames(sum_table))
 dst_total <- as.data.frame(sum_table, stringsAsFactors = F)
 colnames(dst_total) <- kPiechart_dst_colname
+# 対象病名のみの表にする
+temp_dst_total <- dst_total
+dst_total <- subset(dst_total, all > 0)
+dst_target_disease <- data.frame(kTarget_disease, stringsAsFactors=F)
+colnames(dst_target_disease) <- "diseasename"
+dst_total <- left_join(dst_target_disease, dst_total, by="diseasename")
+temp_dst_total <- select(dst_total, -diseasename)
+dst_total <- cbind(temp_dst_total, dst_total$diseasename)
+dst_total <- rename(dst_total, diseasename="dst_total$diseasename")
 # 世代合計"ALL"列の件数降順でソート
 dst_total <- SortDisease(subset(dst_total, diseasename != kSum_colname), generation_total_colname)
 # パイチャート設定色をセット
