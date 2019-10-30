@@ -489,6 +489,7 @@ dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai
 dataset.3org.syousai <- merge(dataset.3org.syousai, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 dataset.3org.syousai[is.na(dataset.3org.syousai)] <- ""
 
+
 write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F)
 # write.csv(ds.md.jsh, paste0(prtpath, "/output/JSH_MoreDetails.csv"), row.names = F)
 # write.csv(ds.md.nhoh, paste0(prtpath, "/output/NHOH_MoreDetails.csv"), row.names = F)
