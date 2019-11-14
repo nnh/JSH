@@ -3,7 +3,7 @@
 # 2017/4/20　作成
 # 2019/7/10 更新
 
-day.shimekiri <- "20190531"
+date.cutoff <- "20190531"
 kYear <- "2018"
 prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2012_2018"
 
@@ -45,9 +45,14 @@ duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 dxt_jspho_outcome <- jspho_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
 
 #JSPHOの診断名が空値を埋める
-jspho.rgst -> jspho
-jspho$flag <- ifelse(jspho$field7 == 2 | (jspho$field7 == 1 & jspho$field37 == 8 & jspho$field69 == 2), "non_tumor", "tumor")
-df.tumor <- subset(jspho, jspho$flag == "tumor")
+# 2017年診断例までの症例のグループと、2018年診断以降のグループに分ける を抽出jspho.rgst -> jspho
+jspho.rgst$year <- substr(jspho.rgst$診断年月日, 1, 4)  
+dxt2017_jspho <- subset(jspho.rgst, jspho.rgst$year <= 2017)
+dxt2018_jspho <- subset(jspho.rgst, jspho.rgst$year >= 2018)
+# 2017年診断例までの症例のグループに対しては、フィールドの入力値からWHO2008分類の病名を当てはめる
+dxt2017_jspho$flag <- ifelse(dxt2017_jspho$field7 == 2 | (dxt2017_jspho$field7 == 1 & dxt2017_jspho$field37 == 8 & dxt2017_jspho$field69 == 2), "non_tumor", "tumor")
+df.tumor <- subset(dxt2017_jspho, dxt2017_jspho$flag == "tumor")
+
 df.tumor$MHDECOD1 <- ifelse(is.na(df.tumor$field1), df.tumor$field1,
                             ifelse((df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 1) | (df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 2), 53, 
                             ifelse(df.tumor$field7 == 1 & df.tumor$field37 == 10, 52, 
@@ -136,7 +141,7 @@ df.tumor$MHDECOD2 <- ifelse(is.na(df.tumor$field1), df.tumor$field1,
                            ifelse(df.tumor$field37 == 9, 9003,NA)))))))))))))))))))))))))))))))))))))))))))) )#  その他の造血器腫瘍			9003
 df.tumor$MHDECOD <- ifelse(is.na(df.tumor$MHDECOD1), df.tumor$MHDECOD2, df.tumor$MHDECOD1)  # 空欄はあてはまらないもの
 
-df.non.t <- subset(jspho, jspho$flag == "non_tumor")
+df.non.t <- subset(dxt2017_jspho, dxt2017_jspho$flag == "non_tumor")
 df.non.t$MHDECOD1 <- ifelse(is.na(df.non.t$field1), df.non.t$field1,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 4, 1001,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 5, 1002,
@@ -237,15 +242,16 @@ df.non.t$MHDECOD3 <- ifelse(!is.na(df.non.t$field1), df.non.t$field1, NA)
 #  あてはまらない病名に仮コードを付与 # その他の血液疾患 9004
 df.non.t$MHDECOD <- ifelse(is.na(df.non.t$MHDECOD1), df.non.t$MHDECOD2, 
                     ifelse(is.na(df.non.t$MHDECOD2), df.non.t$MHDECOD3, NA))  # 空欄はあてはまらないもの
-df.tumor <- df.tumor[, -c(407, 408)]
-df.non.t <- df.non.t[, -c(407, 408, 409)]
+df.tumor <- df.tumor[, -c(407 : 409)]
+df.non.t <- df.non.t[, -c(407 : 410)]
+result_2017_jspho <- rbind(df.tumor, df.non.t)
 
-jspho.rgst <- rbind(df.tumor, df.non.t)
-
+# colnamesを合わせ、すべてのデータをバインドする
+dxt2018_jspho$MHDECOD <- dxt2018_jspho$field1
+jspho_bind <- rbind(result_2017_jspho, dxt2018_jspho)
 jspho  <- merge(jspho.rgst, dxt_jspho_outcome, by = "登録コード", all.x = T)
-jspho$year <- substr(jspho$診断年月日, 1, 4)  
+# 県コードを作成
 jspho$SCSTRESC <- floor(as.integer(sub("^.*.-","",jspho$field173))/1000)
-# 俊樹先生
 
 # STUDYID
 jspho$STUDYID <- "JSPHO"
@@ -308,21 +314,9 @@ jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integ
 colnames(jsh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
 # BRTHDTC, MHSTDTCが逆転している症例を除く
-# jsh.1 <- jsh.1[(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d")) <= (format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")), ]
 jsh.1 <- subset(jsh.1, as.integer(as.integer(format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")) - as.integer(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d"))) >= 0)
 # # 3団体を繋げた基本のデータセットを作成
 dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
-
-# # 俊樹先生 
-# dataset.3org$SEX <- ifelse(dataset.3org$SEX == "男性", 0, 1)
-# dataset.3org$DTHFL <- ifelse(dataset.3org$DTHFL == "yes", TRUE,
-#                       ifelse(dataset.3org$DTHFL == "no", FALSE, NA))
-# dataset.3org <- dataset.3org[format(as.Date(dataset.3org$created.date), "%Y%m%d") <= day.shimekiri, ]
-# 
-# dataset.3org[is.na(dataset.3org)] <- ""
-# write.csv(dataset.3org,  paste0(prtpath, "/output/dataset_3org_20191010.csv"), row.names = F)
-# 
-# 
 
 # age diagnosis
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
@@ -331,7 +325,7 @@ dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC
 dataset.3org$count <- 1
 
 # 集計対象年のみ抽出
-dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == kYear, ]
+dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= date.cutoff & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == kYear, ]
 
 # 疾患別集計
 dxt.dataset.3org.year <- dataset.3org_yyyy
@@ -346,7 +340,6 @@ wip.by.disease <- as.data.frame(cbind(by.disease.mat, sum))
 wip.by.disease$MHDECOD <- rownames(by.disease)
 
 #　病名コードとマージ
-# dxt.disease <- disease[disease$大分類 == "hematology", ]  # 血液疾患のみ抽出
 res.by.disease<- merge(wip.by.disease, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all = T )
 
 # NA処理
@@ -354,7 +347,6 @@ res.by.disease[is.na(res.by.disease)] <- 0
 write.csv(res.by.disease, paste0(prtpath, "/output/result_disease.csv"), row.names = F)
 
 # 詳細集計用データの作成
-
 ## JSPHO
 dxt.jspho <- jspho[, c(1, 2, 17:420)]
 dxt.jspho$MDS染色体 <- "取得なし"
@@ -406,7 +398,6 @@ colnames(dxt.jspho1) <- c("登録コード", "CMLの細分類", "MDS染色体", 
                           "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.", 
                           "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因")
 syousai_jspho <- merge(jspho_ads, dxt.jspho1, by.x = "SUBJID", by.y = "登録コード", all.x = T)             
-# ds.md.jspho[is.na(ds.md.jspho)] <- ""
 
 ## JSH
 dxt.jsh <- m.jsh[, c(1, 2, 13:188)]
@@ -435,7 +426,6 @@ colnames(dxt.jsh1) <- c("登録コード", "CMLの細分類", "MDS染色体", "�
                         "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.", 
                         "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" )
 syousai_jsh <- merge(jsh.1, dxt.jsh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)    
-# ds.md.jsh[is.na(ds.md.jsh)] <- ""
 
 ## NHOH
 dxt.nhoh <- m.nhoh[, c(1, 2, 13:294)]
@@ -484,16 +474,12 @@ dataset.3org.syousai$age.diagnosis <- YearDif(dataset.3org.syousai$BRTHDTC, data
 dataset.3org.syousai$cat.age.diagnosis <- cut(dataset.3org.syousai$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
                                                labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
 # 集計対象年のみ抽出
-dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai$created.date), "%Y%m%d") <= day.shimekiri & as.integer(substr(dataset.3org.syousai$MHSTDTC, 1, 4)) == kYear, ]
-# 
+dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai$created.date), "%Y%m%d") <= date.cutoff & as.integer(substr(dataset.3org.syousai$MHSTDTC, 1, 4)) == kYear, ]
+# WHO分類のCSVをマージする
 dataset.3org.syousai <- merge(dataset.3org.syousai, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 dataset.3org.syousai[is.na(dataset.3org.syousai)] <- ""
 
 
 write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F)
-# write.csv(ds.md.jsh, paste0(prtpath, "/output/JSH_MoreDetails.csv"), row.names = F)
-# write.csv(ds.md.nhoh, paste0(prtpath, "/output/NHOH_MoreDetails.csv"), row.names = F)
 
-#write.csv(dataset.3org.syousai, paste0(prtpath, "/output/test.csv"), row.names = F)
-# write.csv(jspho_ads, "./output/JSH-NHO-datacleaning-20180613.csv",row.names = F)
 
