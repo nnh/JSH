@@ -92,8 +92,7 @@ df.tumor$MHDECOD1 <- ifelse(is.na(df.tumor$field1), df.tumor$field1,
                             ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 4, 12,
                             ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 1, 16,
                             ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 2, 17,
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 3, 18,
-                            ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 3, 9005, NA)))))))))))))))))))))))))))))))))))))))))
+                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 3, 18, NA))))))))))))))))))))))))))))))))))))))))
 df.tumor$MHDECOD2 <- ifelse(is.na(df.tumor$field1), df.tumor$field1,
                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 4, 19,
                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field51 == 5, 27,
@@ -135,13 +134,11 @@ df.tumor$MHDECOD2 <- ifelse(is.na(df.tumor$field1), df.tumor$field1,
                            ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 5, 144,
                            ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 4, 145,
                            ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 2, 154,
-                           ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 3, 155, 
-                           ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 5, 9001, #  あてはまらない病名に仮コードを付与 # その他のリンパ増殖性疾患_その他	9001
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 12, 9002, #  NHL_病理診断_その他			9002 
-                           ifelse(df.tumor$field37 == 9, 9003,NA)))))))))))))))))))))))))))))))))))))))))))) )#  その他の造血器腫瘍			9003
+                           ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 3, 155, NA))))))))))))))))))))))))))))))))))))))))))
 df.tumor$MHDECOD <- ifelse(is.na(df.tumor$MHDECOD1), df.tumor$MHDECOD2, df.tumor$MHDECOD1)  # 空欄はあてはまらないもの
 
 df.non.t <- subset(dxt2017_jspho, dxt2017_jspho$flag == "non_tumor")
+
 df.non.t$MHDECOD1 <- ifelse(is.na(df.non.t$field1), df.non.t$field1,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 4, 1001,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 5, 1002,
@@ -184,9 +181,7 @@ df.non.t$MHDECOD1 <- ifelse(is.na(df.non.t$field1), df.non.t$field1,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 1, 1046,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 2, 1047,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 3, 1048,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 4, 1049,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 15, 9004,NA))))))))))))))))))))))))))))))))))))))))))))
-
+                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 4, 1049, NA)))))))))))))))))))))))))))))))))))))))))))
 df.non.t$MHDECOD2 <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 1, 1050,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 2 & df.non.t$field123 == 1, 1051,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 2 & df.non.t$field123 == 2, 1052,
@@ -255,11 +250,16 @@ jspho$SCSTRESC <- floor(as.integer(sub("^.*.-","",jspho$field173))/1000)
 
 # STUDYID
 jspho$STUDYID <- "JSPHO"
-# WHO2006をWHO2016に変換
-jspho$MHDECOD <- ifelse(nchar(jspho$field1) != 5, round(jspho$field1 * 10 + 10000, digits = 0)
-                                    , jspho$field1)
-jspho$MHDECOD <- ifelse(jspho$MHDECOD == 10930, 10931, jspho$MHDECOD)
-jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+#★ WHO2008をWHO2016に変換  #todo 2008で集計するのか、2016で集計するのかによって変更できるようにする
+# jspho$MHDECOD <- ifelse(nchar(jspho$field1) != 5, round(jspho$field1 * 10 + 10000, digits = 0)
+#                                   , jspho$field1)
+#　jspho$MHDECOD <- ifelse(jspho$MHDECOD == 10930, 10931, jspho$MHDECOD)
+# jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+#☆ WHO2016をWHO2008に変換
+# jspho$MHDECOD <- ifelse(nchar(jspho$field1) == 5, round((jspho$field1 - 10000) / 10, digits = 0)
+#                                   , jspho$field1)
+# jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+
 
 # 診断年月日2012年以降、必要変数を抽出
 jspho <- jspho[!(is.na(as.integer(jspho$year))), ]
