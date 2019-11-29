@@ -5,7 +5,8 @@
 
 date.cutoff <- "20190531"
 kYear <- "2018"
-prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2012_2018"
+flag <- 2 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
+prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/JSH registry todo"
 
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
@@ -250,16 +251,19 @@ jspho$SCSTRESC <- floor(as.integer(sub("^.*.-","",jspho$field173))/1000)
 
 # STUDYID
 jspho$STUDYID <- "JSPHO"
-#★ WHO2008をWHO2016に変換  #todo 2008で集計するのか、2016で集計するのかによって変更できるようにする
-# jspho$MHDECOD <- ifelse(nchar(jspho$field1) != 5, round(jspho$field1 * 10 + 10000, digits = 0)
-#                                   , jspho$field1)
-#　jspho$MHDECOD <- ifelse(jspho$MHDECOD == 10930, 10931, jspho$MHDECOD)
-# jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
-#☆ WHO2016をWHO2008に変換
-# jspho$MHDECOD <- ifelse(nchar(jspho$field1) == 5, round((jspho$field1 - 10000) / 10, digits = 0)
-#                                   , jspho$field1)
-# jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 
+#WHO2008をWHO2016に変換 
+if (flag == 1) {
+jspho$MHDECOD <- ifelse(nchar(jspho$field1) != 5, round(jspho$field1 * 10 + 10000, digits = 0)
+                                  , jspho$field1)
+　jspho$MHDECOD <- ifelse(jspho$MHDECOD == 10930, 10931, jspho$MHDECOD)
+jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+} else {
+# WHO2016をWHO2008に変換
+jspho$MHDECOD <- ifelse(nchar(jspho$field1) >= 5, round((jspho$field1 - 10000) / 10, digits = 0)
+                                  , jspho$field1)
+jspho <- merge(jspho, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
+}
 
 # 診断年月日2012年以降、必要変数を抽出
 jspho <- jspho[!(is.na(as.integer(jspho$year))), ]
@@ -280,11 +284,19 @@ m.nhoh_0 <- merge(nhoh_report,p.nhoh.rgst, by="登録コード", all.x= T)
 m.nhoh <- merge(m.nhoh_0, dxt_nhoh_outcome, by="登録コード", all.x= T)
 # STUDYID
 m.nhoh$STUDYID <- "NHOH"
-# WHO2006をWHO2016に変換
+#WHO2008をWHO2016に変換 
+if (flag == 1) {
 m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) != 5, round(m.nhoh$field2 * 10 + 10000, digits = 0)
                         , m.nhoh$field2)
 m.nhoh$MHDECOD <- ifelse(m.nhoh$MHDECOD == 10930, 10931, m.nhoh$MHDECOD)
 m.nhoh <- merge(m.nhoh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+} else {
+# WHO2016をWHO2008に変換
+m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) > 5, round((m.nhoh$field2 - 10000) / 10, digits = 0)
+                           , m.nhoh$field2)  
+m.nhoh <- merge(m.nhoh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
+}
+  
 # 診断年月日2012年以降、必要変数抽出
 nhoh.1 <- m.nhoh[as.integer(substr(m.nhoh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= kYear ,
                  c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日.y", "最終確認日", "シート作成時施設コード", "MHDECOD",
@@ -302,11 +314,18 @@ m.jsh_0 <- merge(jsh_report, p.jsh.rgst, by = "登録コード", all.x = T)
 m.jsh <- merge(m.jsh_0, dxt_jsh_outcome, by = "登録コード", all.x = T)
 # STUDYID
 m.jsh$STUDYID <- "JSH"
-# WHO2006をWHO2016に変換
+#WHO2008をWHO2016に変換 
+if (flag == 1) {
 m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) != 5, round(m.jsh$field1 * 10 + 10000, digits = 0)
                          , m.jsh$field1)
 m.jsh$MHDECOD <- ifelse(m.jsh$MHDECOD == 10930, 10931, m.jsh$MHDECOD)
 m.jsh <- merge(m.jsh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+} else {
+m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) >= 5, round((m.jsh$field1-10000) / 10, digits = 0)
+                          , m.jsh$field1)
+m.jsh <- merge(m.jsh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)  
+}
+  
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
 jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= kYear ,
                c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "MHDECOD",
@@ -320,6 +339,13 @@ dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads)
 
 # age diagnosis
 dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
+
+# flagが2の場合はここで、データ出力
+if(flag == 2) {
+write.csv(dataset.3org, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads_WHO2008.csv"), row.names = F)
+} else {
+  next
+}
 
 # count用に"1"を入力
 dataset.3org$count <- 1
