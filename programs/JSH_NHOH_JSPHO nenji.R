@@ -3,7 +3,7 @@
 # 2017/4/20　作成
 # 2019/7/10 更新
 
-date.cutoff <- "20190531"
+date.cutoff <- "20191130"
 kYear <- "2018"
 flag <- 2 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
 prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/JSH registry todo"
@@ -15,9 +15,9 @@ jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_190806_0937.csv"), na.strin
 jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_190801_1100.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_190801_1100.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_190801_1100.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_190801_1056.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_190801_1056.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_190801_1056.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_191122_1533.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_191122_1533.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_191122_1533.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 list <- list.files(paste0(prtpath, "/input"))
 df.name <- sub(".csv.*", "", list)  
@@ -342,7 +342,9 @@ dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC
 
 # flagが2の場合はここで、データ出力
 if(flag == 2) {
+dataset.3org[is.na(dataset.3org)] <- ""
 write.csv(dataset.3org, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads_WHO2008.csv"), row.names = F)
+ # ここで終わりにするというのを入れたい  #
 } else {
   next
 }
