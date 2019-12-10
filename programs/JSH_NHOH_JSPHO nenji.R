@@ -47,12 +47,12 @@ dxt_jspho_outcome <- jspho_outcome[, c("登録コード", "生死", "死亡日",
 
 #JSPHOの診断名が空値を埋める
 # 2017年診断例までの症例のグループと、2018年診断以降のグループに分ける を抽出jspho.rgst -> jspho
-jspho.rgst$year <- substr(jspho.rgst$診断年月日, 1, 4)  
-dxt2017_jspho <- subset(jspho.rgst, jspho.rgst$year <= 2017)
-dxt2018_jspho <- subset(jspho.rgst, jspho.rgst$year >= 2018)
+jspho.rgst$year <- as.integer(substr(jspho.rgst$診断年月日, 1, 4))
+before201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 <= "2018/05/30")
+after201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 >= "2018/06/01")
 # 2017年診断例までの症例のグループに対しては、フィールドの入力値からWHO2008分類の病名を当てはめる
-dxt2017_jspho$flag <- ifelse(dxt2017_jspho$field7 == 2 | (dxt2017_jspho$field7 == 1 & dxt2017_jspho$field37 == 8 & dxt2017_jspho$field69 == 2), "non_tumor", "tumor")
-df.tumor <- subset(dxt2017_jspho, dxt2017_jspho$flag == "tumor")
+before201806_jspho$flag <- ifelse(before201806_jspho$field7 == 2 | (before201806_jspho$field7 == 1 & before201806_jspho$field37 == 8 & before201806_jspho$field69 == 2), "non_tumor", "tumor")
+df.tumor <- subset(before201806_jspho, before201806_jspho$flag == "tumor")
 df.tumor <- df.tumor[c(1:500), ]
 # df.tumor <- df.tumor[, -16]
 df.tumor$MHDECOD1 <- ifelse((df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 1) | (df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 2), 53, 
@@ -137,7 +137,7 @@ df.tumor$MHDECOD2 <- ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.
                            ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 3, 155, NA)))))))))))))))))))))))))))))))))))))))))
 df.tumor$MHDECOD <- ifelse(is.na(df.tumor$MHDECOD1), df.tumor$MHDECOD2, df.tumor$MHDECOD1)  # 空欄はあてはまらないもの
 
-df.non.t <- subset(dxt2017_jspho, dxt2017_jspho$flag == "non_tumor")
+df.non.t <- subset(before201806_jspho, before201806_jspho$flag == "non_tumor")
 
 df.non.t$MHDECOD1 <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 4, 1001,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 5, 1002,
@@ -239,11 +239,12 @@ df.non.t$MHDECOD <- ifelse(is.na(df.non.t$MHDECOD1), df.non.t$MHDECOD2,
 df.tumor <- df.tumor[, -c(408, 409)]
 df.non.t <- df.non.t[, -c(408, 409)]
 result_2017_jspho <- rbind(df.tumor, df.non.t)
+result_2017_jspho <- subset(result_2017_jspho, !is.na(result_2017_jspho$MHDECOD))
 # write.csv(result_2017_jspho, paste0(prtpath, "/output/test1.csv"), row.names = F)
 # colnamesを合わせ、すべてのデータをバインドする
-dxt2018_jspho$MHDECOD <- dxt2018_jspho$field1
+after201806_jspho$MHDECOD <- after201806_jspho$field1
 result_2017_jspho <- result_2017_jspho[, -407]
-jspho_bind <- rbind(result_2017_jspho, dxt2018_jspho)
+jspho_bind <- rbind(result_2017_jspho, after201806_jspho)
 jspho  <- merge(jspho_bind, dxt_jspho_outcome, by = "登録コード", all.x = T)
 
 # 県コードを作成
@@ -253,7 +254,8 @@ jspho$SCSTRESC <- floor(as.integer(sub("^.*.-","",jspho$field173))/1000)
 jspho$STUDYID <- "JSPHO"
 
 # 診断年月日2012年以降、必要変数を抽出
-jspho <- jspho[!(is.na(as.integer(jspho$year))), ]
+jspho2012 <- subset(jspho, jspho$year >= 2012)
+jspho <- subset(jspho2012, jspho2012$year <= 2018)
 jspho$age.diagnosis <- YearDif(jspho$生年月日, jspho$診断年月日)
 jspho <- jspho[jspho$age.diagnosis < 20 , ]
 
@@ -269,7 +271,7 @@ if (flag == 1) {
                           , jspho$MHDECOD)
   jspho <- merge(jspho, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
 }
-# write.csv(jspho, paste0(prtpath, "/output/test1.csv"), row.names = F)
+
 
 jspho_ads <- jspho[as.integer(jspho$year) > 2011 & as.integer(jspho$year) <= kYear , 
                  c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "field161", "MHDECOD",
@@ -341,8 +343,8 @@ jsh.1 <- subset(jsh.1, as.integer(as.integer(format(as.Date(jsh.1$MHSTDTC), "%Y%
 dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
 
 # age diagnosis
-dataset.3org$age.diagnosis <- YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC)
-
+dataset.3org$age.diagnosis <- as.integer(YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC))
+# write.csv(jspho_ads, paste0(prtpath, "/output/test1.csv"), row.names = F)
 # flagが2の場合はここで、データ出力
 if(flag == 2) {
   dataset.3org[is.na(dataset.3org)] <- ""
