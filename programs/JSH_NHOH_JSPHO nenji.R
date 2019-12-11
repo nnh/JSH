@@ -50,10 +50,10 @@ dxt_jspho_outcome <- jspho_outcome[, c("登録コード", "生死", "死亡日",
 jspho.rgst$year <- as.integer(substr(jspho.rgst$診断年月日, 1, 4))
 before201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 <= "2018/05/30")
 after201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 >= "2018/06/01")
-# 2017年診断例までの症例のグループに対しては、フィールドの入力値からWHO2008分類の病名を当てはめる
+# 2018/6/1までの登録症例のグループに対しては、フィールドの入力値からWHO2008分類の病名を当てはめる
 before201806_jspho$flag <- ifelse(before201806_jspho$field7 == 2 | (before201806_jspho$field7 == 1 & before201806_jspho$field37 == 8 & before201806_jspho$field69 == 2), "non_tumor", "tumor")
 df.tumor <- subset(before201806_jspho, before201806_jspho$flag == "tumor")
-df.tumor <- df.tumor[c(1:500), ]
+df.tumor <- df.tumor[, c(1:500) ]
 # df.tumor <- df.tumor[, -16]
 df.tumor$MHDECOD1 <- ifelse((df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 1) | (df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 2), 53, 
                             ifelse(df.tumor$field7 == 1 & df.tumor$field37 == 10, 52,
@@ -354,7 +354,7 @@ if(flag == 2) {
   # ICD-10による区分をマージ
   ads_mhcod <-  merge(dataset.3org, mhcod_20161006, by = "MHDECOD", all.x = T)
   # 年齢区分を挿入
-  ads_mhcod$cat.age.diagnosis <- cut(ads_mhcod$age.diagnosis, breaks = c(0, 15, 150),
+  ads_mhcod$cat.age.diagnosis <- cut(ads_mhcod$age.diagnosis, breaks = c(0, 15, 200),
                                                  labels= c("0-14", "15-"), right=FALSE)
   # 診断年区分を挿入
   ads_mhcod$year.diagnosis <- paste0("JSH_", substr(ads_mhcod$MHSTDTC, 1, 4))
