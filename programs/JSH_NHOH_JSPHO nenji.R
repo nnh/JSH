@@ -46,14 +46,14 @@ duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 dxt_jspho_outcome <- jspho_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
 
 #JSPHOの診断名が空値を埋める
-# 2017年診断例までの症例のグループと、2018年診断以降のグループに分ける を抽出jspho.rgst -> jspho
+# 2018/5/30までに登録されたグループと、2018/5/30以降に登録されたグループに分ける
 jspho.rgst$year <- as.integer(substr(jspho.rgst$診断年月日, 1, 4))
 before201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 <= "2018/05/30")
 after201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 >= "2018/06/01")
 # 2018/6/1までの登録症例のグループに対しては、フィールドの入力値からWHO2008分類の病名を当てはめる
 before201806_jspho$flag <- ifelse(before201806_jspho$field7 == 2 | (before201806_jspho$field7 == 1 & before201806_jspho$field37 == 8 & before201806_jspho$field69 == 2), "non_tumor", "tumor")
 df.tumor <- subset(before201806_jspho, before201806_jspho$flag == "tumor")
-df.tumor <- df.tumor[, c(1:500) ]
+
 # df.tumor <- df.tumor[, -16]
 df.tumor$MHDECOD1 <- ifelse((df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 1) | (df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 2), 53, 
                             ifelse(df.tumor$field7 == 1 & df.tumor$field37 == 10, 52,
@@ -231,7 +231,6 @@ df.non.t$MHDECOD2 <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.n
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 2, 1100,
                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 3, 1102, 
                      ifelse(df.non.t$field7 == 1 & df.non.t$field37 == 8 & df.non.t$field69 == 2, 1102, NA))))))))))))))))))))))))))))))))))))))))))))))))))
-# df.non.t$MHDECOD3 <- ifelse(!is.na(df.non.t$field1), df.non.t$field1, NA)
 
 #  あてはまらない病名に仮コードを付与 # その他の血液疾患 9004
 df.non.t$MHDECOD <- ifelse(is.na(df.non.t$MHDECOD1), df.non.t$MHDECOD2, 
@@ -240,7 +239,7 @@ df.tumor <- df.tumor[, -c(408, 409)]
 df.non.t <- df.non.t[, -c(408, 409)]
 result_2017_jspho <- rbind(df.tumor, df.non.t)
 result_2017_jspho <- subset(result_2017_jspho, !is.na(result_2017_jspho$MHDECOD))
-# write.csv(result_2017_jspho, paste0(prtpath, "/output/test1.csv"), row.names = F)
+
 # colnamesを合わせ、すべてのデータをバインドする
 after201806_jspho$MHDECOD <- after201806_jspho$field1
 result_2017_jspho <- result_2017_jspho[, -407]
@@ -278,7 +277,6 @@ jspho_ads <- jspho[as.integer(jspho$year) > 2011 & as.integer(jspho$year) <= kYe
                    "name_ja", "生年月日", "診断年月日", "STUDYID")]
 colnames(jspho_ads)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                             "BRTHDTC", "MHSTDTC")
-
 
 #------NHOH---------
 #施設コードをマージする処理(NHOH)
@@ -367,7 +365,7 @@ if(flag == 2) {
   over15 <- ads_mhcod[ads_mhcod$cat.age.diagnosis == "15-", ]
   by.year.diagnosis.o15 <- xtabs(count ~ MHSCAT + year.diagnosis, data = over15)
 
- # ここで終わりにするというのを入れたい  #
+ # flagが2の場合はここで終わりにする、2ではないときは、次へ行く、というのを入れたい  #
 } else {
   next
 }
@@ -530,7 +528,4 @@ dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai
 dataset.3org.syousai <- merge(dataset.3org.syousai, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 dataset.3org.syousai[is.na(dataset.3org.syousai)] <- ""
 
-
 write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F)
-
-
