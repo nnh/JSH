@@ -5,20 +5,19 @@
 
 date.cutoff <- "20191130"
 kYear <- "2018"
-kToday <- "20191219"
 flag <- 2 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
 prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/JSH registry todo"
-
+kToday <- Sys.Date()
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jspho.rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_191203_1603.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_191203_1603.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_191203_1540.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_191203_1540.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_191203_1540.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_191203_1559.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_191203_1559.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_191203_1559.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_191219_1311.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_191219_1311.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_191219_1225.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_191219_1225.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_191219_1225.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_191219_1317.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_191219_1317.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_191219_1317.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 list <- list.files(paste0(prtpath, "/input"))
 df.name <- sub(".csv.*", "", list)  
@@ -42,17 +41,23 @@ duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 # インシデントにより削除され代理入力した症例
 # add_data <- 164062
 ############################################################
-jspho_total <- nrow(jspho.rgst)
-jsh_total <- nrow(jsh.rgst)
-nho_total <- nrow(nhoh.rgst)
+jspho_total <- nrow(jspho_rgst)
+jsh_total <- nrow(jsh_report)
+nho_total <- nrow(nhoh_report)
 #------JSPHO---------
 #性別、転帰をマージする処理(JSPHO)
 dxt_jspho_outcome <- jspho_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
 
 #JSPHOの診断名が空値を埋める
 # 2018/5/30までに登録されたグループと、2018/5/30以降に登録されたグループに分ける
+# jspho.rgst$診断年月日が空値、または作成日が空値の症例を除外する
+dropout_emp_year <- nrow(jspho_rgst[is.na(jspho_rgst$診断年月日), ])
+jspho_rgst2 <- jspho_rgst[!is.na(jspho_rgst$診断年月日), ]
+dropout_emp_cdate <- nrow(jspho_rgst2[is.na(jspho_rgst2$作成日), ])
+jspho.rgst <- jspho_rgst2[!is.na(jspho_rgst2$作成日), ]
+
 jspho.rgst$year <- as.integer(substr(jspho.rgst$診断年月日, 1, 4))
-before201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 <= "2018/05/30")
+before201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 <= "2018/05/31")
 after201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 >= "2018/06/01")
 # 2018/6/1までの登録症例のグループに対しては、フィールドの入力値からWHO2008分類の病名を当てはめる
 before201806_jspho$flag <- ifelse(before201806_jspho$field7 == 2 | (before201806_jspho$field7 == 1 & before201806_jspho$field37 == 8 & before201806_jspho$field69 == 2), "non_tumor", "tumor")
@@ -276,7 +281,7 @@ if (flag == 1) {
   jspho <- merge(jspho, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
 }
 
-jspho_year_dropout <- nrow(subset(jspho, jspho$year < 2011 | as.integer(jspho$year) > kYear))  # dropoutした人数
+jspho_year_dropout <- nrow(subset(jspho, jspho$year <= 2011 | as.integer(jspho$year) > kYear))  # dropoutした人数
 jspho_ads <- jspho[as.integer(jspho$year) > 2011 & as.integer(jspho$year) <= kYear , 
                  c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "field161", "MHDECOD",
                    "name_ja", "生年月日", "診断年月日", "STUDYID")]
@@ -308,7 +313,7 @@ m.nhoh <- merge(m.nhoh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
   
 # 診断年月日2012年以降、必要変数抽出
 nho_year_dropout <- nrow(subset(m.nhoh, 
-                                  as.integer(substr(m.nhoh$診断年月日, 1, 4)) < 2011 | as.integer(substr(m.nhoh$診断年月日, 1, 4)) > kYear))  # dropoutした人数
+                                  as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= 2011 | as.integer(substr(m.nhoh$診断年月日, 1, 4)) > kYear))  # dropoutした人数
 nhoh.1 <- m.nhoh[as.integer(substr(m.nhoh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= kYear ,
                  c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日.y", "最終確認日", "シート作成時施設コード", "MHDECOD",
                    "name_ja", "生年月日", "診断年月日", "STUDYID")]
@@ -316,7 +321,7 @@ colnames(nhoh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL"
                             "BRTHDTC", "MHSTDTC")
 # BRTHDTC, MHSTDTCが逆転している症例を除く
 nho_reverse_dropout <- nrow(subset(nhoh.1, ((format(as.Date(nhoh.1$BRTHDTC), "%Y%m%d")) >  format(as.Date(nhoh.1$MHSTDTC), "%Y%m%d"))))  # dropoutした人数
-nhoh.1 <- nhoh.1[(format(as.Date(nhoh.1$BRTHDTC), "%Y%m%d")) <=  (format(as.Date(nhoh.1$MHSTDTC), "%Y%m%d")), ]
+nhoh.1 <- nhoh.1[format(as.Date(nhoh.1$BRTHDTC), "%Y%m%d") <=  format(as.Date(nhoh.1$MHSTDTC), "%Y%m%d"), ]
 #------JSH---------
 #施設コードをマージする処理(JSH)
 p.jsh.rgst <- jsh.rgst[, c("登録コード", "field114", "生年月日", "性別")]
@@ -339,32 +344,34 @@ m.jsh <- merge(m.jsh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
 }
   
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
-jsh_year_dropout <- nrow(subset(m.jsh, 
-                                as.integer(substr(m.jsh$診断年月日, 1, 4)) < 2011 | as.integer(substr(m.jsh$診断年月日, 1, 4)) > kYear))  # dropoutした人数
-jsh.1 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= kYear ,
+jsh_year_dropout <- nrow(m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) <= 2011 | as.integer(substr(m.jsh$診断年月日, 1, 4)) > kYear, ])  # dropoutした人数
+jsh.2 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= kYear ,
                c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "シート作成時施設コード", "MHDECOD",
                  "name_ja", "生年月日", "診断年月日", "STUDYID")]
-colnames(jsh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
+colnames(jsh.2)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
 # BRTHDTC, MHSTDTCが逆転している症例を除く
-jsh_reverse_dropout <- nrow(subset(jsh.1, ((format(as.Date(jsh.1$BRTHDTC), "%Y%m%d")) >  format(as.Date(jsh.1$MHSTDTC), "%Y%m%d"))))  # dropoutした人数
-jsh.1 <- subset(jsh.1, as.integer(as.integer(format(as.Date(jsh.1$MHSTDTC), "%Y%m%d")) - as.integer(format(as.Date(jsh.1$BRTHDTC), "%Y%m%d"))) >= 0)
-# # 3団体を繋げた基本のデータセットを作成
-dataset.3org <-  rbind(jsh.1, nhoh.1, jspho_ads) 
+jsh_reverse_dropout <- nrow(subset(jsh.2, ((format(as.Date(jsh.2$BRTHDTC), "%Y%m%d")) >  format(as.Date(jsh.2$MHSTDTC), "%Y%m%d")))) # dropoutした人数
+jsh.1 <-subset(jsh.2, (format(as.Date(jsh.2$BRTHDTC), "%Y%m%d") <=  format(as.Date(jsh.2$MHSTDTC), "%Y%m%d")))
 
+# # 3団体を繋げた基本のデータセットを作成
+dataset.3org0 <-  rbind(jsh.1, nhoh.1, jspho_ads) 
+dataset.3org <- dataset.3org0[!is.na(dataset.3org0$STUDYID), ]
 # age diagnosis
 dataset.3org$age.diagnosis <- as.integer(YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC))
 
+
 # flagが2の場合はここで、データ出力
 if(flag == 2) {
-  dataset.3org[is.na(dataset.3org)] <- ""
+   dataset.3org[is.na(dataset.3org)] <- ""
   write.csv(dataset.3org, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads_WHO2008", "_", kToday, ".csv"), row.names = F)
+
   # count用に"1"を入力
   dataset.3org$count <- 1
   # ICD-10による区分をマージ
   ads_mhcod <-  merge(dataset.3org, mhcod_20161006, by = "MHDECOD", all.x = T)
   # 年齢区分を挿入
-  ads_mhcod$cat.age.diagnosis <- cut(ads_mhcod$age.diagnosis, breaks = c(0, 15, 200),
+  ads_mhcod$cat.age.diagnosis <- cut(as.integer(ads_mhcod$age.diagnosis), breaks = c(0, 15, 200),
                                                  labels= c("0-14", "15-"), right=FALSE)
   # 診断年区分を挿入
   ads_mhcod$year.diagnosis <- paste0("JSH_", substr(ads_mhcod$MHSTDTC, 1, 4))
@@ -379,10 +386,10 @@ if(flag == 2) {
 
  # 条件設定により落ちた症例をカウント
   dropout <- data.frame(
-    項目 = c("全登録数","JSPHO詳細登録の内容よりWHO分類にマッピング不能","診断時年齢20歳以上","集計対象年以外", "生年月日と診断年月日の逆転"),
-    JSPHO = c(jspho_total, result_2017_jspho_dropout, jspho_dropout, jspho_year_dropout, "-"),
-    JSH =  c(jsh_total,"-", "-", jsh_year_dropout, jsh_reverse_dropout), 
-    NHO =  c(nho_total,"-", "-", nho_year_dropout, nho_reverse_dropout)
+    項目 = c("全登録数","JSPHO詳細登録の内容よりWHO分類にマッピング不能","作成日または診断年月日が空値", "診断時年齢20歳以上","集計対象年以外", "生年月日と診断年月日の逆転", "解析対象症例数"),
+    JSPHO = c(jspho_total, result_2017_jspho_dropout, (dropout_emp_year + dropout_emp_cdate),  jspho_dropout, jspho_year_dropout, "-", nrow(dataset.3org[dataset.3org$STUDYID == "JSPHO", ])),
+    JSH =  c(jsh_total,"-", "-", "-", jsh_year_dropout, jsh_reverse_dropout, nrow(dataset.3org[dataset.3org$STUDYID == "JSH", ])), 
+    NHO =  c(nho_total,"-", "-", "-", nho_year_dropout, nho_reverse_dropout, nrow(dataset.3org[dataset.3org$STUDYID == "NHOH", ]))
   )
   write.csv(dropout, paste0(prtpath, "/output/dropout", "_", kToday, ".csv"), row.names = F)
  # flagが2の場合はここで終わりにする、2ではないときは、次へ行く、というのを入れたい  #
