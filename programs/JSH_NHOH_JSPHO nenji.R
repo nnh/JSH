@@ -351,8 +351,8 @@ jsh.2 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integ
 colnames(jsh.2)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
 # BRTHDTC, MHSTDTCが逆転している症例を除く
-jsh_reverse_dropout <- nrow(subset(jsh.2, ((format(as.Date(jsh.2$BRTHDTC), "%Y%m%d")) >  format(as.Date(jsh.2$MHSTDTC), "%Y%m%d")))) # dropoutした人数
-jsh.1 <-subset(jsh.2, (format(as.Date(jsh.2$BRTHDTC), "%Y%m%d") <=  format(as.Date(jsh.2$MHSTDTC), "%Y%m%d")))
+jsh_reverse_dropout <- nrow(jsh.2[is.na(jsh.2$BRTHDTC) | as.integer(format(as.Date(jsh.2$MHSTDTC), "%Y%m%d")) - as.integer(format(as.Date(jsh.2$BRTHDTC), "%Y%m%d")) < 0, ]) # dropoutした人数
+jsh.1 <- subset(jsh.2, !is.na(jsh.2$BRTHDTC) & (format(as.Date(jsh.2$BRTHDTC), "%Y%m%d") <=  format(as.Date(jsh.2$MHSTDTC), "%Y%m%d")))
 
 # # 3団体を繋げた基本のデータセットを作成
 dataset.3org0 <-  rbind(jsh.1, nhoh.1, jspho_ads) 
