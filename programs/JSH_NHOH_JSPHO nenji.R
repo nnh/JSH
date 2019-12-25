@@ -356,7 +356,10 @@ jsh.1 <- subset(jsh.2, !is.na(jsh.2$BRTHDTC) & (format(as.Date(jsh.2$BRTHDTC), "
 
 # # 3団体を繋げた基本のデータセットを作成
 dataset.3org0 <-  rbind(jsh.1, nhoh.1, jspho_ads) 
-dataset.3org <- dataset.3org0[!is.na(dataset.3org0$STUDYID), ]
+# SEX, SCSTRESC, BRTHDTCの空欄は解析対象から除外する
+sys_fail_dropout <- dataset.3org0[is.na(dataset.3org0$SEX) | is.na(dataset.3org0$SCSTRESC) | is.na(dataset.3org0$BRTHDTC), ]
+dataset.3org <- dataset.3org0[!is.na(dataset.3org0$SEX) & !is.na(dataset.3org0$SCSTRESC) & !is.na(dataset.3org0$BRTHDTC), ]
+
 # age diagnosis
 dataset.3org$age.diagnosis <- as.integer(YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC))
 
@@ -386,10 +389,11 @@ if(flag == 2) {
 
  # 条件設定により落ちた症例をカウント
   dropout <- data.frame(
-    項目 = c("全登録数","JSPHO詳細登録の内容よりWHO分類にマッピング不能","作成日または診断年月日が空値", "診断時年齢20歳以上","集計対象年以外", "生年月日と診断年月日の逆転", "解析対象症例数"),
-    JSPHO = c(jspho_total, result_2017_jspho_dropout, (dropout_emp_year + dropout_emp_cdate),  jspho_dropout, jspho_year_dropout, "-", nrow(dataset.3org[dataset.3org$STUDYID == "JSPHO", ])),
-    JSH =  c(jsh_total,"-", "-", "-", jsh_year_dropout, jsh_reverse_dropout, nrow(dataset.3org[dataset.3org$STUDYID == "JSH", ])), 
-    NHO =  c(nho_total,"-", "-", "-", nho_year_dropout, nho_reverse_dropout, nrow(dataset.3org[dataset.3org$STUDYID == "NHOH", ]))
+    項目 = c("全登録数","JSPHO詳細登録の内容よりWHO分類にマッピング不能","作成日または診断年月日が空値", "診断時年齢20歳以上","集計対象年以外", "生年月日と診断年月日の逆転",　"DLデータ不具合による脱落
+           ", "解析対象症例数"),
+    JSPHO = c(jspho_total, result_2017_jspho_dropout, (dropout_emp_year + dropout_emp_cdate),  jspho_dropout, jspho_year_dropout, 0, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSPHO",]), nrow(dataset.3org[dataset.3org$STUDYID == "JSPHO", ])),
+    JSH =  c(jsh_total, 0, 0, 0, jsh_year_dropout, jsh_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "JSH", ])), 
+    NHO =  c(nho_total, 0, 0, 0, nho_year_dropout, nho_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "NHOH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "NHOH", ]))
   )
   write.csv(dropout, paste0(prtpath, "/output/dropout", "_", kToday, ".csv"), row.names = F)
  # flagが2の場合はここで終わりにする、2ではないときは、次へ行く、というのを入れたい  #
