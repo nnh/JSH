@@ -10,14 +10,14 @@ prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ�
 kToday <- Sys.Date()
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_191219_1311.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_191219_1311.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_191219_1225.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_191219_1225.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_191219_1225.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_191219_1317.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_191219_1317.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_191219_1317.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_200212_1142.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_200212_1142.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_200212_1118.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_200212_1118.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_200212_1118.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_200212_1137.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_200212_1137.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_200212_1137.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 list <- list.files(paste0(prtpath, "/input"))
 df.name <- sub(".csv.*", "", list)  
@@ -356,9 +356,15 @@ jsh.1 <- subset(jsh.2, !is.na(jsh.2$BRTHDTC) & (format(as.Date(jsh.2$BRTHDTC), "
 
 # # 3団体を繋げた基本のデータセットを作成
 dataset.3org0 <-  rbind(jsh.1, nhoh.1, jspho_ads) 
+#MHTERMの空欄は解析対象から除外する
+MHTERM_jspho_fail_dropout <- nrow(dataset.3org0[is.na(dataset.3org0$MHTERM) & dataset.3org0$STUDYID == "JSPHO", ])
+MHTERM_jsh_fail_dropout <- nrow(dataset.3org0[is.na(dataset.3org0$MHTERM) & dataset.3org0$STUDYID == "JSH", ])
+MHTERM_nho_fail_dropout <- nrow(dataset.3org0[is.na(dataset.3org0$MHTERM) & dataset.3org0$STUDYID == "NHOH", ])
+dataset.3org0 <- dataset.3org0[!is.na(dataset.3org0$MHTERM), ]
 # SEX, SCSTRESC, BRTHDTCの空欄は解析対象から除外する
 sys_fail_dropout <- dataset.3org0[is.na(dataset.3org0$SEX) | is.na(dataset.3org0$SCSTRESC) | is.na(dataset.3org0$BRTHDTC), ]
-dataset.3org <- dataset.3org0[!is.na(dataset.3org0$SEX) & !is.na(dataset.3org0$SCSTRESC) & !is.na(dataset.3org0$BRTHDTC), ]
+dataset.3org <- dataset.3org0[!is.na(dataset.3org0$SEX) & !is.na(dataset.3org0$SCSTRESC) & !is.na(dataset.3org0$BRTHDTC) , ]
+
 
 # age diagnosis
 dataset.3org$age.diagnosis <- as.integer(YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC))
@@ -389,11 +395,11 @@ if(flag == 2) {
 
  # 条件設定により落ちた症例をカウント
   dropout <- data.frame(
-    項目 = c("全登録数","JSPHO詳細登録の内容よりWHO分類にマッピング不能","作成日または診断年月日が空値", "診断時年齢20歳以上","集計対象年以外", "生年月日と診断年月日の逆転",　"DLデータ不具合による脱落
+    項目 = c("全登録数", "JSPHO詳細登録の内容よりWHO分類にマッピング不能", "WHO2008に分類できない", "作成日または診断年月日が空値", "診断時年齢20歳以上", "集計対象年以外", "生年月日と診断年月日の逆転",　"不具合による脱落
            ", "解析対象症例数"),
-    JSPHO = c(jspho_total, result_2017_jspho_dropout, (dropout_emp_year + dropout_emp_cdate),  jspho_dropout, jspho_year_dropout, 0, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSPHO",]), nrow(dataset.3org[dataset.3org$STUDYID == "JSPHO", ])),
-    JSH =  c(jsh_total, 0, 0, 0, jsh_year_dropout, jsh_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "JSH", ])), 
-    NHO =  c(nho_total, 0, 0, 0, nho_year_dropout, nho_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "NHOH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "NHOH", ]))
+    JSPHO = c(jspho_total, result_2017_jspho_dropout, MHTERM_jspho_fail_dropout, (dropout_emp_year + dropout_emp_cdate),  jspho_dropout, jspho_year_dropout, 0, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSPHO",]), nrow(dataset.3org[dataset.3org$STUDYID == "JSPHO", ])),
+    JSH =  c(jsh_total, 0, MHTERM_jsh_fail_dropout, 0, 0, jsh_year_dropout, jsh_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "JSH", ])), 
+    NHO =  c(nho_total, 0, MHTERM_nho_fail_dropout, 0, 0, nho_year_dropout, nho_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "NHOH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "NHOH", ]))
   )
   write.csv(dropout, paste0(prtpath, "/output/dropout", "_", kToday, ".csv"), row.names = F)
  # flagが2の場合はここで終わりにする、2ではないときは、次へ行く、というのを入れたい  #
