@@ -10,14 +10,14 @@ prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ�
 kToday <- Sys.Date()
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_200212_1142.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_200212_1142.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_200212_1118.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_200212_1118.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_200212_1118.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_200212_1137.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_200212_1137.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_200212_1137.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_200420_1311.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_200420_1311.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_200420_1153.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_200420_1153.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_200420_1153.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_200420_1315.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_200420_1315.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_200420_1315.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 list <- list.files(paste0(prtpath, "/input"))
 df.name <- sub(".csv.*", "", list)  
@@ -372,7 +372,8 @@ dataset.3org$age.diagnosis <- as.integer(YearDif(dataset.3org$BRTHDTC, dataset.3
 
 # flagが2の場合はここで、データ出力
 if(flag == 2) {
-   dataset.3org[is.na(dataset.3org)] <- ""
+  dataset.3org <- dataset.3org[dataset.3org$age.diagnosis > 9 | dataset.3org$age.diagnosis <= 9 & dataset.3org$STUDYID == "JSPHO", ] # JSH/NHOHの0-9歳を疾患によらず全て削除
+  dataset.3org[is.na(dataset.3org)] <- ""
   write.csv(dataset.3org, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads_WHO2008", "_", kToday, ".csv"), row.names = F)
 
   # count用に"1"を入力
