@@ -1,9 +1,9 @@
 # JSH データカットのみ
 # Mamiko Yonejima
 # 2019/4/11
-# 2020/05/13 Kumiko Agata JSHクリーニング用
+# 2020/05/14 Kumiko Agata JSHクリーニング用（カット日を変更）
 
-day.shimekiri <- "20200621"
+day.shimekiri <- "20200430"
 kYear <- "2019"
 FileNameOutput <- "JSH_cleaning_DS.csv"
 prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2020/クリーニング/20200513"
