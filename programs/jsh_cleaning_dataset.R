@@ -1,7 +1,7 @@
 # JSH データカットのみ
 # Mamiko Yonejima
 # 2019/4/11
-# 2020/05/13 Kumiko Agata 2019年度集計クリーニング用
+# 2020/05/13 Kumiko Agata JSHクリーニング用
 
 day.shimekiri <- "20200621"
 kYear <- "2019"
