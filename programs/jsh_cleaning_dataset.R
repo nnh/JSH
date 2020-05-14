@@ -1,18 +1,19 @@
 # JSH データカットのみ
 # Mamiko Yonejima
 # 2019/4/11
-day.shimekiri <- "20190531"
-kYear <- "2018"
-FileNameOutput <- "NHOH_cleaning_DS.csv"
-prtpath <- "//192.168.200.222/Datacenter/学会事務/120_血液ネット疾患登録/04.03.02 データ集計/日本血液学会へ提出/2019年/クリーニング"
+# 2020/05/13 Kumiko Agata 2019年度集計クリーニング用
 
+day.shimekiri <- "20200621"
+kYear <- "2019"
+FileNameOutput <- "JSH_cleaning_DS.csv"
+prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2020/クリーニング/20200513"
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jsh_report <- read.csv(paste0(rawdatapath, "NHOH_report_190411_1230.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_190411_1230.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_200511_1121.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_200511_1121.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 ###########重複データ確認###################################
-duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]  
+duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 # grep(191414, jsh_report$登録コード) #重複している登録番号を記載
 # grep(191417, jsh_report$登録コード)
 # grep(191422, jsh_report$登録コード)
