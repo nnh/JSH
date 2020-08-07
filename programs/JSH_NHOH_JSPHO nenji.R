@@ -3,15 +3,15 @@
 # 2017/4/20　作成
 # 2020/7/8 更新(Agata.K)
 
-date.cutoff <- "20200630"
+date.cutoff <- "20200622"
 kYear <- "2019"
 flag <- 1 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
-prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2020/集計/20200706"
+prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2020/集計/20200806/再集計"
 kToday <- Sys.Date()
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_200708_1719.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_200708_1719.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_200720_0836.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_200720_0836.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_200701_0938.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_200701_0938.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_200701_0938.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
@@ -24,6 +24,7 @@ df.name <- sub(".csv.*", "", list)
 for (i in 1:length(list)) {
   assign(df.name[i], read.csv(paste0(prtpath, "/input/", list[i]), as.is=T, na.strings = c(""), fileEncoding='UTF-8-BOM'))
 }
+
 # 関数の定義 ###############################################
 YearDif <- function(starting, ending) {
   # 2つの日付の年差（切り下げ）を計算する。startingに生年月日を指定すれば満年齢計算に使用可能。
@@ -40,6 +41,12 @@ duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 # jsh_report <- jsh_report[- c(184381, 184384, 184390, 190449), ]  # 重複が確認された場合、その行番号を入力
 # インシデントにより削除され代理入力した症例
 # add_data <- 164062
+
+# 2020/08/07 Agata.K JSPHOのみ編集が必要なため以下対応
+# JSPHO 2020/6/22以降のデータと参加外施設（30319、30323）の情報を削除する
+jspho_rgst <- jspho_rgst[jspho_rgst$作成日 <= "2020/06/21",]
+jspho_rgst <- jspho_rgst[jspho_rgst$登録コード != "30319",]
+jspho_rgst <- jspho_rgst[jspho_rgst$登録コード != "30323",]
 ############################################################
 jspho_total <- nrow(jspho_rgst)
 jsh_total <- nrow(jsh_report)
@@ -66,180 +73,180 @@ df.tumor <- subset(before201806_jspho, before201806_jspho$flag == "tumor")
 # df.tumor <- df.tumor[, -16]
 df.tumor$MHDECOD1 <- ifelse((df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 1) | (df.tumor$field7 == 1 & df.tumor$field37 == 2 & df.tumor$field10 == 2), 53, 
                             ifelse(df.tumor$field7 == 1 & df.tumor$field37 == 10, 52,
-                            ifelse((df.tumor$field37 == 1 & df.tumor$field20 == 6) | (df.tumor$field37 == 1 & df.tumor$field20 == 7) | (df.tumor$field37 == 1 & df.tumor$field20 == 8), 65, 
-                            ifelse((df.tumor$field37 == 1 & df.tumor$field20 == 1) | (df.tumor$field37 == 1 & df.tumor$field20 == 2) | (df.tumor$field37 == 1 & df.tumor$field20 == 3), 66,
-                            ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 2, 62,
-                            ifelse((df.tumor$field37 == 1 & df.tumor$field19 == 4) | (df.tumor$field37 == 1 & df.tumor$field19 == 5) | (df.tumor$field37 == 1 & df.tumor$field19 == 6) |(df.tumor$field37 == 1 & df.tumor$field19 == 7), 63,
-                            ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 3, 64, 
-                            ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 14, 67,
-                            ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 8, 68,
-                            ifelse((df.tumor$field37 == 1 & df.tumor$field17 == 1) | (df.tumor$field37 == 5 & df.tumor$field55 == 2), 61,
-                            ifelse((df.tumor$field37 == 1 & df.tumor$field17 == 3) | (df.tumor$field37 == 5 & df.tumor$field55 == 1), 69, 
-                            ifelse(df.tumor$field37 == 1 & df.tumor$field17 == 2, 70, # End Classification of ALL★★
-                            ifelse((df.tumor$field37 == 2 & df.tumor$field26 == 4)| (df.tumor$field37 == 2 & df.tumor$field25 == 7), 31,
-                            ifelse((df.tumor$field37 == 2 & df.tumor$field26 == 3)| (df.tumor$field37 == 2 & df.tumor$field25 == 4) | (df.tumor$field37 == 2 & df.tumor$field25 == 5), 32,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 6 , 33,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 2 , 30,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 12, 34,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 13, 36,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 9 , 57,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 1 , 42,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 2 , 43,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 3 , 44,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 6 , 45,
-                            ifelse((df.tumor$field37 == 2 & df.tumor$field25 == 8) | (df.tumor$field37 == 2 & df.tumor$field25 == 9), 46,
-                            ifelse((df.tumor$field37 == 2 & df.tumor$field25 == 10) | (df.tumor$field37 == 2 & df.tumor$field25 == 11),47,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 12,  48,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field24 == 5, 51,
-                            ifelse(df.tumor$field37 == 2 & df.tumor$field24 == 6, 54,
-                            ifelse(df.tumor$field37 == 2, 41,  # End Classification of AML
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 1, 1,　　　　　　　　　　　
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 2, 5,
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 3, 3,
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 7, 4,
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 5, 7,
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 6, 9,
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 4, 12,
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 1, 16,
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 2, 17,
-                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 3, 18, NA)))))))))))))))))))))))))))))))))))))))
+                                   ifelse((df.tumor$field37 == 1 & df.tumor$field20 == 6) | (df.tumor$field37 == 1 & df.tumor$field20 == 7) | (df.tumor$field37 == 1 & df.tumor$field20 == 8), 65, 
+                                          ifelse((df.tumor$field37 == 1 & df.tumor$field20 == 1) | (df.tumor$field37 == 1 & df.tumor$field20 == 2) | (df.tumor$field37 == 1 & df.tumor$field20 == 3), 66,
+                                                 ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 2, 62,
+                                                        ifelse((df.tumor$field37 == 1 & df.tumor$field19 == 4) | (df.tumor$field37 == 1 & df.tumor$field19 == 5) | (df.tumor$field37 == 1 & df.tumor$field19 == 6) |(df.tumor$field37 == 1 & df.tumor$field19 == 7), 63,
+                                                               ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 3, 64, 
+                                                                      ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 14, 67,
+                                                                             ifelse(df.tumor$field37 == 1 & df.tumor$field19 == 8, 68,
+                                                                                    ifelse((df.tumor$field37 == 1 & df.tumor$field17 == 1) | (df.tumor$field37 == 5 & df.tumor$field55 == 2), 61,
+                                                                                           ifelse((df.tumor$field37 == 1 & df.tumor$field17 == 3) | (df.tumor$field37 == 5 & df.tumor$field55 == 1), 69, 
+                                                                                                  ifelse(df.tumor$field37 == 1 & df.tumor$field17 == 2, 70, # End Classification of ALL★★
+                                                                                                         ifelse((df.tumor$field37 == 2 & df.tumor$field26 == 4)| (df.tumor$field37 == 2 & df.tumor$field25 == 7), 31,
+                                                                                                                ifelse((df.tumor$field37 == 2 & df.tumor$field26 == 3)| (df.tumor$field37 == 2 & df.tumor$field25 == 4) | (df.tumor$field37 == 2 & df.tumor$field25 == 5), 32,
+                                                                                                                       ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 6 , 33,
+                                                                                                                              ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 2 , 30,
+                                                                                                                                     ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 12, 34,
+                                                                                                                                            ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 13, 36,
+                                                                                                                                                   ifelse(df.tumor$field37 == 2 & df.tumor$field26 == 9 , 57,
+                                                                                                                                                          ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 1 , 42,
+                                                                                                                                                                 ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 2 , 43,
+                                                                                                                                                                        ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 3 , 44,
+                                                                                                                                                                               ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 6 , 45,
+                                                                                                                                                                                      ifelse((df.tumor$field37 == 2 & df.tumor$field25 == 8) | (df.tumor$field37 == 2 & df.tumor$field25 == 9), 46,
+                                                                                                                                                                                             ifelse((df.tumor$field37 == 2 & df.tumor$field25 == 10) | (df.tumor$field37 == 2 & df.tumor$field25 == 11),47,
+                                                                                                                                                                                                    ifelse(df.tumor$field37 == 2 & df.tumor$field25 == 12,  48,
+                                                                                                                                                                                                           ifelse(df.tumor$field37 == 2 & df.tumor$field24 == 5, 51,
+                                                                                                                                                                                                                  ifelse(df.tumor$field37 == 2 & df.tumor$field24 == 6, 54,
+                                                                                                                                                                                                                         ifelse(df.tumor$field37 == 2, 41,  # End Classification of AML
+                                                                                                                                                                                                                                ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 1, 1,　　　　　　　　　　　
+                                                                                                                                                                                                                                       ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 2, 5,
+                                                                                                                                                                                                                                              ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 3, 3,
+                                                                                                                                                                                                                                                     ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 7, 4,
+                                                                                                                                                                                                                                                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 5, 7,
+                                                                                                                                                                                                                                                                   ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 6, 9,
+                                                                                                                                                                                                                                                                          ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 1 & df.tumor$field35 == 4, 12,
+                                                                                                                                                                                                                                                                                 ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 1, 16,
+                                                                                                                                                                                                                                                                                        ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 2, 17,
+                                                                                                                                                                                                                                                                                               ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 3, 18, NA)))))))))))))))))))))))))))))))))))))))
 df.tumor$MHDECOD2 <- ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 2 & df.tumor$field47 == 4, 19,
-                           ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field51 == 5, 27,
-                           ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 1, 21,
-                           ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 2, 24,
-                           ifelse((df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 3) | (df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 4), 25,
-                           ifelse((df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 5) | (df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 6), 26,
-                           ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 7, 28,
-                           ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 9, 29, # End Classification of MDS MPD
-                           ifelse(df.tumor$field37 == 3 & df.tumor$field32 == 3, 57,
-                           ifelse(df.tumor$field37 == 3 & df.tumor$field32 == 2, 56, 
-                           ifelse((df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 3) | (df.tumor$field37 == 3 & df.tumor$field28 == 6), 60,
-                           ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 1, 58,
-                           ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 2, 59,
-                           ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 2 , 55, # End Classification of Rare leukemia
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 3, 106,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 4, 93,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 5, 100,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 6, 90,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 7 & df.tumor$field67 == 1, 129,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 7 & df.tumor$field67 == 2, 130,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 9, 116,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 10, 119,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 11, 127,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 13, 86,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 14, 88,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 15, 107,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 16, 117,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 17, 113,
-                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 15, 107,  # End Classification of NHL
-                           ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 1, 131,
-                           ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 2, 133,
-                           ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 3, 134,
-                           ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 4, 135,
-                           ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 5, 136,
-                           ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 7, 132,  # End Classification of HL
-                           ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 1, 138, 
-                           ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 4, 137,
-                           ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 5, 144,
-                           ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 4, 145,
-                           ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 2, 154,
-                           ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 3, 155, NA)))))))))))))))))))))))))))))))))))))))))
+                            ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field51 == 5, 27,
+                                   ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 1, 21,
+                                          ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 2, 24,
+                                                 ifelse((df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 3) | (df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 4), 25,
+                                                        ifelse((df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 5) | (df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 6), 26,
+                                                               ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 7, 28,
+                                                                      ifelse(df.tumor$field37 == 4 & df.tumor$field159 == 2 & df.tumor$field164 == 3 & df.tumor$field49 == 9, 29, # End Classification of MDS MPD
+                                                                             ifelse(df.tumor$field37 == 3 & df.tumor$field32 == 3, 57,
+                                                                                    ifelse(df.tumor$field37 == 3 & df.tumor$field32 == 2, 56, 
+                                                                                           ifelse((df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 3) | (df.tumor$field37 == 3 & df.tumor$field28 == 6), 60,
+                                                                                                  ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 1, 58,
+                                                                                                         ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 1 & df.tumor$field29 == 2, 59,
+                                                                                                                ifelse(df.tumor$field37 == 3 & df.tumor$field28 == 2 , 55, # End Classification of Rare leukemia
+                                                                                                                       ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 3, 106,
+                                                                                                                              ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 4, 93,
+                                                                                                                                     ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 5, 100,
+                                                                                                                                            ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 6, 90,
+                                                                                                                                                   ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 7 & df.tumor$field67 == 1, 129,
+                                                                                                                                                          ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 7 & df.tumor$field67 == 2, 130,
+                                                                                                                                                                 ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 9, 116,
+                                                                                                                                                                        ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 10, 119,
+                                                                                                                                                                               ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 11, 127,
+                                                                                                                                                                                      ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 13, 86,
+                                                                                                                                                                                             ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 14, 88,
+                                                                                                                                                                                                    ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 15, 107,
+                                                                                                                                                                                                           ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 16, 117,
+                                                                                                                                                                                                                  ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 17, 113,
+                                                                                                                                                                                                                         ifelse(df.tumor$field37 == 5 & df.tumor$field55 == 15, 107,  # End Classification of NHL
+                                                                                                                                                                                                                                ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 1, 131,
+                                                                                                                                                                                                                                       ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 2, 133,
+                                                                                                                                                                                                                                              ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 3, 134,
+                                                                                                                                                                                                                                                     ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 4, 135,
+                                                                                                                                                                                                                                                            ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 5, 136,
+                                                                                                                                                                                                                                                                   ifelse(df.tumor$field37 == 6 & df.tumor$field61 == 7, 132,  # End Classification of HL
+                                                                                                                                                                                                                                                                          ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 1, 138, 
+                                                                                                                                                                                                                                                                                 ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 4, 137,
+                                                                                                                                                                                                                                                                                        ifelse(df.tumor$field37 == 8 & df.tumor$field69 == 5, 144,
+                                                                                                                                                                                                                                                                                               ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 4, 145,
+                                                                                                                                                                                                                                                                                                      ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 2, 154,
+                                                                                                                                                                                                                                                                                                             ifelse(df.tumor$field37 == 7 & df.tumor$field77 == 3, 155, NA)))))))))))))))))))))))))))))))))))))))))
 df.tumor$MHDECOD <- ifelse(is.na(df.tumor$MHDECOD1), df.tumor$MHDECOD2, df.tumor$MHDECOD1)  # 空欄はあてはまらないもの
 
 df.non.t <- subset(before201806_jspho, before201806_jspho$flag == "non_tumor")
 
 df.non.t$MHDECOD1 <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 4, 1001,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 5, 1002,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 6, 1003,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 1, 1004,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 2, 1008,    
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 3 & df.non.t$field90 == 1, 1009,       
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 3 & df.non.t$field90 == 2, 1010,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 1, 1011,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 2, 1012, 
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 3, 1013,    
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 1, 1014,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 2, 1015,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 3, 1016,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 4, 1017,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 5, 1018,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 6, 1019,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 7, 1020,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 8, 1021,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 9, 1022,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 10, 1023,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 11, 1024,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 12, 1024,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 13, 1025,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 14, 1026,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 15, 1027,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 2, 1028,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 16 & df.non.t$field103 == 1, 1029,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 16 & df.non.t$field103 == 2, 1030,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 16 & df.non.t$field103 == 3, 1031,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 16 & df.non.t$field103 == 4, 1035,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 17, 1036,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 1 & df.non.t$field109 == 1, 1037,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 1 & df.non.t$field109 == 2, 1038,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 1 & df.non.t$field109 == 3, 1039,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 2, 1040,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 3, 1041,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 4, 1042,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 5, 1043,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 1, 1046,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 2, 1047,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 3, 1048,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 4, 1049, NA))))))))))))))))))))))))))))))))))))))))))
+                            ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 5, 1002,
+                                   ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 6, 1003,
+                                          ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 1, 1004,
+                                                 ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 2, 1008,    
+                                                        ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 3 & df.non.t$field90 == 1, 1009,       
+                                                               ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 1 & df.non.t$field88 == 3 & df.non.t$field90 == 2, 1010,
+                                                                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 1, 1011,
+                                                                             ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 2, 1012, 
+                                                                                    ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 8 & df.non.t$field94 == 3, 1013,    
+                                                                                           ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 1, 1014,
+                                                                                                  ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 2, 1015,
+                                                                                                         ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 3, 1016,
+                                                                                                                ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 4, 1017,
+                                                                                                                       ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 5, 1018,
+                                                                                                                              ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 6, 1019,
+                                                                                                                                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 7, 1020,
+                                                                                                                                            ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 8, 1021,
+                                                                                                                                                   ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 9, 1022,
+                                                                                                                                                          ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 10, 1023,
+                                                                                                                                                                 ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 11, 1024,
+                                                                                                                                                                        ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 12, 1024,
+                                                                                                                                                                               ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 13, 1025,
+                                                                                                                                                                                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 14, 1026,
+                                                                                                                                                                                             ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 15, 1027,
+                                                                                                                                                                                                    ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 2, 1028,
+                                                                                                                                                                                                           ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 16 & df.non.t$field103 == 1, 1029,
+                                                                                                                                                                                                                  ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 16 & df.non.t$field103 == 2, 1030,
+                                                                                                                                                                                                                         ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 16 & df.non.t$field103 == 3, 1031,
+                                                                                                                                                                                                                                ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 16 & df.non.t$field103 == 4, 1035,
+                                                                                                                                                                                                                                       ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 9 & df.non.t$field98 == 17, 1036,
+                                                                                                                                                                                                                                              ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 1 & df.non.t$field109 == 1, 1037,
+                                                                                                                                                                                                                                                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 1 & df.non.t$field109 == 2, 1038,
+                                                                                                                                                                                                                                                            ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 1 & df.non.t$field109 == 3, 1039,
+                                                                                                                                                                                                                                                                   ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 2, 1040,
+                                                                                                                                                                                                                                                                          ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 3, 1041,
+                                                                                                                                                                                                                                                                                 ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 4, 1042,
+                                                                                                                                                                                                                                                                                        ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 3 & df.non.t$field108 == 5, 1043,
+                                                                                                                                                                                                                                                                                               ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 1, 1046,
+                                                                                                                                                                                                                                                                                                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 2, 1047,
+                                                                                                                                                                                                                                                                                                             ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 3, 1048,
+                                                                                                                                                                                                                                                                                                                    ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 10 & df.non.t$field117 == 4, 1049, NA))))))))))))))))))))))))))))))))))))))))))
 df.non.t$MHDECOD2 <- ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 1, 1050,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 2 & df.non.t$field123 == 1, 1051,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 2 & df.non.t$field123 == 2, 1052,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 7, 1054,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 3, 1055,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 4, 1056,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 6, 1057,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 5, 1058,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 1, 1062,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 2, 1063,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 3, 1064,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 9, 1064,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 4, 1065,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 10, 1065,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 11, 1065,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 6, 1067,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 5, 1067,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 7, 1068,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 8, 1069,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 1, 1070,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 2, 1071,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 3, 1072,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 8, 1073,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 7, 1074,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 9, 1075,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 5, 1076,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 6, 1077,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 1, 1079,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 2, 1080,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 3, 1081,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 4, 1082,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 5, 1083,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 6, 1084,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 1, 1086,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 2, 1087,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 3, 1088,
-                  　 ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 4, 1089,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 5, 1090,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 6, 1091,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 1, 1092,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 2, 1093,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 3, 1094,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 4, 1095,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 5, 1096,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 6, 1097,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 7, 1098,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 1, 1099,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 2, 1100,
-                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 3, 1102, 
-                     ifelse(df.non.t$field7 == 1 & df.non.t$field37 == 8 & df.non.t$field69 == 2, 1102, NA))))))))))))))))))))))))))))))))))))))))))))))))))
+                            ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 2 & df.non.t$field123 == 1, 1051,
+                                   ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 2 & df.non.t$field123 == 2, 1052,
+                                          ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 7, 1054,
+                                                 ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 3, 1055,
+                                                        ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 4, 1056,
+                                                               ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 6, 1057,
+                                                                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 11 & df.non.t$field120 == 5, 1058,
+                                                                             ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 1, 1062,
+                                                                                    ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 2, 1063,
+                                                                                           ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 3, 1064,
+                                                                                                  ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 9, 1064,
+                                                                                                         ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 4, 1065,
+                                                                                                                ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 10, 1065,
+                                                                                                                       ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 11, 1065,
+                                                                                                                              ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 6, 1067,
+                                                                                                                                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 5, 1067,
+                                                                                                                                            ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 7, 1068,
+                                                                                                                                                   ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 5 & df.non.t$field130 == 8, 1069,
+                                                                                                                                                          ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 1, 1070,
+                                                                                                                                                                 ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 2, 1071,
+                                                                                                                                                                        ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 3, 1072,
+                                                                                                                                                                               ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 8, 1073,
+                                                                                                                                                                                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 7, 1074,
+                                                                                                                                                                                             ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 9, 1075,
+                                                                                                                                                                                                    ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 5, 1076,
+                                                                                                                                                                                                           ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 12 & df.non.t$field135 == 6, 1077,
+                                                                                                                                                                                                                  ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 1, 1079,
+                                                                                                                                                                                                                         ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 2, 1080,
+                                                                                                                                                                                                                                ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 3, 1081,
+                                                                                                                                                                                                                                       ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 4, 1082,
+                                                                                                                                                                                                                                              ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 5, 1083,
+                                                                                                                                                                                                                                                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 13 & df.non.t$field141 == 6, 1084,
+                                                                                                                                                                                                                                                            ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 1, 1086,
+                                                                                                                                                                                                                                                                   ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 2, 1087,
+                                                                                                                                                                                                                                                                          ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 3, 1088,
+                                                                                                                                                                                                                                                                                 ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 4, 1089,
+                                                                                                                                                                                                                                                                                        ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 5, 1090,
+                                                                                                                                                                                                                                                                                               ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 7 & df.non.t$field148 == 6, 1091,
+                                                                                                                                                                                                                                                                                                      ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 1, 1092,
+                                                                                                                                                                                                                                                                                                             ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 2, 1093,
+                                                                                                                                                                                                                                                                                                                    ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 3, 1094,
+                                                                                                                                                                                                                                                                                                                           ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 4, 1095,
+                                                                                                                                                                                                                                                                                                                                  ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 5, 1096,
+                                                                                                                                                                                                                                                                                                                                         ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 6, 1097,
+                                                                                                                                                                                                                                                                                                                                                ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 14 & df.non.t$field151 == 7, 1098,
+                                                                                                                                                                                                                                                                                                                                                       ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 1, 1099,
+                                                                                                                                                                                                                                                                                                                                                              ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 2, 1100,
+                                                                                                                                                                                                                                                                                                                                                                     ifelse(df.non.t$field7 == 2 & df.non.t$field84 == 16 & df.non.t$field153 == 3, 1102, 
+                                                                                                                                                                                                                                                                                                                                                                            ifelse(df.non.t$field7 == 1 & df.non.t$field37 == 8 & df.non.t$field69 == 2, 1102, NA))))))))))))))))))))))))))))))))))))))))))))))))))
 
 #  あてはまらない病名に仮コードを付与 # その他の血液疾患 9004
 df.non.t$MHDECOD <- ifelse(is.na(df.non.t$MHDECOD1), df.non.t$MHDECOD2, 
@@ -283,11 +290,11 @@ if (flag == 1) {
 
 jspho_year_dropout <- nrow(subset(jspho, jspho$year <= 2011 | as.integer(jspho$year) > kYear))  # dropoutした人数
 jspho_ads <- jspho[as.integer(jspho$year) > 2011 & as.integer(jspho$year) <= kYear , 
-                 c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "field161", "MHDECOD",
-                   "name_ja", "生年月日", "診断年月日", "STUDYID")]
+                   c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日", "最終確認日", "field161", "MHDECOD",
+                     "name_ja", "生年月日", "診断年月日", "STUDYID")]
 
 colnames(jspho_ads)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
-                            "BRTHDTC", "MHSTDTC")
+                               "BRTHDTC", "MHSTDTC")
 
 #------NHOH---------
 #施設コードをマージする処理(NHOH)
@@ -300,20 +307,20 @@ m.nhoh <- merge(m.nhoh_0, dxt_nhoh_outcome, by="登録コード", all.x= T)
 m.nhoh$STUDYID <- "NHOH"
 #WHO2008をWHO2016に変換 
 if (flag == 1) {
-m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) != 5, round(m.nhoh$field2 * 10 + 10000, digits = 0)
-                        , m.nhoh$field2)
-m.nhoh$MHDECOD <- ifelse(m.nhoh$field2 == 10930, 10931, m.nhoh$field2)
-m.nhoh <- merge(m.nhoh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+  m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) != 5, round(m.nhoh$field2 * 10 + 10000, digits = 0)
+                           , m.nhoh$field2)
+  m.nhoh$MHDECOD <- ifelse(m.nhoh$field2 == 10930, 10931, m.nhoh$field2)
+  m.nhoh <- merge(m.nhoh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 } else {
-# WHO2016をWHO2008に変換
-m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) == 5, round((m.nhoh$field2 - 10000) / 10, digits = 0)
+  # WHO2016をWHO2008に変換
+  m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) == 5, round((m.nhoh$field2 - 10000) / 10, digits = 0)
                            , m.nhoh$field2)  
-m.nhoh <- merge(m.nhoh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
+  m.nhoh <- merge(m.nhoh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
 }
-  
+
 # 診断年月日2012年以降、必要変数抽出
 nho_year_dropout <- nrow(subset(m.nhoh, 
-                                  as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= 2011 | as.integer(substr(m.nhoh$診断年月日, 1, 4)) > kYear))  # dropoutした人数
+                                as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= 2011 | as.integer(substr(m.nhoh$診断年月日, 1, 4)) > kYear))  # dropoutした人数
 nhoh.1 <- m.nhoh[as.integer(substr(m.nhoh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.nhoh$診断年月日, 1, 4)) <= kYear ,
                  c("作成日", "登録コード", "性別", "SCSTRESC", "生死", "死亡日.y", "最終確認日", "シート作成時施設コード", "MHDECOD",
                    "name_ja", "生年月日", "診断年月日", "STUDYID")]
@@ -333,16 +340,16 @@ m.jsh <- merge(m.jsh_0, dxt_jsh_outcome, by = "登録コード", all.x = T)
 m.jsh$STUDYID <- "JSH"
 #WHO2008をWHO2016に変換 
 if (flag == 1) {
-m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) != 5, round(m.jsh$field1 * 10 + 10000, digits = 0)
-                         , m.jsh$field1)
-m.jsh$MHDECOD <- ifelse(m.jsh$field1 == 10930, 10931, m.jsh$field1)
-m.jsh <- merge(m.jsh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
-} else {
-m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) == 5, round((m.jsh$field1 - 10000) / 10, digits = 0)
+  m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) != 5, round(m.jsh$field1 * 10 + 10000, digits = 0)
                           , m.jsh$field1)
-m.jsh <- merge(m.jsh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)  
+  m.jsh$MHDECOD <- ifelse(m.jsh$field1 == 10930, 10931, m.jsh$field1)
+  m.jsh <- merge(m.jsh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+} else {
+  m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) == 5, round((m.jsh$field1 - 10000) / 10, digits = 0)
+                          , m.jsh$field1)
+  m.jsh <- merge(m.jsh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)  
 }
-  
+
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
 jsh_year_dropout <- nrow(m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) <= 2011 | as.integer(substr(m.jsh$診断年月日, 1, 4)) > kYear, ])  # dropoutした人数
 jsh.2 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integer(substr(m.jsh$診断年月日, 1, 4)) <= kYear ,
@@ -375,14 +382,14 @@ if(flag == 2) {
   dataset.3org <- dataset.3org[dataset.3org$age.diagnosis > 9 | dataset.3org$age.diagnosis <= 9 & dataset.3org$STUDYID == "JSPHO", ] # JSH/NHOHの0-9歳を疾患によらず全て削除
   dataset.3org[is.na(dataset.3org)] <- ""
   write.csv(dataset.3org, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads_WHO2008", "_", kToday, ".csv"), row.names = F)
-
+  
   # count用に"1"を入力
   dataset.3org$count <- 1
   # ICD-10による区分をマージ
   ads_mhcod <-  merge(dataset.3org, mhcod_20161006, by = "MHDECOD", all.x = T)
   # 年齢区分を挿入
   ads_mhcod$cat.age.diagnosis <- cut(as.integer(ads_mhcod$age.diagnosis), breaks = c(0, 15, 200),
-                                                 labels= c("0-14", "15-"), right=FALSE)
+                                     labels= c("0-14", "15-"), right=FALSE)
   # 診断年区分を挿入
   ads_mhcod$year.diagnosis <- paste0("JSH_", substr(ads_mhcod$MHSTDTC, 1, 4))
   # 診断年、診断区分別に集計  
@@ -393,8 +400,8 @@ if(flag == 2) {
   # 15歳以上の症例に対し、診断年、診断区分別に集計 
   over15 <- ads_mhcod[ads_mhcod$cat.age.diagnosis == "15-", ]
   by.year.diagnosis.o15 <- xtabs(count ~ MHSCAT + year.diagnosis, data = over15)
-
- # 条件設定により落ちた症例をカウント
+  
+  # 条件設定により落ちた症例をカウント
   dropout <- data.frame(
     項目 = c("全登録数", "JSPHO詳細登録の内容よりWHO分類にマッピング不能", "WHO2008に分類できない", "作成日または診断年月日が空値", "診断時年齢20歳以上", "集計対象年以外", "生年月日と診断年月日の逆転",　"不具合による脱落
            ", "解析対象症例数"),
@@ -403,9 +410,9 @@ if(flag == 2) {
     NHO =  c(nho_total, 0, MHTERM_nho_fail_dropout, 0, 0, nho_year_dropout, nho_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "NHOH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "NHOH", ]))
   )
   write.csv(dropout, paste0(prtpath, "/output/dropout", "_", kToday, ".csv"), row.names = F)
- # flagが2の場合はここで終わりにする、2ではないときは、次へ行く、というのを入れたい  #
- # →if文以降の処理をelse側にそのまま入れた
-
+  # flagが2の場合はここで終わりにする、2ではないときは、次へ行く、というのを入れたい  #
+  # →if文以降の処理をelse側にそのまま入れた
+  
 } else {
   # count用に"1"を入力
   dataset.3org$count <- 1
@@ -568,4 +575,3 @@ if(flag == 2) {
   write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F)
   
 }
-
