@@ -1,18 +1,26 @@
 # JSH データカットのみ
 # Mamiko Yonejima
 # 2019/4/11
-# 2020/06/01 Kumiko Agata JSH集計クリーニング
-# 2020/06/01 Kumiko Agata NHOH集計クリーニング
+# 2021/05/31 Kumiko Agata JSH集計クリーニング
+# 2020/06/22 Kumiko Agata NHOH集計クリーニング
 
-day.shimekiri <- "20200531"
-kYear <- "2019"
+day.shimekiri <- "20210531"
+kYear <- "2020"
+
+#JSHの場合はコメント解除
 FileNameOutput <- "JSH_cleaning_DS.csv"
-prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2020/クリーニング/20200601"
-
-
+prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2021/クリーニング/20210531"
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_200601_1158.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_200601_1158.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_210531_1058.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_210531_1058.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+
+#NHOHの場合はコメント解除
+#FileNameOutput <- "NHOH_cleaning_DS.csv"
+#prtpath <- "//192.168.200.222/Datacenter/学会事務/120_血液ネット疾患登録/04.03.02 データ集計/日本血液学会へ提出/2020年/クリーニング/20200622"
+#rawdatapath <- paste0(prtpath, "/rawdata/")
+#jsh_report <- read.csv(paste0(rawdatapath, "NHOH_report_200622_1756.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+#jsh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_200622_1756.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+
 
 ###########重複データ確認###################################
 duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
