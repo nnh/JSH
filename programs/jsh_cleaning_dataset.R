@@ -1,7 +1,7 @@
 # JSH データカットのみ
 # Mamiko Yonejima
 # 2019/4/11
-# 2021/05/31 Kumiko Agata JSH集計クリーニング
+# 2021/06/01 Kumiko Agata JSH集計クリーニング
 # 2020/06/22 Kumiko Agata NHOH集計クリーニング
 
 day.shimekiri <- "20210531"
@@ -9,10 +9,11 @@ kYear <- "2020"
 
 #JSHの場合はコメント解除
 FileNameOutput <- "JSH_cleaning_DS.csv"
-prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2021/クリーニング/20210531"
+prtpath <- "//192.168.200.222/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2021/クリーニング/20210601"
+
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_210531_1058.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_210531_1058.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_210601_1347.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_210601_1347.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 #NHOHの場合はコメント解除
 #FileNameOutput <- "NHOH_cleaning_DS.csv"
