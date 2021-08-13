@@ -1,23 +1,24 @@
 # JSH, NHOH, JSPHO 団体集計 プログラム
 # Mamiko Yonejima
-# 2017/4/20　作成
-# 2020/7/8 更新(Agata.K)
+# 2017/4/20 作成
+# 2021/7/26 集計のため更新（Agata.K）
+# 2021/7/29 WHO2016にWHO2008が混在している為、両方に対応出来るように修正（JSHのみ）
 
-date.cutoff <- "20200622"
-kYear <- "2019"
+date.cutoff <- "20210620"
+kYear <- "2020"
 flag <- 1 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
-prtpath <- "//192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2020/集計/20200806/再集計"
+prtpath <- "C:/Users/KumikoAgata/Box/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2021/集計/作業/20210726"
 kToday <- Sys.Date()
 
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_200720_0836.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_200720_0836.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_200701_0938.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_200701_0938.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_200701_0938.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_200701_1111.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_200701_1111.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_200701_1111.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_210719_0853.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_210719_0853.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_210701_1113.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_210701_1113.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_210701_1113.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_210726_1120.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_210726_1120.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_210726_1120.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
 list <- list.files(paste0(prtpath, "/input"))
 df.name <- sub(".csv.*", "", list)  
@@ -42,11 +43,18 @@ duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 # インシデントにより削除され代理入力した症例
 # add_data <- 164062
 
-# 2020/08/07 Agata.K JSPHOのみ編集が必要なため以下対応
+# 2019年診断対応（2020/08/07 Agata.K）
 # JSPHO 2020/6/22以降のデータと参加外施設（30319、30323）の情報を削除する
-jspho_rgst <- jspho_rgst[jspho_rgst$作成日 <= "2020/06/21",]
-jspho_rgst <- jspho_rgst[jspho_rgst$登録コード != "30319",]
-jspho_rgst <- jspho_rgst[jspho_rgst$登録コード != "30323",]
+# jspho_rgst <- jspho_rgst[jspho_rgst$作成日 <= "2020/06/21",]
+# jspho_rgst <- jspho_rgst[jspho_rgst$登録コード != "30319",]
+# jspho_rgst <- jspho_rgst[jspho_rgst$登録コード != "30323",]
+
+# 2020年診断集計対応（2021/7/26 Agata.K）
+jspho_rgst <- jspho_rgst[jspho_rgst$作成日 <= "2021/05/31",]  # JSPHO 2021/6/1以降削除
+nhoh_report <- nhoh_report[nhoh_report$登録コード != "37037",]  #NHOH 37037を削除（JSHと重複の為）
+nhoh_report <- nhoh_report[nhoh_report$登録コード != "38525",]  #NHOH 38525を削除（JSHと重複の為）
+nhoh_report <- nhoh_report[nhoh_report$登録コード != "37849",]  #NHOH 37849を削除（JSPHOと重複の為）
+jsh_report <- jsh_report[jsh_report$登録コード != "310144",]  #JSH 310144を削除（参加外施設の為）
 ############################################################
 jspho_total <- nrow(jspho_rgst)
 jsh_total <- nrow(jsh_report)
@@ -340,13 +348,14 @@ m.jsh <- merge(m.jsh_0, dxt_jsh_outcome, by = "登録コード", all.x = T)
 m.jsh$STUDYID <- "JSH"
 #WHO2008をWHO2016に変換 
 if (flag == 1) {
-  m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) != 5, round(m.jsh$field1 * 10 + 10000, digits = 0)
-                          , m.jsh$field1)
+  # WHO2008のコードが混在の為、elseの時の処理を変更（2021/07/29 Agata.K）
+  # m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) != 5, round(m.jsh$field1 * 10 + 10000, digits = 0), m.jsh$field1)
+  m.jsh$MHDECOD <- ifelse(m.jsh$field1 < 10000, round(m.jsh$field1 * 10 + 10000, digits = 0), m.jsh$field1)
   m.jsh$MHDECOD <- ifelse(m.jsh$field1 == 10930, 10931, m.jsh$field1)
   m.jsh <- merge(m.jsh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 } else {
-  m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) == 5, round((m.jsh$field1 - 10000) / 10, digits = 0)
-                          , m.jsh$field1)
+　m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) == 5, round((m.jsh$field1 - 10000) / 10, digits = 0)
+　                         , m.jsh$field1)
   m.jsh <- merge(m.jsh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)  
 }
 
