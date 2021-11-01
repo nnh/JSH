@@ -40,6 +40,11 @@
 # 固定日:20200621
 # NAS1  ://192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2020/集計/作業/20200826/rawdata/JSH_registration_200701_0938.csv
 # NAS2  ://192.168.200.222/Datacenter/学会事務/130_日本血液学会/04.03.02 データ集計/2020/集計/作業/20200826/rawdata/JSH_report_200701_0938.csv
+
+# 診断年:2020
+# 固定日: 20210620
+# Box1: Box/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2021/集計/作業/20210726/rawdata/JSH_registration_210701_1113.csv
+# Box2: Box/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2021/集計/作業/20210726/rawdata/JSH_registration_210701_1113.csv
 ###########################################
 
   # データカット用設定
