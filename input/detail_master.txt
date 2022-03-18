@@ -1,0 +1,50 @@
+id	field	val	target	curation
+1	MHDECOD	10010	CMLの細分類
+2	group_code	who2016.1004	MDS染色体	^.?8.*$>8
+3	MHDECOD	10320	急性前骨髄球性白血病_染色体遺伝子	WHO分類にて選択済み>t(15;17)(q22;q12)/PML-RARA
+4	MHDECOD	10390	骨髄異形成関連変化随伴急性骨髄性白血病_詳細
+5	MHDECOD	10460	AML.FAB分類	M4>不明
+6	MHDECOD	10470	急性赤白血病_詳細	myeｌoid>myeloid
+7	group_code	who2016.1005	AML_詳細
+8	group_code	who2016.1007.2	Tリンパ芽球性白血病_リンパ腫	^ALL$>T-ALL,Non-Hodgkin Lymphoma>T-LBL
+9	group_code	who2016.1007.1	FAB分類
+10	MHDECOD	10730	ヘアリー細胞白血病
+11	MHDECOD	10830	多発性骨髄腫_詳細
+12	MHDECOD	10890;10891;10892	濾胞性リンパ腫_詳細
+13	MHDECOD	10890;10891;10892	濾胞性リンパ腫国際予後因子_FLIPI	\n>
+14	MHDECOD	10931	びまん性大細胞型Ｂ細胞性リンパ腫_詳細
+15	MHDECOD	11010	血管内大細胞型Ｂ細胞性リンパ腫_詳細
+16	MHDECOD	11550	キャッスルマン_詳細
+17	MHDECOD	11150	成人Ｔ細胞白血病リンパ腫_詳細
+18	MHDECOD	11171;11172	abbr
+19	MHDECOD	11270	末梢性Ｔ細胞リンパ腫_詳細
+20	group_code	who2016.1010	HL.Stage.Ann.Arbor
+21	group_code	who2016.1010	HL付加事項
+22	group_code	who2016.1010	HL.国際予後スコア.IPS.
+23	-	-	免疫不全関連リンパ腫の場合
+24	group_code	who2016.1101	再生不良性貧血の重症度
+25	MHDECOD	20130	続発性赤芽球癆の場合.原疾患
+26	MHDECOD	20220	サラセミア
+27	MHDECOD	20240	温式自己免疫性溶血性貧血.AIHA.
+28	温式自己免疫性溶血性貧血.AIHA.	二次性	温式自己免疫性溶血性貧血が二次性の場合.その原因
+29	MHDECOD	20250	寒冷凝集素症
+30	寒冷凝集素症	二次性	二次性寒冷凝集素症
+31	MHDECOD	20370	ビタミンB12欠乏性貧血の原因
+32	ビタミンB12欠乏性貧血の原因	内因子の欠乏	ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合
+33	MHDECOD	20380	葉酸欠乏性貧血の場合の原因
+34	MHDECOD	20410	鉄芽球性貧血	二次性.+>二次性
+35	MHDECOD	20510	JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数
+36	MHDECOD	20510	JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体
+37	MHDECOD	20520	JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数
+38	MHDECOD	20520	JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体
+39	MHDECOD	20530	JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数
+40	MHDECOD	20530	JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体
+41	MHDECOD	20540	JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数
+42	MHDECOD	20540	JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体
+43	MHDECOD	20550	ヘパリン起因性血小板減少症
+44	MHDECOD	20550	ヘパリン起因性血小板減少症.抗HIT抗体.
+45	MHDECOD	20620	凝固異常症.血友病A.インヒビター合併.
+46	MHDECOD	20630	凝固異常症.血友病B.インヒビター合併.
+47	MHDECOD	20760	抗リン脂質抗体症候群の分類
+48	MHDECOD	20760	抗リン脂質抗体症候群の場合.合併症
+49	MHDECOD	20840	無顆粒球症の原因
