@@ -3,24 +3,30 @@
 # 2019/4/11
 # 2021/06/24 Kumiko Agata JSH集計クリーニング
 # 2020/06/15 Kumiko Agata NHOH集計クリーニング
+# 2022/5/20 Mamiko Yonejima JSH集計クリーニング,NHOH集計クリーニング
 
-day.shimekiri <- "20210620"
-kYear <- "2020"
+day.shimekiri <- "20220520"
+kYear <- "2021"
+library(tidyverse)
 
 #JSHの場合はコメント解除
 FileNameOutput <- "JSH_cleaning_DS.csv"
-prtpath <- "C:/Users/KumikoAgata/Box/Datacenter/Trials/JSH/Registry/04.03.02 データ集計/2021/クリーニング/20210622"
+prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220509"
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_210622_1043.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_210622_1043.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+# jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_220509_0819.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+# jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_220509_0819.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
+jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_220509_0819.csv")) # tidyverseパッケージのread_csvを使用
+jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_220509_0819.csv")) # tidyverseパッケージのread_csvを使用
 
 #NHOHの場合はコメント解除
 # FileNameOutput <- "NHOH_cleaning_DS.csv"
-# prtpath <- "//192.168.200.222/Datacenter/Trials/NHO/NHOH-BDR/04.03.02 データ集計/2021年/クリーニング/20210615"
+# prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220509"
 # rawdatapath <- paste0(prtpath, "/rawdata/")
 # jsh_report <- read.csv(paste0(rawdatapath, "NHOH_report_210601_1114.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 # jsh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_210601_1114.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 
+# jsh_report <- read_csv(paste0(rawdatapath, "NHOH_report_220509_1015.csv"))   # tidyverseパッケージのread_csvを使用
+# jsh.rgst <- read_csv(paste0(rawdatapath, "NHOH_registration_220509_1015.csv"))  # tidyverseパッケージのread_csvを使用
 
 ###########重複データ確認###################################
 duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
