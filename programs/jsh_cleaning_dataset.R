@@ -5,16 +5,15 @@
 # 2020/06/15 Kumiko Agata NHOH集計クリーニング
 # 2022/5/20 Mamiko Yonejima JSH集計クリーニング,NHOH集計クリーニング
 
+library(tidyverse)
+
 day.shimekiri <- "20220520"
 kYear <- "2021"
-library(tidyverse)
 
 #JSHの場合はコメント解除
 FileNameOutput <- "JSH_cleaning_DS.csv"
 prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220509"
 rawdatapath <- paste0(prtpath, "/rawdata/")
-# jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_220509_0819.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-# jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_220509_0819.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
 jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_220509_0819.csv")) # tidyverseパッケージのread_csvを使用
 jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_220509_0819.csv")) # tidyverseパッケージのread_csvを使用
 
@@ -22,9 +21,6 @@ jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_220509_0819.csv")) # 
 # FileNameOutput <- "NHOH_cleaning_DS.csv"
 # prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220509"
 # rawdatapath <- paste0(prtpath, "/rawdata/")
-# jsh_report <- read.csv(paste0(rawdatapath, "NHOH_report_210601_1114.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-# jsh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_210601_1114.csv"), na.strings = c(""), as.is=T, fileEncoding="CP932")
-
 # jsh_report <- read_csv(paste0(rawdatapath, "NHOH_report_220509_1015.csv"))   # tidyverseパッケージのread_csvを使用
 # jsh.rgst <- read_csv(paste0(rawdatapath, "NHOH_registration_220509_1015.csv"))  # tidyverseパッケージのread_csvを使用
 
