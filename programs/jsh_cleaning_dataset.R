@@ -7,22 +7,22 @@
 
 library(tidyverse)
 
-day.shimekiri <- "20220520"
+day.shimekiri <- "20220531"
 kYear <- "2021"
 
 #JSHの場合はコメント解除
 FileNameOutput <- "JSH_cleaning_DS.csv"
-prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220509"
+prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220601"
 rawdatapath <- paste0(prtpath, "/rawdata/")
-jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_220509_0819.csv")) # tidyverseパッケージのread_csvを使用
-jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_220509_0819.csv")) # tidyverseパッケージのread_csvを使用
+jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_220601_1135.csv")) # tidyverseパッケージのread_csvを使用
+jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_220601_1135.csv")) # tidyverseパッケージのread_csvを使用
 
-#NHOHの場合はコメント解除
+# #NHOHの場合はコメント解除
 # FileNameOutput <- "NHOH_cleaning_DS.csv"
-# prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220509"
+# prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220601"
 # rawdatapath <- paste0(prtpath, "/rawdata/")
-# jsh_report <- read_csv(paste0(rawdatapath, "NHOH_report_220509_1015.csv"))   # tidyverseパッケージのread_csvを使用
-# jsh.rgst <- read_csv(paste0(rawdatapath, "NHOH_registration_220509_1015.csv"))  # tidyverseパッケージのread_csvを使用
+# jsh_report <- read_csv(paste0(rawdatapath, "NHOH_report_220601_1010.csv"))   # tidyverseパッケージのread_csvを使用
+# jsh.rgst <- read_csv(paste0(rawdatapath, "NHOH_registration_220601_1010.csv"))  # tidyverseパッケージのread_csvを使用
 
 ###########重複データ確認###################################
 duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
