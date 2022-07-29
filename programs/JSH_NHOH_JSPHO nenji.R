@@ -3,38 +3,44 @@
 # 2017/4/20 作成
 # 2021/7/26 集計のため更新（Agata.K）
 # 2021/7/29 WHO2016にWHO2008が混在している為、両方に対応出来るように修正（JSHのみ）
+# 2022/7/28 csvのread方法変更に伴うコード修正、重複症例削除処理の追加（Agata.K）
 
-date.cutoff <- "20220531"
-kYear <- "2021"
-flag <- 1 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
-prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/220509"
+library(tidyverse) # read_csv利用の為のライブラリ(2022/7/28 Agata.K)
+
+date.cutoff <- "20220531" # データ固定日
+kYear <- "2021"           # 集計する診断年
+flag <- 1                 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
+# programを保管しているパス
+prtpath <- "C:/Users/KumikoAgata/Box/Datacenter/Users/agata/100_R関連/JSH/★work/2_JSH_NHOH_JSPHO nenji" 
 kToday <- Sys.Date()
 
-rawdatapath <- paste0(prtpath, "/rawdata/")
-jspho_rgst <- read.csv(paste0(rawdatapath, "JSPHO_registration_220511_0938.csv"), na.strings = c(""), as.is=T, fileEncoding="UTF-8-BOM")
-jspho_outcome <- read.csv(paste0(rawdatapath, "JSPHO_220511_0938.csv"), na.strings = c(""), as.is=T, fileEncoding="UTF-8-BOM")
-jsh_report <- read.csv(paste0(rawdatapath, "JSH_report_220509_0819.csv"), na.strings = c(""), as.is=T, fileEncoding="UTF-8-BOM")
-jsh.rgst <- read.csv(paste0(rawdatapath, "JSH_registration_220509_0819.csv"), na.strings = c(""), as.is=T, fileEncoding="UTF-8-BOM")
-jsh_outcome <- read.csv(paste0(rawdatapath, "JSH_220509_0819.csv"), na.strings = c(""), as.is=T, fileEncoding="UTF-8-BOM")
-nhoh_report <- read.csv(paste0(rawdatapath, "NHOH_report_220509_1015.csv"), na.strings = c(""), as.is=T, fileEncoding="UTF-8-BOM")
-nhoh.rgst <- read.csv(paste0(rawdatapath, "NHOH_registration_220509_1015.csv"), na.strings = c(""), as.is=T, fileEncoding="UTF-8-BOM")
-nhoh_outcome <- read.csv(paste0(rawdatapath, "NHOH_220509_1015.csv"), na.strings = c(""), as.is=T, fileEncoding="UTF-8-BOM")
+# rawdataフォルダ内のファイル読込（tidyverseパッケージのread_csvを使用）(2022/7/28 Agata.K)
+rawdatapath <- paste0(prtpath, "/rawdata/") # DLデータ保管フォルダ
+jspho_rgst <- read_csv(paste0(rawdatapath, "JSPHO_registration_220722_1533.csv")) # JSPHOのDLデータ読込
+jspho_outcome <- read_csv(paste0(rawdatapath, "JSPHO_220722_1533.csv"))
+jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_220701_0827.csv"))         # JSHのDLデータ読込
+jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_220701_0827.csv"))
+jsh_outcome <- read_csv(paste0(rawdatapath, "JSH_220701_0827.csv"))
+nhoh_report <- read_csv(paste0(rawdatapath, "NHOH_report_220701_1207.csv"))       # NHOHのDLデータ読込
+nhoh.rgst <- read_csv(paste0(rawdatapath, "NHOH_registration_220701_1207.csv"))
+nhoh_outcome <- read_csv(paste0(rawdatapath, "NHOH_220701_1207.csv"))
 
+# inputフォルダ内のファイルを読込（Disease_Name_v2.csv、mhcod_20161006.csv、WHO2008.csv、Duplicate.csv）(2022/7/28 Agata.K)
 list <- list.files(paste0(prtpath, "/input"))
 df.name <- sub(".csv.*", "", list)
 for (i in 1:length(list)) {
-  assign(df.name[i], read.csv(paste0(prtpath, "/input/", list[i]), as.is=T, na.strings = c(""), fileEncoding='UTF-8-BOM'))
+    assign(df.name[i], read_csv(paste0(prtpath, "/input/", list[i])))
 }
 
 # 関数の定義 ###############################################
 YearDif <- function(starting, ending) {
-  # 2つの日付の年差（切り下げ）を計算する。startingに生年月日を指定すれば満年齢計算に使用可能。
-  as.integer((as.integer(format(as.Date(ending), "%Y%m%d")) - as.integer(format(as.Date(starting), "%Y%m%d"))) / 10000)
+    # 2つの日付の年差（切り下げ）を計算する。startingに生年月日を指定すれば満年齢計算に使用可能。
+    as.integer((as.integer(format(as.Date(ending), "%Y%m%d")) - as.integer(format(as.Date(starting), "%Y%m%d"))) / 10000)
 }
 Sys.setlocale("LC_TIME", "C") #必須：日本時間にコンピュータ設定を合わせるforwindows
 
-###########重複データ確認###################################
-duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
+# 重複データ削除###################################
+# duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 # grep(191414, jsh_report$登録コード) #重複している登録番号を記載
 # grep(191417, jsh_report$登録コード)
 # grep(191422, jsh_report$登録コード)
@@ -50,15 +56,31 @@ duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
 # jspho_rgst <- jspho_rgst[jspho_rgst$登録コード != "30323",]
 
 # 2020年診断集計対応（2021/7/26 Agata.K）
-jspho_rgst <- jspho_rgst[jspho_rgst$作成日 <= "2021/05/31",]  # JSPHO 2021/6/1以降削除
-nhoh_report <- nhoh_report[nhoh_report$登録コード != "37037",]  #NHOH 37037を削除（JSHと重複の為）
-nhoh_report <- nhoh_report[nhoh_report$登録コード != "38525",]  #NHOH 38525を削除（JSHと重複の為）
-nhoh_report <- nhoh_report[nhoh_report$登録コード != "37849",]  #NHOH 37849を削除（JSPHOと重複の為）
-jsh_report <- jsh_report[jsh_report$登録コード != "310144",]  #JSH 310144を削除（参加外施設の為）
+# jspho_rgst <- jspho_rgst[jspho_rgst$作成日 <= "2021/05/31",]  # JSPHO 2021/6/1以降削除
+# nhoh_report <- nhoh_report[nhoh_report$登録コード != "37037",]  #NHOH 37037を削除（JSHと重複の為）
+# nhoh_report <- nhoh_report[nhoh_report$登録コード != "38525",]  #NHOH 38525を削除（JSHと重複の為）
+# nhoh_report <- nhoh_report[nhoh_report$登録コード != "37849",]  #NHOH 37849を削除（JSPHOと重複の為）
+# jsh_report <- jsh_report[jsh_report$登録コード != "310144",]  #JSH 310144を削除（参加外施設の為）
+
+# 2021年診断集計対応。Duplicate.csvの症例を削除する（2022/7/27 Agata.K) 
+for (j in 1: length(Duplicate$解析に使用する症例)){
+    
+    if(Duplicate$解析に使用する症例[j] == "JSH") { #NHOHの症例を削除
+        nhoh_report <- nhoh_report[nhoh_report$登録コード!= Duplicate$NHOH[j] ,]
+    }
+    
+    else if(Duplicate$解析に使用する症例[j] == "NHOH"){ #JSHの症例を削除
+        jsh_report <- jsh_report[jsh_report$登録コード != Duplicate$JSH[j] ,]
+    }
+}
+
 ############################################################
+
+# 各団体の行数（症例数）を取得
 jspho_total <- nrow(jspho_rgst)
 jsh_total <- nrow(jsh_report)
 nho_total <- nrow(nhoh_report)
+
 #------JSPHO---------
 #性別、転帰をマージする処理(JSPHO)
 dxt_jspho_outcome <- jspho_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
@@ -74,6 +96,7 @@ jspho.rgst <- jspho_rgst2[!is.na(jspho_rgst2$作成日), ]
 jspho.rgst$year <- as.integer(substr(jspho.rgst$診断年月日, 1, 4))
 before201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 <= "2018/05/31")
 after201806_jspho <- subset(jspho.rgst, jspho.rgst$作成日 >= "2018/06/01")
+
 # 2018/6/1までの登録症例のグループに対しては、フィールドの入力値からWHO2008分類の病名を当てはめる
 before201806_jspho$flag <- ifelse(before201806_jspho$field7 == 2 | (before201806_jspho$field7 == 1 & before201806_jspho$field37 == 8 & before201806_jspho$field69 == 2), "non_tumor", "tumor")
 df.tumor <- subset(before201806_jspho, before201806_jspho$flag == "tumor")
@@ -285,15 +308,15 @@ jspho_dropout <- nrow(subset(jspho_merge,jspho_merge$age.diagnosis >= 20))  # dr
 
 #WHO2008をWHO2016に変換
 if (flag == 1) {
-  jspho$MHDECOD <- ifelse(nchar(jspho$MHDECOD) != 5, round(jspho$MHDECOD * 10 + 10000, digits = 0)
-                          , jspho$MHDECOD)
-  jspho$MHDECOD <- ifelse(jspho$MHDECOD == 10930, 10931, jspho$MHDECOD)
-  jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+    jspho$MHDECOD <- ifelse(nchar(jspho$MHDECOD) != 5, round(jspho$MHDECOD * 10 + 10000, digits = 0)
+                            , jspho$MHDECOD)
+    jspho$MHDECOD <- ifelse(jspho$MHDECOD == 10930, 10931, jspho$MHDECOD)
+    jspho <- merge(jspho, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 } else {
-  # WHO2016をWHO2008に変換
-  jspho$MHDECOD <- ifelse(nchar(jspho$MHDECOD) == 5, round((jspho$MHDECOD - 10000) / 10, digits = 0)
-                          , jspho$MHDECOD)
-  jspho <- merge(jspho, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
+    # WHO2016をWHO2008に変換
+    jspho$MHDECOD <- ifelse(nchar(jspho$MHDECOD) == 5, round((jspho$MHDECOD - 10000) / 10, digits = 0)
+                            , jspho$MHDECOD)
+    jspho <- merge(jspho, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
 }
 
 jspho_year_dropout <- nrow(subset(jspho, jspho$year <= 2011 | as.integer(jspho$year) > kYear))  # dropoutした人数
@@ -307,7 +330,7 @@ colnames(jspho_ads)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTH
 #------NHOH---------
 #施設コードをマージする処理(NHOH)
 p.nhoh.rgst <- nhoh.rgst[,c("登録コード", "field7", "生年月日", "性別")]
-p.nhoh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-","",p.nhoh.rgst$field))/1000)
+p.nhoh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-","",p.nhoh.rgst$field7))/1000)
 dxt_nhoh_outcome <- nhoh_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
 m.nhoh_0 <- merge(nhoh_report,p.nhoh.rgst, by="登録コード", all.x= T)
 m.nhoh <- merge(m.nhoh_0, dxt_nhoh_outcome, by="登録コード", all.x= T)
@@ -315,15 +338,15 @@ m.nhoh <- merge(m.nhoh_0, dxt_nhoh_outcome, by="登録コード", all.x= T)
 m.nhoh$STUDYID <- "NHOH"
 #WHO2008をWHO2016に変換
 if (flag == 1) {
-  m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) != 5, round(m.nhoh$field2 * 10 + 10000, digits = 0)
-                           , m.nhoh$field2)
-  m.nhoh$MHDECOD <- ifelse(m.nhoh$field2 == 10930, 10931, m.nhoh$field2)
-  m.nhoh <- merge(m.nhoh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+    m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) != 5, round(m.nhoh$field2 * 10 + 10000, digits = 0)
+                             , m.nhoh$field2)
+    m.nhoh$MHDECOD <- ifelse(m.nhoh$field2 == 10930, 10931, m.nhoh$field2)
+    m.nhoh <- merge(m.nhoh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 } else {
-  # WHO2016をWHO2008に変換
-  m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) == 5, round((m.nhoh$field2 - 10000) / 10, digits = 0)
-                           , m.nhoh$field2)
-  m.nhoh <- merge(m.nhoh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
+    # WHO2016をWHO2008に変換
+    m.nhoh$MHDECOD <- ifelse(nchar(m.nhoh$field2) == 5, round((m.nhoh$field2 - 10000) / 10, digits = 0)
+                             , m.nhoh$field2)
+    m.nhoh <- merge(m.nhoh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
 }
 
 # 診断年月日2012年以降、必要変数抽出
@@ -337,6 +360,7 @@ colnames(nhoh.1)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL"
 # BRTHDTC, MHSTDTCが逆転している症例を除く
 nho_reverse_dropout <- nrow(subset(nhoh.1, ((format(as.Date(nhoh.1$BRTHDTC), "%Y%m%d")) >  format(as.Date(nhoh.1$MHSTDTC), "%Y%m%d"))))  # dropoutした人数
 nhoh.1 <- nhoh.1[format(as.Date(nhoh.1$BRTHDTC), "%Y%m%d") <=  format(as.Date(nhoh.1$MHSTDTC), "%Y%m%d"), ]
+
 #------JSH---------
 #施設コードをマージする処理(JSH)
 p.jsh.rgst <- jsh.rgst[, c("登録コード", "field114", "生年月日", "性別")]
@@ -348,15 +372,15 @@ m.jsh <- merge(m.jsh_0, dxt_jsh_outcome, by = "登録コード", all.x = T)
 m.jsh$STUDYID <- "JSH"
 #WHO2008をWHO2016に変換
 if (flag == 1) {
-  # WHO2008のコードが混在の為、elseの時の処理を変更（2021/07/29 Agata.K）
-  # m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) != 5, round(m.jsh$field1 * 10 + 10000, digits = 0), m.jsh$field1)
-  m.jsh$MHDECOD <- ifelse(m.jsh$field1 < 10000, round(m.jsh$field1 * 10 + 10000, digits = 0), m.jsh$field1)
-  m.jsh$MHDECOD <- ifelse(m.jsh$field1 == 10930, 10931, m.jsh$field1)
-  m.jsh <- merge(m.jsh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+    # WHO2008のコードが混在の為、elseの時の処理を変更（2021/07/29 Agata.K）
+    # m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) != 5, round(m.jsh$field1 * 10 + 10000, digits = 0), m.jsh$field1)
+    m.jsh$MHDECOD <- ifelse(m.jsh$field1 < 10000, round(m.jsh$field1 * 10 + 10000, digits = 0), m.jsh$field1)
+    m.jsh$MHDECOD <- ifelse(m.jsh$field1 == 10930, 10931, m.jsh$field1)
+    m.jsh <- merge(m.jsh, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
 } else {
-　m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) == 5, round((m.jsh$field1 - 10000) / 10, digits = 0)
-　                         , m.jsh$field1)
-  m.jsh <- merge(m.jsh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
+    m.jsh$MHDECOD <- ifelse(nchar(m.jsh$field1) == 5, round((m.jsh$field1 - 10000) / 10, digits = 0)
+                            , m.jsh$field1)
+    m.jsh <- merge(m.jsh, WHO2008, by.x = "MHDECOD", by.y = "code", all.x = T)
 }
 
 # 診断年月日2012年以降、腫瘍性病変のみを抽出
@@ -366,221 +390,221 @@ jsh.2 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integ
                  "name_ja", "生年月日", "診断年月日", "STUDYID")]
 colnames(jsh.2)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
+
 # BRTHDTC, MHSTDTCが逆転している症例を除く
 jsh_reverse_dropout <- nrow(jsh.2[is.na(jsh.2$BRTHDTC) | as.integer(format(as.Date(jsh.2$MHSTDTC), "%Y%m%d")) - as.integer(format(as.Date(jsh.2$BRTHDTC), "%Y%m%d")) < 0, ]) # dropoutした人数
 jsh.1 <- subset(jsh.2, !is.na(jsh.2$BRTHDTC) & (format(as.Date(jsh.2$BRTHDTC), "%Y%m%d") <=  format(as.Date(jsh.2$MHSTDTC), "%Y%m%d")))
 
 # # 3団体を繋げた基本のデータセットを作成
 dataset.3org0 <-  rbind(jsh.1, nhoh.1, jspho_ads)
+
 #MHTERMの空欄は解析対象から除外する
 MHTERM_jspho_fail_dropout <- nrow(dataset.3org0[is.na(dataset.3org0$MHTERM) & dataset.3org0$STUDYID == "JSPHO", ])
 MHTERM_jsh_fail_dropout <- nrow(dataset.3org0[is.na(dataset.3org0$MHTERM) & dataset.3org0$STUDYID == "JSH", ])
 MHTERM_nho_fail_dropout <- nrow(dataset.3org0[is.na(dataset.3org0$MHTERM) & dataset.3org0$STUDYID == "NHOH", ])
 dataset.3org0 <- dataset.3org0[!is.na(dataset.3org0$MHTERM), ]
+
 # SEX, SCSTRESC, BRTHDTCの空欄は解析対象から除外する
 sys_fail_dropout <- dataset.3org0[is.na(dataset.3org0$SEX) | is.na(dataset.3org0$SCSTRESC) | is.na(dataset.3org0$BRTHDTC), ]
 dataset.3org <- dataset.3org0[!is.na(dataset.3org0$SEX) & !is.na(dataset.3org0$SCSTRESC) & !is.na(dataset.3org0$BRTHDTC) , ]
 
-
 # age diagnosis
 dataset.3org$age.diagnosis <- as.integer(YearDif(dataset.3org$BRTHDTC, dataset.3org$MHSTDTC))
 
-
 # flagが2の場合はここで、データ出力
 if(flag == 2) {
-  dataset.3org <- dataset.3org[dataset.3org$age.diagnosis > 9 | dataset.3org$age.diagnosis <= 9 & dataset.3org$STUDYID == "JSPHO", ] # JSH/NHOHの0-9歳を疾患によらず全て削除
-  dataset.3org[is.na(dataset.3org)] <- ""
-  write.csv(dataset.3org, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads_WHO2008", "_", kToday, ".csv"), row.names = F)
-
-  # count用に"1"を入力
-  dataset.3org$count <- 1
-  # ICD-10による区分をマージ
-  ads_mhcod <-  merge(dataset.3org, mhcod_20161006, by = "MHDECOD", all.x = T)
-  # 年齢区分を挿入
-  ads_mhcod$cat.age.diagnosis <- cut(as.integer(ads_mhcod$age.diagnosis), breaks = c(0, 15, 200),
-                                     labels= c("0-14", "15-"), right=FALSE)
-  # 診断年区分を挿入
-  ads_mhcod$year.diagnosis <- paste0("JSH_", substr(ads_mhcod$MHSTDTC, 1, 4))
-  # 診断年、診断区分別に集計
-  by.year.diagnosis <- xtabs(count ~ MHSCAT + year.diagnosis, data = ads_mhcod)
-  # 15歳未満の症例に対し、診断年、診断区分別に集計
-  under15 <- ads_mhcod[ads_mhcod$cat.age.diagnosis == "0-14", ]
-  by.year.diagnosis.u15 <- xtabs(count ~ MHSCAT + year.diagnosis, data = under15)
-  # 15歳以上の症例に対し、診断年、診断区分別に集計
-  over15 <- ads_mhcod[ads_mhcod$cat.age.diagnosis == "15-", ]
-  by.year.diagnosis.o15 <- xtabs(count ~ MHSCAT + year.diagnosis, data = over15)
-
-  # 条件設定により落ちた症例をカウント
-  dropout <- data.frame(
-    項目 = c("全登録数", "JSPHO詳細登録の内容よりWHO分類にマッピング不能", "WHO2008に分類できない", "作成日または診断年月日が空値", "診断時年齢20歳以上", "集計対象年以外", "生年月日と診断年月日の逆転",　"不具合による脱落
+    dataset.3org <- dataset.3org[dataset.3org$age.diagnosis > 9 | dataset.3org$age.diagnosis <= 9 & dataset.3org$STUDYID == "JSPHO", ] # JSH/NHOHの0-9歳を疾患によらず全て削除
+    dataset.3org[is.na(dataset.3org)] <- ""
+    write.csv(dataset.3org, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads_WHO2008", "_", kToday, ".csv"), row.names = F)
+    
+    # count用に"1"を入力
+    dataset.3org$count <- 1
+    # ICD-10による区分をマージ
+    ads_mhcod <-  merge(dataset.3org, mhcod_20161006, by = "MHDECOD", all.x = T)
+    # 年齢区分を挿入
+    ads_mhcod$cat.age.diagnosis <- cut(as.integer(ads_mhcod$age.diagnosis), breaks = c(0, 15, 200),
+                                       labels= c("0-14", "15-"), right=FALSE)
+    # 診断年区分を挿入
+    ads_mhcod$year.diagnosis <- paste0("JSH_", substr(ads_mhcod$MHSTDTC, 1, 4))
+    # 診断年、診断区分別に集計
+    by.year.diagnosis <- xtabs(count ~ MHSCAT + year.diagnosis, data = ads_mhcod)
+    # 15歳未満の症例に対し、診断年、診断区分別に集計
+    under15 <- ads_mhcod[ads_mhcod$cat.age.diagnosis == "0-14", ]
+    by.year.diagnosis.u15 <- xtabs(count ~ MHSCAT + year.diagnosis, data = under15)
+    # 15歳以上の症例に対し、診断年、診断区分別に集計
+    over15 <- ads_mhcod[ads_mhcod$cat.age.diagnosis == "15-", ]
+    by.year.diagnosis.o15 <- xtabs(count ~ MHSCAT + year.diagnosis, data = over15)
+    
+    # 条件設定により落ちた症例をカウント
+    dropout <- data.frame(
+        項目 = c("全登録数", "JSPHO詳細登録の内容よりWHO分類にマッピング不能", "WHO2008に分類できない", "作成日または診断年月日が空値", "診断時年齢20歳以上", "集計対象年以外", "生年月日と診断年月日の逆転",　"不具合による脱落
            ", "解析対象症例数"),
-    JSPHO = c(jspho_total, result_2017_jspho_dropout, MHTERM_jspho_fail_dropout, (dropout_emp_year + dropout_emp_cdate),  jspho_dropout, jspho_year_dropout, 0, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSPHO",]), nrow(dataset.3org[dataset.3org$STUDYID == "JSPHO", ])),
-    JSH =  c(jsh_total, 0, MHTERM_jsh_fail_dropout, 0, 0, jsh_year_dropout, jsh_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "JSH", ])),
-    NHO =  c(nho_total, 0, MHTERM_nho_fail_dropout, 0, 0, nho_year_dropout, nho_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "NHOH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "NHOH", ]))
-  )
-  write.csv(dropout, paste0(prtpath, "/output/dropout", "_", kToday, ".csv"), row.names = F)
-  # flagが2の場合はここで終わりにする、2ではないときは、次へ行く、というのを入れたい  #
-  # →if文以降の処理をelse側にそのまま入れた
-
+        JSPHO = c(jspho_total, result_2017_jspho_dropout, MHTERM_jspho_fail_dropout, (dropout_emp_year + dropout_emp_cdate),  jspho_dropout, jspho_year_dropout, 0, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSPHO",]), nrow(dataset.3org[dataset.3org$STUDYID == "JSPHO", ])),
+        JSH =  c(jsh_total, 0, MHTERM_jsh_fail_dropout, 0, 0, jsh_year_dropout, jsh_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "JSH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "JSH", ])),
+        NHO =  c(nho_total, 0, MHTERM_nho_fail_dropout, 0, 0, nho_year_dropout, nho_reverse_dropout, nrow(sys_fail_dropout[sys_fail_dropout$STUDYID == "NHOH",]),  nrow(dataset.3org[dataset.3org$STUDYID == "NHOH", ]))
+    )
+    write.csv(dropout, paste0(prtpath, "/output/dropout", "_", kToday, ".csv"), row.names = F)
+    # flagが2の場合はここで終わりにする、2ではないときは、次へ行く、というのを入れたい  #
+    # →if文以降の処理をelse側にそのまま入れた
+    
 } else {
-  # count用に"1"を入力
-  dataset.3org$count <- 1
-
-  # 集計対象年のみ抽出
-  dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= date.cutoff & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == kYear, ]
-
-  # 疾患別集計
-  dxt.dataset.3org.year <- dataset.3org_yyyy
-  dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
-                                                 labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
-  by.disease <- xtabs(count ~ MHDECOD + cat.age.diagnosis, data = dxt.dataset.3org.year)
-  by.disease.mat <- matrix(by.disease , nrow(by.disease), ncol(by.disease))
-  colnames(by.disease.mat) <- c("0-14", "15-19", "20-29", "30-39", "40-")
-  rownames(by.disease.mat) <- rownames(by.disease)
-  sum <- apply(by.disease.mat, 1, sum)
-  wip.by.disease <- as.data.frame(cbind(by.disease.mat, sum))
-  wip.by.disease$MHDECOD <- rownames(by.disease)
-
-  #　病名コードとマージ
-  res.by.disease<- merge(wip.by.disease, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all = T )
-
-  # NA処理
-  res.by.disease[is.na(res.by.disease)] <- 0
-  write.csv(res.by.disease, paste0(prtpath, "/output/result_disease.csv"), row.names = F)
-
-  # 詳細集計用データの作成
-  ## JSPHO
-  dxt.jspho <- jspho[, c(1, 2, 17:420)]
-  dxt.jspho$MDS染色体 <- "取得なし"
-  dxt.jspho$骨髄異形成関連変化随伴急性骨髄性白血病 <- "取得なし"
-  dxt.jspho$急性赤白血病 <- "取得なし"
-  dxt.jspho$AML詳細 <- "取得なし"
-  dxt.jspho$FAB分類 <- "取得なし"
-  dxt.jspho$ヘアリー細胞白血病 <- "取得なし"
-  dxt.jspho$多発性骨髄腫 <- "取得なし"
-  dxt.jspho$濾胞性リンパ腫 <- "取得なし"
-  dxt.jspho$濾胞性リンパ腫国際予後因子..FLIPI <- "取得なし"
-  dxt.jspho$びまん性大細胞型Ｂ細胞性リンパ腫 <- "取得なし"
-  dxt.jspho$血管内大細胞型Ｂ細胞性リンパ腫 <- "取得なし"
-  dxt.jspho$キャッスルマン <- "取得なし"
-  dxt.jspho$成人Ｔ細胞白血病リンパ腫 <- "取得なし"
-  dxt.jspho$腸管症関連Ｔ細胞リンパ腫 <- "取得なし"
-  dxt.jspho$末梢性Ｔ細胞リンパ腫 <- "取得なし"
-  dxt.jspho$HL付加事項 <- "取得なし"
-  dxt.jspho$HL.国際予後スコア.IPS. <- "取得なし"
-  dxt.jspho$免疫不全関連リンパ腫の場合 <- "取得なし"
-  dxt.jspho$二次性寒冷凝集素症 <- "取得なし"
-  dxt.jspho$ITP血小板数 <- "取得なし"
-  dxt.jspho$ITP.抗リン脂質抗体 <- "取得なし"
-  dxt.jspho$ヘパリン起因性血小板減少症 <- "取得なし"
-  dxt.jspho$ヘパリン起因性血小板減少症.抗HIT抗体. <- "取得なし"
-  dxt.jspho$凝固異常症.血友病A.インヒビター合併. <- "取得なし"
-  dxt.jspho$凝固異常症.血友病B.インヒビター合併. <- "取得なし"
-  dxt.jspho1 <- dxt.jspho[, c("登録コード", "CMLの細分類", "MDS染色体", "AML.染色体遺伝子",
-                              "骨髄異形成関連変化随伴急性骨髄性白血病", "AML.FAB分類", "急性赤白血病",
-                              "AML詳細", "血液腫瘍性.疾患名", "FAB分類", "ヘアリー細胞白血病",
-                              "多発性骨髄腫", "濾胞性リンパ腫", "濾胞性リンパ腫国際予後因子..FLIPI",
-                              "びまん性大細胞型Ｂ細胞性リンパ腫", "血管内大細胞型Ｂ細胞性リンパ腫", "キャッスルマン",
-                              "成人Ｔ細胞白血病リンパ腫", "腸管症関連Ｔ細胞リンパ腫",
-                              "末梢性Ｔ細胞リンパ腫", "HL.Stage.Ann.Arbor.", "HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
+    # count用に"1"を入力
+    dataset.3org$count <- 1
+    
+    # 集計対象年のみ抽出
+    dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= date.cutoff & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == kYear, ]
+    
+    # 疾患別集計
+    dxt.dataset.3org.year <- dataset.3org_yyyy
+    dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
+                                                   labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
+    by.disease <- xtabs(count ~ MHDECOD + cat.age.diagnosis, data = dxt.dataset.3org.year)
+    by.disease.mat <- matrix(by.disease , nrow(by.disease), ncol(by.disease))
+    colnames(by.disease.mat) <- c("0-14", "15-19", "20-29", "30-39", "40-")
+    rownames(by.disease.mat) <- rownames(by.disease)
+    sum <- apply(by.disease.mat, 1, sum)
+    wip.by.disease <- as.data.frame(cbind(by.disease.mat, sum))
+    wip.by.disease$MHDECOD <- rownames(by.disease)
+    
+    #　病名コードとマージ
+    res.by.disease<- merge(wip.by.disease, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all = T )
+    
+    # NA処理
+    res.by.disease[is.na(res.by.disease)] <- 0
+    write.csv(res.by.disease, paste0(prtpath, "/output/result_disease.csv"), row.names = F)
+    
+    # 詳細集計用データの作成
+    ## JSPHO
+    dxt.jspho <- jspho[, c(1, 2, 17:420)]
+    dxt.jspho$MDS染色体 <- "取得なし"
+    dxt.jspho$骨髄異形成関連変化随伴急性骨髄性白血病 <- "取得なし"
+    dxt.jspho$急性赤白血病 <- "取得なし"
+    dxt.jspho$AML詳細 <- "取得なし"
+    dxt.jspho$FAB分類 <- "取得なし"
+    dxt.jspho$ヘアリー細胞白血病 <- "取得なし"
+    dxt.jspho$多発性骨髄腫 <- "取得なし"
+    dxt.jspho$濾胞性リンパ腫 <- "取得なし"
+    dxt.jspho$濾胞性リンパ腫国際予後因子..FLIPI <- "取得なし"
+    dxt.jspho$びまん性大細胞型Ｂ細胞性リンパ腫 <- "取得なし"
+    dxt.jspho$血管内大細胞型Ｂ細胞性リンパ腫 <- "取得なし"
+    dxt.jspho$キャッスルマン <- "取得なし"
+    dxt.jspho$成人Ｔ細胞白血病リンパ腫 <- "取得なし"
+    dxt.jspho$腸管症関連Ｔ細胞リンパ腫 <- "取得なし"
+    dxt.jspho$末梢性Ｔ細胞リンパ腫 <- "取得なし"
+    dxt.jspho$HL付加事項 <- "取得なし"
+    dxt.jspho$HL.国際予後スコア.IPS. <- "取得なし"
+    dxt.jspho$免疫不全関連リンパ腫の場合 <- "取得なし"
+    dxt.jspho$二次性寒冷凝集素症 <- "取得なし"
+    dxt.jspho$ITP血小板数 <- "取得なし"
+    dxt.jspho$ITP.抗リン脂質抗体 <- "取得なし"
+    dxt.jspho$ヘパリン起因性血小板減少症 <- "取得なし"
+    dxt.jspho$ヘパリン起因性血小板減少症.抗HIT抗体. <- "取得なし"
+    dxt.jspho$凝固異常症.血友病A.インヒビター合併. <- "取得なし"
+    dxt.jspho$凝固異常症.血友病B.インヒビター合併. <- "取得なし"
+    # readcsvの方法を変更したことにより、一部項目名を修正（2022.07.27 Agata.K）
+    dxt.jspho1 <- dxt.jspho[, c("登録コード", "CMLの細分類", "MDS染色体", "AML 染色体遺伝子", "骨髄異形成関連変化随伴急性骨髄性白血病", "AML FAB分類",
+                                "急性赤白血病", "AML詳細", "血液腫瘍性 疾患名", "FAB分類", "ヘアリー細胞白血病", "多発性骨髄腫", "濾胞性リンパ腫",
+                                "濾胞性リンパ腫国際予後因子..FLIPI", "びまん性大細胞型Ｂ細胞性リンパ腫", "血管内大細胞型Ｂ細胞性リンパ腫",
+                                "キャッスルマン", "成人Ｔ細胞白血病リンパ腫", "腸管症関連Ｔ細胞リンパ腫", "末梢性Ｔ細胞リンパ腫", "HL Stage(Ann Arbor)",
+                                "HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合", "再生不良性貧血の重症度", "続発性赤芽球癆の場合、原疾患",
+                                "サラセミア", "温式自己免疫性溶血性貧血（AIHA)", "温式自己免疫性溶血性貧血が二次性の場合、その原因", "寒冷凝集素症",
+                                "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
+                                "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "慢性特発性血小板減少性紫斑病 診断時の血小板数",
+                                "慢性特発性血小板減少性紫斑病の場合、抗リン脂質抗体の有無", "ヘパリン起因性血小板減少症", "ヘパリン起因性血小板減少症.抗HIT抗体.",
+                                "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.", "抗リン脂質抗体症候群の分類",
+                                "抗リン脂質抗体症候群の場合、合併症", "無顆粒球症の原因")]
+    colnames(dxt.jspho1) <- c("登録コード", "CMLの細分類", "MDS染色体", "急性前骨髄球性白血病_染色体遺伝子","骨髄異形成関連変化随伴急性骨髄性白血病_詳細",
+                              "AML.FAB分類", "急性赤白血病_詳細", "AML_詳細", "Tリンパ芽球性白血病_リンパ腫" ,"FAB分類", "ヘアリー細胞白血病",
+                              "多発性骨髄腫_詳細",  "濾胞性リンパ腫_詳細","濾胞性リンパ腫国際予後因子_FLIPI", "びまん性大細胞型Ｂ細胞性リンパ腫_詳細",
+                              "血管内大細胞型Ｂ細胞性リンパ腫_詳細", "キャッスルマン_詳細", "成人Ｔ細胞白血病リンパ腫_詳細" , "腸管症関連Ｔ細胞リンパ腫_詳細",
+                              "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合" ,
                               "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
-                              "寒冷凝集素症", "二次性寒冷凝集素症",  "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
-                              "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "慢性特発性血小板減少性紫斑病.診断時の血小板数", "慢性特発性血小板減少性紫斑病の場合.抗リン脂質抗体の有無",
-                              "ヘパリン起因性血小板減少症",  "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
-                              "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因")]
-  colnames(dxt.jspho1) <- c("登録コード", "CMLの細分類", "MDS染色体", "急性前骨髄球性白血病_染色体遺伝子","骨髄異形成関連変化随伴急性骨髄性白血病_詳細",
+                              "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
+                              "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数",
+                              "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
+                              "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
+                              "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因")
+    syousai_jspho <- merge(jspho_ads, dxt.jspho1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
+    
+    ## JSH
+    dxt.jsh <- m.jsh[, c(1, 2, 13:188)]
+    dxt.jsh$AML詳細 <- "取得なし"
+    # readcsvの方法を変更したことにより、一部項目名を修正（2022.07.27 Agata.K）
+    dxt.jsh1 <- dxt.jsh[, c("登録コード", "CML病期", "MDS染色体", "APL", "AML/MRC", "AML(M5)", "AML(M6)", "AML詳細", "Tリンパ芽球性白血病・リンパ腫",
+                            "FAB分類","ヘアリーセル白血病（HCL）","多発性骨髄腫", "濾胞性リンパ腫", "濾胞性リンパ腫国際予後因子 （FLIPI）", "国際予後因子：IPI",
+                            "血管内B細胞リンパ腫（IVLBCL)", "キャッスルマン病", "ATLL", "EATL", "T/NK細胞腫瘍：PTCL", "Ann Arbor 分類病期", "付加事項",
+                            "HL　国際予後スコア(IPS)", "免疫不全関連リンパ腫の場合", "再生不良性貧血の重症度", "続発性赤芽球癆（原疾患）", "サラセミア（細分類）",
+                            "自己免疫性溶血性貧血AIHA", "二次性自己免疫性溶血性貧血AIHAの詳細", "寒冷凝集素症", "二次性寒冷凝集素症",
+                            "巨赤芽球性貧血 ビタミンB12欠乏", "巨赤芽球性貧血 ビタミンB12欠乏 内因子の欠乏", "巨赤芽球性貧血 葉酸欠乏" ,
+                            "鉄芽球性貧血: Sideroblastic anemia(SA)", "ITP （血小板数　/μL）", "ITP（抗リン脂質抗体）", "ヘパリン起因性血小板減少症",
+                            "ヘパリン起因性血小板減少症（抗HIT抗体）",  "凝固異常症：血友病A（インヒビター合併）","凝固異常症：血友病B（インヒビター合併）",
+                            "抗リン脂質抗体症候群", "抗リン脂質抗体症候群（合併症）", "無顆粒球症")]
+    colnames(dxt.jsh1) <- c("登録コード", "CMLの細分類", "MDS染色体", "急性前骨髄球性白血病_染色体遺伝子","骨髄異形成関連変化随伴急性骨髄性白血病_詳細",
                             "AML.FAB分類", "急性赤白血病_詳細", "AML_詳細", "Tリンパ芽球性白血病_リンパ腫" ,"FAB分類", "ヘアリー細胞白血病",
                             "多発性骨髄腫_詳細",  "濾胞性リンパ腫_詳細","濾胞性リンパ腫国際予後因子_FLIPI", "びまん性大細胞型Ｂ細胞性リンパ腫_詳細",
                             "血管内大細胞型Ｂ細胞性リンパ腫_詳細", "キャッスルマン_詳細", "成人Ｔ細胞白血病リンパ腫_詳細" , "腸管症関連Ｔ細胞リンパ腫_詳細",
-                            "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合" ,
+                            "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
                             "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
                             "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
                             "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数",
                             "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
                             "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
-                            "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因")
-  syousai_jspho <- merge(jspho_ads, dxt.jspho1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
-
-  ## JSH
-  dxt.jsh <- m.jsh[, c(1, 2, 13:188)]
-  dxt.jsh$AML詳細 <- "取得なし"
-  dxt.jsh1 <- dxt.jsh[, c("登録コード", "CML病期", "MDS染色体", "APL",
-                          "AML.MRC", "AML.M5.", "AML.M6.",
-                          "AML詳細", "Tリンパ芽球性白血病.リンパ腫", "FAB分類", "ヘアリーセル白血病.HCL.",
-                          "多発性骨髄腫", "濾胞性リンパ腫", "濾胞性リンパ腫国際予後因子..FLIPI.",
-                          "国際予後因子.IPI", "血管内B細胞リンパ腫.IVLBCL.", "キャッスルマン病",
-                          "ATLL", "EATL",
-                          "T.NK細胞腫瘍.PTCL", "Ann.Arbor.分類病期", "付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
-                          "再生不良性貧血の重症度", "続発性赤芽球癆.原疾患.", "サラセミア.細分類.", "自己免疫性溶血性貧血AIHA", "二次性自己免疫性溶血性貧血AIHAの詳細",
-                          "寒冷凝集素症", "二次性寒冷凝集素症", "巨赤芽球性貧血.ビタミンB12欠乏", "巨赤芽球性貧血.ビタミンB12欠乏.内因子の欠乏",
-                          "巨赤芽球性貧血.葉酸欠乏" , "鉄芽球性貧血..Sideroblastic.anemia.SA.", "ITP..血小板数..μL.", "ITP.抗リン脂質抗体.",
-                          "ヘパリン起因性血小板減少症",  "ヘパリン起因性血小板減少症.抗HIT抗体.",  "凝固異常症.血友病A.インヒビター合併.","凝固異常症.血友病B.インヒビター合併.",
-                          "抗リン脂質抗体症候群", "抗リン脂質抗体症候群.合併症.", "無顆粒球症")]
-  colnames(dxt.jsh1) <- c("登録コード", "CMLの細分類", "MDS染色体", "急性前骨髄球性白血病_染色体遺伝子","骨髄異形成関連変化随伴急性骨髄性白血病_詳細",
-                          "AML.FAB分類", "急性赤白血病_詳細", "AML_詳細", "Tリンパ芽球性白血病_リンパ腫" ,"FAB分類", "ヘアリー細胞白血病",
-                          "多発性骨髄腫_詳細",  "濾胞性リンパ腫_詳細","濾胞性リンパ腫国際予後因子_FLIPI", "びまん性大細胞型Ｂ細胞性リンパ腫_詳細",
-                          "血管内大細胞型Ｂ細胞性リンパ腫_詳細", "キャッスルマン_詳細", "成人Ｔ細胞白血病リンパ腫_詳細" , "腸管症関連Ｔ細胞リンパ腫_詳細",
-                          "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
-                          "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
-                          "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
-                          "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数",
-                          "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
-                          "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
-                          "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" )
-  syousai_jsh <- merge(jsh.1, dxt.jsh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
-
-  ## NHOH
-  dxt.nhoh <- m.nhoh[, c(1, 2, 13:294)]
-  dxt.nhoh$骨髄異形成関連変化随伴急性骨髄性白血病 <- "取得なし"
-  dxt.nhoh$FAB分類 <- "取得なし"
-  dxt.nhoh$続発性赤芽球癆.原疾患. <- "取得なし"
-  dxt.nhoh$サラセミア <- "取得なし"
-  dxt.nhoh$自己免疫性溶血性貧血AIHA <- "取得なし"
-  dxt.nhoh$AIHA_二次性の場合の原因 <- "取得なし"
-  dxt.nhoh$寒冷凝集素症 <- "取得なし"
-  dxt.nhoh$二次性寒冷凝集素症 <- "取得なし"
-  dxt.nhoh$巨赤芽球性貧血.ビタミンB12欠乏 <- "取得なし"
-  dxt.nhoh$巨赤芽球性貧血.ビタミンB12欠乏.内因子の欠乏 <- "取得なし"
-  dxt.nhoh$葉酸欠乏性貧血の場合の原因 <- "取得なし"
-  dxt.nhoh$鉄芽球性貧血 <- "取得なし"
-  dxt.nhoh$ヘパリン起因性血小板減少症 <- "取得なし"
-  dxt.nhoh$ヘパリン起因性血小板減少症.抗HIT抗体. <- "取得なし"
-  dxt.nhoh1 <- dxt.nhoh[, c("登録コード", "慢性骨髄増殖性白血病.CML...病期..MPN_4","骨髄異形成症候群..染色体.", "急性骨髄性白血病.APL.with.t.15.17..and.variantsの詳細" ,
-                            "骨髄異形成関連変化随伴急性骨髄性白血病", "急性骨髄性白血病.FAB分類", "急性骨髄性白血病.Acute.erythroid.leukemiaの詳細",
-                            "急性骨髄性白血病.染色体.遺伝子解析が不可能.発病形式.", "Tリンパ芽球性白血病.リンパ腫", "FAB分類", "Mature.B.cell.neoplasms.有毛細胞白血病.Variant.",
-                            "Mature.B.cell.neoplasms.多発性骨髄腫の詳細.MB_4_3","Mature.B.cell.neoplasms.濾胞性リンパ腫.組織型.", "濾胞性リンパ腫国際予後因子..FLIPI.",
-                            "国際予後因子.全年齢..International.Prognostic.Index.IPI.","Mature.B.cell.neoplasms.血管内B細胞リンパ腫.Variant.",  "Mature.B.cell.neoplasms.Castleman病.細分類.",
-                            "T.NK細胞腫瘍.成人T細胞白血病.リンパ腫.病型..TNK_5_1", "T.NK細胞腫瘍.Enteropathy.associated.T.cell.lymphoma.病型.",
-                            "T.NK細胞腫瘍.末梢性T細胞リンパ腫.特定不能.Variant.", "Ann.Arbor.分類病期", "付加事項", "HL.国際予後スコア.International.Prognostic.Score.IPS.", "Mature.B.cell.neoplasms.免疫不全関連リンパ腫の詳細",
-                            "Aplastic.anemia.の重症度", "続発性赤芽球癆.原疾患.", "サラセミア", "自己免疫性溶血性貧血AIHA", "AIHA_二次性の場合の原因",
-                            "寒冷凝集素症", "二次性寒冷凝集素症", "巨赤芽球性貧血.ビタミンB12欠乏", "巨赤芽球性貧血.ビタミンB12欠乏.内因子の欠乏",
-                            "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "血小板減少症.特発性血小板減少性紫斑病.血小板数.", "血小板減少症.特発性血小板減少性紫斑病.抗リン脂質抗体.",
-                            "ヘパリン起因性血小板減少症",  "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併.", "凝固異常症.血友病B.インヒビター合併.",
-                            "血栓傾向.抗リン脂質抗体症候群.分類.",  "血栓傾向.抗リン脂質抗体症候群.合併症.","好中球減少症.無顆粒球症の詳細")]
-  colnames(dxt.nhoh1) <- c("登録コード", "CMLの細分類", "MDS染色体", "急性前骨髄球性白血病_染色体遺伝子","骨髄異形成関連変化随伴急性骨髄性白血病_詳細",
-                           "AML.FAB分類", "急性赤白血病_詳細", "AML_詳細", "Tリンパ芽球性白血病_リンパ腫" ,"FAB分類", "ヘアリー細胞白血病",
-                           "多発性骨髄腫_詳細",  "濾胞性リンパ腫_詳細","濾胞性リンパ腫国際予後因子_FLIPI", "びまん性大細胞型Ｂ細胞性リンパ腫_詳細",
-                           "血管内大細胞型Ｂ細胞性リンパ腫_詳細", "キャッスルマン_詳細", "成人Ｔ細胞白血病リンパ腫_詳細" , "腸管症関連Ｔ細胞リンパ腫_詳細",
-                           "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
-                           "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
-                           "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
-                           "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数",
-                           "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
-                           "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
-                           "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" )
-  syousai_nhoh <- merge(nhoh.1, dxt.nhoh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
-  #バインド
-  dataset.3org.syousai <- rbind(syousai_jspho, syousai_jsh, syousai_nhoh)
-  # age diagnosis
-  dataset.3org.syousai$age.diagnosis <- YearDif(dataset.3org.syousai$BRTHDTC, dataset.3org.syousai$MHSTDTC)
-  dataset.3org.syousai$cat.age.diagnosis <- cut(dataset.3org.syousai$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
-                                                labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
-  # 集計対象年のみ抽出
-  dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai$created.date), "%Y%m%d") <= date.cutoff & as.integer(substr(dataset.3org.syousai$MHSTDTC, 1, 4)) == kYear, ]
-  # WHO分類のCSVをマージする
-  dataset.3org.syousai <- merge(dataset.3org.syousai, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
-  dataset.3org.syousai[is.na(dataset.3org.syousai)] <- ""
-
-  write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F)
-
+                            "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" )
+    syousai_jsh <- merge(jsh.1, dxt.jsh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
+    
+    ## NHOH
+    dxt.nhoh <- m.nhoh[, c(1, 2, 13:294)]
+    dxt.nhoh$骨髄異形成関連変化随伴急性骨髄性白血病 <- "取得なし"
+    dxt.nhoh$FAB分類 <- "取得なし"
+    dxt.nhoh$続発性赤芽球癆.原疾患. <- "取得なし"
+    dxt.nhoh$サラセミア <- "取得なし"
+    dxt.nhoh$自己免疫性溶血性貧血AIHA <- "取得なし"
+    dxt.nhoh$AIHA_二次性の場合の原因 <- "取得なし"
+    dxt.nhoh$寒冷凝集素症 <- "取得なし"
+    dxt.nhoh$二次性寒冷凝集素症 <- "取得なし"
+    dxt.nhoh$巨赤芽球性貧血.ビタミンB12欠乏 <- "取得なし"
+    dxt.nhoh$巨赤芽球性貧血.ビタミンB12欠乏.内因子の欠乏 <- "取得なし"
+    dxt.nhoh$葉酸欠乏性貧血の場合の原因 <- "取得なし"
+    dxt.nhoh$鉄芽球性貧血 <- "取得なし"
+    dxt.nhoh$ヘパリン起因性血小板減少症 <- "取得なし"
+    dxt.nhoh$ヘパリン起因性血小板減少症.抗HIT抗体. <- "取得なし"
+    # readcsvの方法を変更したことにより、一部項目名を修正（2022.07.27 Agata.K）
+    dxt.nhoh1 <- dxt.nhoh[, c("登録コード", "慢性骨髄増殖性白血病(CML)：（病期） MPN_4","骨髄異形成症候群：（染色体）", "急性骨髄性白血病：APL with t(15;17) and variantsの詳細" ,
+                              "骨髄異形成関連変化随伴急性骨髄性白血病", "急性骨髄性白血病：FAB分類", "急性骨髄性白血病：Acute erythroid leukemiaの詳細",
+                              "急性骨髄性白血病：染色体・遺伝子解析が不可能（発病形式）", "Tリンパ芽球性白血病・リンパ腫", "FAB分類", "Mature B-cell neoplasms：有毛細胞白血病（Variant）",
+                              "Mature B-cell neoplasms：多発性骨髄腫の詳細 MB_4_3","Mature B-cell neoplasms：濾胞性リンパ腫（組織型）", "濾胞性リンパ腫国際予後因子 （FLIPI）",
+                              "国際予後因子（全年齢）(International Prognostic Index：IPI)","Mature B-cell neoplasms：血管内B細胞リンパ腫（Variant）",  "Mature B-cell neoplasms：Castleman病（細分類）",
+                              "T/NK細胞腫瘍：成人T細胞白血病/リンパ腫（病型） TNK_5_1", "T/NK細胞腫瘍：Enteropathy-associated T-cell lymphoma（病型）",
+                              "T/NK細胞腫瘍：末梢性T細胞リンパ腫、特定不能（Variant）", "Ann Arbor 分類病期", "付加事項", "HL　国際予後スコア（International Prognostic Score：IPS）", "Mature B-cell neoplasms：免疫不全関連リンパ腫の詳細",
+                              "Aplastic anemia の重症度", "続発性赤芽球癆.原疾患.", "サラセミア", "自己免疫性溶血性貧血AIHA", "AIHA_二次性の場合の原因",
+                              "寒冷凝集素症", "二次性寒冷凝集素症", "巨赤芽球性貧血.ビタミンB12欠乏", "巨赤芽球性貧血.ビタミンB12欠乏.内因子の欠乏",
+                              "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "血小板減少症：特発性血小板減少性紫斑病（血小板数）", "血小板減少症：特発性血小板減少性紫斑病（抗リン脂質抗体）",
+                              "ヘパリン起因性血小板減少症",  "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症：血友病A（インヒビター合併）", "凝固異常症：血友病B（インヒビター合併）",
+                              "血栓傾向：抗リン脂質抗体症候群（分類）",  "血栓傾向：抗リン脂質抗体症候群（合併症）","好中球減少症：無顆粒球症の詳細")]
+    colnames(dxt.nhoh1) <- c("登録コード", "CMLの細分類", "MDS染色体", "急性前骨髄球性白血病_染色体遺伝子","骨髄異形成関連変化随伴急性骨髄性白血病_詳細",
+                             "AML.FAB分類", "急性赤白血病_詳細", "AML_詳細", "Tリンパ芽球性白血病_リンパ腫" ,"FAB分類", "ヘアリー細胞白血病",
+                             "多発性骨髄腫_詳細",  "濾胞性リンパ腫_詳細","濾胞性リンパ腫国際予後因子_FLIPI", "びまん性大細胞型Ｂ細胞性リンパ腫_詳細",
+                             "血管内大細胞型Ｂ細胞性リンパ腫_詳細", "キャッスルマン_詳細", "成人Ｔ細胞白血病リンパ腫_詳細" , "腸管症関連Ｔ細胞リンパ腫_詳細",
+                             "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
+                             "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
+                             "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
+                             "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数",
+                             "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
+                             "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
+                             "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" )
+    syousai_nhoh <- merge(nhoh.1, dxt.nhoh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
+    #バインド
+    dataset.3org.syousai <- rbind(syousai_jspho, syousai_jsh, syousai_nhoh)
+    # age diagnosis
+    dataset.3org.syousai$age.diagnosis <- YearDif(dataset.3org.syousai$BRTHDTC, dataset.3org.syousai$MHSTDTC)
+    dataset.3org.syousai$cat.age.diagnosis <- cut(dataset.3org.syousai$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
+                                                  labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
+    # 集計対象年のみ抽出
+    dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai$created.date), "%Y%m%d") <= date.cutoff & as.integer(substr(dataset.3org.syousai$MHSTDTC, 1, 4)) == kYear, ]
+    # WHO分類のCSVをマージする
+    dataset.3org.syousai <- merge(dataset.3org.syousai, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
+    dataset.3org.syousai[is.na(dataset.3org.syousai)] <- ""
+    
+    write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F)
+    
 }
