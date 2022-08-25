@@ -196,7 +196,8 @@ DiseaseMinorSum <- function(df, cat){
   ifelse(cat == 1, dg_master <- diseases[diseases$category1 == 1,], dg_master <- diseases[diseases$category1 == 2,])
 
   # マスタとresultをマージ（key：code,group_code)
-  tmp <- merge(dg_master, tmp, by.x = "code", by.y = "MHDECOD", all.x = T , sort = T)
+  tmp <- merge(dg_master, tmp, by.x = "code", by.y = "MHDECOD", all.x = T )
+  tmp <- tmp[order(tmp$group_code.x),]
 
   # group_jaについてNullがあれば埋める、codeが同じでgroup_jaが異なる場合はマスタに合わせる
   for (i in 1: length(tmp$code)){

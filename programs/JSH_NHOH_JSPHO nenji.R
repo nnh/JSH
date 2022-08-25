@@ -11,7 +11,7 @@ date.cutoff <- "20220531" # データ固定日
 kYear <- "2021"           # 集計する診断年
 flag <- 1                 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
 # programを保管しているパス
-prtpath <- "C:/Users/KumikoAgata/Box/Datacenter/Users/agata/100_R関連/JSH/★work/2_JSH_NHOH_JSPHO nenji"
+prtpath <- "C:/Users/KumikoAgata/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/集計/R/成形"
 kToday <- Sys.Date()
 
 # rawdataフォルダ内のファイル読込（tidyverseパッケージのread_csvを使用）(2022/7/28 Agata.K)
@@ -80,6 +80,10 @@ for (j in 1: length(Duplicate$解析に使用する症例)){
     jspho_rgst <- jspho_rgst[jspho_rgst$登録コード != Duplicate$JSPHO[j] ,]
   }
 }
+
+# 2症例削除（2021年診断だけ）2022.08.23 Agata.K
+jsh_report <- jsh_report[jsh_report$登録コード != "337116",]  #JSH 337116を削除（参加外施設の為）
+jsh_report <- jsh_report[jsh_report$登録コード != "345069",]  #JSH 345069を削除（参加外施設の為）
 
 ############################################################
 
@@ -612,6 +616,10 @@ if(flag == 2) {
   dataset.3org.syousai <- merge(dataset.3org.syousai, Disease_Name_v2, by.x = "MHDECOD", by.y = "code", all.x = T)
   dataset.3org.syousai[is.na(dataset.3org.syousai)] <- ""
 
+  # JSH-376891のSITEIDを95210074(2022.08.23 Agata.K 2021年診断のみ対応)
+  dataset.3org.syousai$SITEID <- ifelse(dataset.3org.syousai$SUBJID == 376891, 95210074, dataset.3org.syousai$SITEID)
+
+  # CSV出力
   write.csv(dataset.3org.syousai, paste0(prtpath, "/output/JSH_NHOH_JSPHO_ads.csv"), row.names = F, fileEncoding = "CP932")
 
 }
