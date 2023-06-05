@@ -4,25 +4,26 @@
 # 2021/06/24 Kumiko Agata JSH集計クリーニング
 # 2020/06/15 Kumiko Agata NHOH集計クリーニング
 # 2022/5/20 Mamiko Yonejima JSH集計クリーニング,NHOH集計クリーニング
+# 20236/5 Mamiko Yonejima JSH集計クリーニング,NHOH集計クリーニング
 
 library(tidyverse)
 
-day.shimekiri <- "20220531"
-kYear <- "2021"
+day.shimekiri <- "20230531"
+kYear <- "2022"
 
 #JSHの場合はコメント解除
-FileNameOutput <- "JSH_cleaning_DS.csv"
-prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220601"
-rawdatapath <- paste0(prtpath, "/rawdata/")
-jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_220601_1135.csv")) # tidyverseパッケージのread_csvを使用
-jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_220601_1135.csv")) # tidyverseパッケージのread_csvを使用
+# FileNameOutput <- "JSH_cleaning_DS.csv"
+# prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/11.03.03 中間解析用生データ/2023/JSH_sheets_230601_0855"
+# rawdatapath <- paste0(prtpath, "/rawdata/")
+# jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_230601_0855.csv")) # tidyverseパッケージのread_csvを使用
+# jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_230601_0855.csv")) # tidyverseパッケージのread_csvを使用
 
 # #NHOHの場合はコメント解除
-# FileNameOutput <- "NHOH_cleaning_DS.csv"
-# prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/JSH/Registry/10.03.10 データレビュー書/2021年診断/クリーニング/20220601"
-# rawdatapath <- paste0(prtpath, "/rawdata/")
-# jsh_report <- read_csv(paste0(rawdatapath, "NHOH_report_220601_1010.csv"))   # tidyverseパッケージのread_csvを使用
-# jsh.rgst <- read_csv(paste0(rawdatapath, "NHOH_registration_220601_1010.csv"))  # tidyverseパッケージのread_csvを使用
+FileNameOutput <- "NHOH_cleaning_DS.csv"
+prtpath <- "C:/Users/MamikoYonejima/Box/Datacenter/Trials/NHO/NHOH-BDR/11.03.03 中間解析用生データ/NHOH_sheets_230601_1102"
+rawdatapath <- paste0(prtpath, "/rawdata/")
+jsh_report <- read_csv(paste0(rawdatapath, "NHOH_report_230601_1102.csv"))   # tidyverseパッケージのread_csvを使用
+jsh.rgst <- read_csv(paste0(rawdatapath, "NHOH_registration_230601_1102.csv"))  # tidyverseパッケージのread_csvを使用
 
 ###########重複データ確認###################################
 duplicate <- jsh_report$登録コード[duplicated(jsh_report$登録コード)]
@@ -40,4 +41,4 @@ colnames(jsh.rgst) <- paste0("registration_", colnames(jsh.rgst))
 cleaning_ds <- merge(jsh.rgst, dxt2_jsh_report, by.x = "registration_登録コード", by.y = "登録コード", all.y = T)
 cleaning_ds[is.na(cleaning_ds)] <- ""
 outputpath <- paste0(prtpath, "/output/")
-write.csv(cleaning_ds, paste0(outputpath, FileNameOutput), row.names = F)
+write.csv(cleaning_ds, paste0(outputpath, FileNameOutput), row.names = F, )
