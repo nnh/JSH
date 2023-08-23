@@ -88,6 +88,9 @@ Sys.setlocale("LC_TIME", "C") #必須：日本時間にコンピュータ設定�
 # jsh_report <- jsh_report[jsh_report$登録コード != "337116",]  #JSH 337116を削除（参加外施設の為）
 # jsh_report <- jsh_report[jsh_report$登録コード != "345069",]  #JSH 345069を削除（参加外施設の為）
 
+# 2症例削除（2021年診断だけ）2022.08.23 Agata.K
+jsh_report <- jsh_report[jsh_report$登録コード != "426094",]    #JSH 426094を削除（参加外施設の為）
+nhoh_report <- nhoh_report[nhoh_report$登録コード != "43558",]  #NHOH 43558を削除（参加外施設の為）
 ############################################################
 
 # 各団体の行数（症例数）を取得
