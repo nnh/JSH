@@ -5,24 +5,33 @@
 # 2021/7/29 WHO2016にWHO2008が混在している為、両方に対応出来るように修正（JSHのみ）
 # 2022/8/16csvのread方法変更に伴うコード修正、重複症例削除処理の追加（Agata.K）
 # 2023/8/10 2023年度集計(Agata.K)
-# 2024/10/23 2024年度集計(Agata.K)
+# 2024/10/25 2024年度集計(Agata.K)
+# 2025/07/25 2025年度集計（Agata.K）
 
 library(tidyverse) # read_csv利用の為のライブラリ(2022/7/28 Agata.K)
 
-date.cutoff <- "20240531" # データ固定日
-kYear <- "2023"           # 集計する診断年
+date.cutoff <- "20250531" # データ固定日
+kYear <- "2024"           # 集計する診断年
 flag <- 1                 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
-# programを保管しているパス
-prtpath <- "C:/Users/c0002392/work/GIT/JSH/work/JSH_NHOH_JSPHO nenji"
+prtpath <- "C:/work/R/JSH/work/JSH_NHOH_JSPOH_nenji" # programを保管しているパス
 kToday <- Sys.Date()
 
 # rawdataフォルダ内のファイル読込（tidyverseパッケージのread_csvを使用）(2022/7/28 Agata.K)
 rawdatapath <- paste0(prtpath, "/rawdata/") # DLデータ保管フォルダ
-jspho_rgst <- read_csv(paste0(rawdatapath, "JSPHO_registration_240801_1352.csv")) # JSPHOのDLデータ読込
+
+# 2025.07.23 Agata.K JSPHOを読み込む際に、一部文字型を誤って読み込み、おかしくなるため暫定処置
+# jspho_rgst <- read_csv(paste0(rawdatapath, "JSPHO_registration_250701_0905.csv")) # JSPHOのDLデータ読込
+jspho_rgst <- read_csv(
+  paste0(rawdatapath, "JSPHO_registration_250725_0923.csv"),
+  col_types = cols(
+    "寒冷凝集素症" = col_character(), # この列を文字型として指定 2025.07.23 Agata.K
+    "field248" = col_integer() # この列を数値型として指定 2025.07.23 Agata.K
+  )
+)
 jspho_outcome <- read_csv(paste0(rawdatapath, "JSPHO_220722_1533.csv"))
 
-jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_240701_0834.csv"))         # JSHのDLデータ読込
-jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_240701_0834.csv"))
+jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_250703_1520.csv"))         # JSHのDLデータ読込
+jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_250703_1520.csv"))
 jsh_outcome <- read_csv(paste0(rawdatapath, "JSH_220701_0827.csv"))
 
 # nhoh_report <- read_csv(paste0(rawdatapath, "NHOH_report_230703_1201.csv"))       # NHOHのDLデータ読込
@@ -35,6 +44,7 @@ df.name <- sub(".csv.*", "", list)
 for (i in 1:length(list)) {
   assign(df.name[i], read_csv(paste0(prtpath, "/input/", list[i])))
 }
+
 
 # 関数の定義 ###############################################
 YearDif <- function(starting, ending) {
@@ -92,6 +102,10 @@ Sys.setlocale("LC_TIME", "C") #必須：日本時間にコンピュータ設定�
 # 2症例削除（2021年診断だけ）2022.08.23 Agata.K
 # jsh_report <- jsh_report[jsh_report$登録コード != "426094",]    #JSH 426094を削除（参加外施設の為）
 # nhoh_report <- nhoh_report[nhoh_report$登録コード != "43558",]  #NHOH 43558を削除（参加外施設の為）
+
+# (2024年診断のみ以下特記対応)2025.07.23 Agata.K
+# シート作成時施設コードを変更する（338900010→338903089）
+jsh_report$シート作成時施設コード[jsh_report$シート作成時施設コード == '338900010'] <- '338903089'
 ############################################################
 
 # 各団体の行数（症例数）を取得
@@ -539,10 +553,10 @@ if(flag == 2) {
                             "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合" ,
                             "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
                             "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
-                            "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数",
-                            "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
+                            "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数", 　
+                            "JSH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
                             "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
-                            "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因")
+                            "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因") # 2025.07.22 Agata.K "J「SH_ITP」にNHOHを削除
   syousai_jspho <- merge(jspho_ads, dxt.jspho1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
   
   ## JSH
@@ -565,10 +579,10 @@ if(flag == 2) {
                           "末梢性Ｔ細胞リンパ腫_詳細", "HL.Stage.Ann.Arbor","HL付加事項", "HL.国際予後スコア.IPS.", "免疫不全関連リンパ腫の場合",
                           "再生不良性貧血の重症度", "続発性赤芽球癆の場合.原疾患", "サラセミア", "温式自己免疫性溶血性貧血.AIHA.",  "温式自己免疫性溶血性貧血が二次性の場合.その原因",
                           "寒冷凝集素症", "二次性寒冷凝集素症", "ビタミンB12欠乏性貧血の原因", "ビタミンB12欠乏性貧血の原因が内因子の欠乏の場合",
-                          "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH.NHOH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数",
-                          "JSH.NHOH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
+                          "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数",
+                          "JSH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
                           "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
-                          "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" )
+                          "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" ) # 2025.07.22 Agata.K "J「SH_ITP」にNHOHを削除
   syousai_jsh <- merge(jsh.1, dxt.jsh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
   
   ## NHOH

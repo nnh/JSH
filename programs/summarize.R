@@ -5,12 +5,13 @@
 # コピー元: none
 # 変更履歴: 2022.08.18 Agata.K 2022年度集計に伴う、プログラム修正とコメント追加
 #           2023.08.09 Agata.K 2023年度集計：パスを手動設定に変更、outputのディレクトリを無ければ生成するよう修正
+#           2025.07.25 Agata.K 2025年度集計：エラーとなった場所が多数あり、改良
 #######################################################################
 
 # 手動で設定する事項の定義
 ######################################################################################
 # inputフォルダを保管しているフォルダのパス
-prtpath <- "C:/Users/c0002392/work/GIT/JSH/work/summarize"
+prtpath <- "C:/work/R/JSH/work/summarize"
 ######################################################################################
 
 
@@ -33,7 +34,8 @@ AddTotal <- function(df, col_no = 2){
   col_no <- as.numeric(col_no)
   
   # col_no-最終列までの登録数の合計を算出
-  total <- df %>% summarize(across(c(col_no:ncol(.)), sum))
+  #total <- df %>% summarize(across(c(col_no:ncol(.)), sum))
+  total <- df %>% summarize(across(c(col_no:ncol(.)), ~sum(., na.rm = TRUE)))
   
   # 最下行に結合
   df <- bind_rows(df, total)
@@ -117,6 +119,7 @@ SiteRegistSum <- function(df){
 #       cat(腫瘍性／非腫瘍性)
 # 返値：result
 # 履歴：2022.07.28 Agata.K 修正
+#       2025.07.25 Agata.K 修正
 # 備考：
 #--------------------------------
 DiseaseMajorSum <- function(df, cat){
@@ -150,11 +153,17 @@ DiseaseMajorSum <- function(df, cat){
   # 不要な項目を削除する(2022.07.28 Agata.K)
   tmp <- tmp %>% select(-c(code, category, abbr, group_ja))
   
-  # 項目名変更(2022.07.28 Agata.K)
-  result <- tmp %>% rename_with( ~ paste0(., "歳"), matches("\\d-\\d")) %>% rename(診断名 = name_ja, `40歳以上` = `40-`)
+  # 項目名変更 2025.07.22 Agata.K 動きが不安定なため改良
+  # result <- tmp %>% rename_with( ~ paste0(., "歳"), matches("\\d-\\d")) %>% rename(診断名 = name_ja, `40歳以上` = `40-`)
+  result <- tmp %>% 
+    rename_age_cols() %>% # 変更点
+    rename(診断名 = name_ja)
   
   # 集計結果でNAの箇所は0にする
   result[is.na(result)] <- 0
+  
+  # 列を整形する
+  result <- FormatDetailSum(result)
   
   return(result)
   
@@ -167,6 +176,7 @@ DiseaseMajorSum <- function(df, cat){
 #       cat(腫瘍性／非腫瘍性)
 # 返値：
 # 履歴：2022.07.28 Agata.K 修正
+#       2025.07.25 Agata.K 修正
 # 備考：
 #--------------------------------
 DiseaseMinorSum <- function(df, cat){
@@ -233,9 +243,11 @@ DiseaseMinorSum <- function(df, cat){
   # 列順変更
   tmp <- tmp[,c(2,1,3,4,5,6,7,8)]
   
-  # 項目名変更
-  result <- tmp %>% rename_with( ~ paste0(., "歳"), matches("\\d-\\d")) %>% rename(`疾患名・中分類` = `group_ja`, 診断名 = name_ja, `40歳以上` = `40-`)
-  
+  # 項目名変更 2025.07.22 Agata.K 動きが不安定なため修正
+  # result <- tmp %>% rename_with( ~ paste0(., "歳"), matches("\\d-\\d")) %>% rename(`疾患名・中分類` = `group_ja`, 診断名 = name_ja, `40歳以上` = `40-`)
+  result <- tmp %>% 
+    rename_age_cols() %>% # 変更点
+    rename(`疾患名・中分類` = `group_ja`, 診断名 = name_ja)
   #----------------------------------------------------#
   
   # NAの箇所は0にする
@@ -246,6 +258,9 @@ DiseaseMinorSum <- function(df, cat){
   
   #「合計」の左隣の列には一行上の値を代入する(gtフォーマット用)
   result[nrow(result),1] <- result[nrow(result)-1,1]
+  
+  # 列を整形する
+  result <- FormatDetailSum(result)
   
   return(result)
   
@@ -354,7 +369,7 @@ FormatDetailSum <- function(result){
 # 引数：df（DfFilteringで抽出、DfCuratingで置換したデータ）
 #       master(detail_master)
 # 返値：
-# 履歴：
+# 履歴：2025.07.25 Agata.K 修正
 # 備考：
 #--------------------------------
 DetailSum <- function(df, master){
@@ -362,9 +377,11 @@ DetailSum <- function(df, master){
   # 詳細集計する項目名を取得
   item <- rlang::sym(master$target)
   
-  # dfを年齢別で集計する
-  result <- df %>% select(!!item, cat.age.diagnosis) %>% group_by(!!item, cat.age.diagnosis) %>% summarize(n = n()) %>% mutate(合計 = sum(n)) %>%
-    spread(cat.age.diagnosis, n)  %>% rename_with( ~ paste0(., "歳"), matches("\\d-\\d")) %>% rename(`40歳以上` = `40-`) %>% ungroup
+  # dfを年齢別で集計する 2025.07.22 Agata.K 動きが不安定なため修正
+  # result <- df %>% select(!!item, cat.age.diagnosis) %>% group_by(!!item, cat.age.diagnosis) %>% summarize(n = n()) %>% mutate(合計 = sum(n)) %>%
+  #  spread(cat.age.diagnosis, n)  %>% rename_with( ~ paste0(., "歳"), matches("\\d-\\d")) %>% rename(`40歳以上` = `40-`) %>% ungroup
+  result <- df %>% select(!!item, cat.age.diagnosis) %>% group_by(!!item, cat.age.diagnosis) %>% summarize(n = n()) %>% mutate(合計 = sum(n)) %>% spread(cat.age.diagnosis, n) %>%
+    rename_age_cols() %>% ungroup # 変更点
   
   # NAの項目名を修正
   result[is.na(result[,1]),1] <- "未入力または未取得"
@@ -379,6 +396,33 @@ DetailSum <- function(df, master){
   return(result)
   
 }
+
+#--------------------------------
+# 関数：rename_age_cols
+# 内容：存在する年代の項目に「歳」を付けてリネームする
+# 引数：df (データフレーム)
+# 返値：df (リネーム後のデータフレーム)
+# 履歴：2025.07.22 Agata.K 作成 
+# 備考：
+#--------------------------------
+rename_age_cols <- function(df){
+  
+  # 「-」を含む一般的な年代カラムをリネーム
+  general_age_cols <- c("0-14", "15-19", "20-29", "30-39")
+  cols_to_change <- intersect(names(df), general_age_cols)
+  
+  if (length(cols_to_change) > 0) {
+    names(df)[match(cols_to_change, names(df))] <- paste0(cols_to_change, "歳")
+  }
+  
+  # 「40-」カラムが存在すればリネーム
+  if ("40-" %in% names(df)) {
+    names(df)[names(df) == "40-"] <- "40歳以上"
+  }
+  
+  return(df)
+}
+
 
 # ここからメインの処理-----------
 # 履歴：2022.08.18 Agata.K 修正
@@ -460,26 +504,44 @@ disease_detail <- lapply(1:nrow(detail_diag), function(i){
   df <- DfCurating(df, detail_diag[i,])   # targetの項目についてcurationの情報で置換
   df_R <- DetailSum(df, detail_diag[i,])  # 年代別カラムが表示されるように調整
   
-  # 今年度の集計項目(df_R)にあってマスター(report_form.txt)にない疾患詳細項目があるか調べる
-  colnames(df_R)[1] <- "detail"
-  df_R$id <- i
-  df_L <- report %>% select(id, detail) %>% filter(id == i)
-  missing_name <- setdiff(df_R$detail, df_L$detail)
-  
-  # マスターにない項目を【要確認】ファイルに記載する
-  if (length(missing_name) != 0) {
-    missing <- df_R %>% filter(detail %in% missing_name) %>% select(id, detail)
-    write.table(missing, file = errorOut, append = T, sep="\t", row.names = F, col.names = T, quote = F)
-    return(NULL)
-  } else {
+  if (nrow(df_R) > 0) {
+    # 今年度の集計項目(df_R)にあってマスター(report_form.txt)にない疾患詳細項目があるか調べる
+    colnames(df_R)[1] <- "detail"
+    df_R$id <- i
+    df_L <- report %>% select(id, detail) %>% filter(id == i)
+    missing_name <- setdiff(df_R$detail, df_L$detail)
     
-    # summarize_outputでidが必要なので、ここでは削除しない（2022.7.28 Agata.K）
-    # result <- df_L %>% left_join(df_R, by = c("id"="id", "detail"="detail")) %>% select(detail, everything()) %>%
-    #   select(-id)
-    result <- df_L %>% left_join(df_R, by = c("id"="id", "detail"="detail")) %>% select(detail, everything())
-    result[is.na(result)] <- 0
+    # マスターにない項目を【要確認】ファイルに記載する
+    if (length(missing_name) != 0) {
+      missing <- df_R %>% filter(detail %in% missing_name) %>% select(id, detail)
+      write.table(missing, file = errorOut, append = T, sep="\t", row.names = F, col.names = T, quote = F)
+      return(NULL)
+      
+    } else {
+      # summarize_outputでidが必要なので、ここでは削除しない（2022.7.28 Agata.K）
+      # result <- df_L %>% left_join(df_R, by = c("id"="id", "detail"="detail")) %>% select(detail, everything()) %>%
+      #   select(-id)
+      result <- df_L %>% left_join(df_R, by = c("id"="id", "detail"="detail")) %>% select(detail, everything())
+      result[is.na(result)] <- 0
+    }
+    return(result)
+    
+  } else {  # データがない場合は、report_form.txtを基に0埋めの表を作成する 2025.07.25 Agata.K
+    result <- report %>%
+      filter(id == i) %>%
+      select(detail, id)
+    
+    # 0埋めした年代と合計の列を追加
+    result <- result %>% mutate(
+      `0-14歳` = 0,
+      `15-19歳` = 0,
+      `20-29歳` = 0,
+      `30-39歳` = 0,
+      `40歳以上` = 0,
+      `合計` = 0
+    )
+    return(result)
   }
-  return(result)
 })
 
 report_title <- report %>% select(id, category, disease) %>% distinct()
