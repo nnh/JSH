@@ -5,29 +5,22 @@
 # 2021/7/29 WHO2016にWHO2008が混在している為、両方に対応出来るように修正（JSHのみ）
 # 2022/8/16csvのread方法変更に伴うコード修正、重複症例削除処理の追加（Agata.K）
 # 2023/8/10 2023年度集計(Agata.K)
-# 2024/10/25 2024年度集計(Agata.K)
+# 2024/10/23 2024年度集計(Agata.K)
 # 2025/07/25 2025年度集計（Agata.K）
+# 2025/08/20 2025年度集計・国外削除対応（Agata.K）
 
 library(tidyverse) # read_csv利用の為のライブラリ(2022/7/28 Agata.K)
 
 date.cutoff <- "20250531" # データ固定日
 kYear <- "2024"           # 集計する診断年
 flag <- 1                 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
-prtpath <- "C:/work/R/JSH/work/JSH_NHOH_JSPOH_nenji" # programを保管しているパス
+# programを保管しているパス
+prtpath <- "C:/Users/c0002392/work/GIT/JSH/work/JSH_NHOH_JSPHO_nenji"
 kToday <- Sys.Date()
 
 # rawdataフォルダ内のファイル読込（tidyverseパッケージのread_csvを使用）(2022/7/28 Agata.K)
 rawdatapath <- paste0(prtpath, "/rawdata/") # DLデータ保管フォルダ
-
-# 2025.07.23 Agata.K JSPHOを読み込む際に、一部文字型を誤って読み込み、おかしくなるため暫定処置
-# jspho_rgst <- read_csv(paste0(rawdatapath, "JSPHO_registration_250701_0905.csv")) # JSPHOのDLデータ読込
-jspho_rgst <- read_csv(
-  paste0(rawdatapath, "JSPHO_registration_250725_0923.csv"),
-  col_types = cols(
-    "寒冷凝集素症" = col_character(), # この列を文字型として指定 2025.07.23 Agata.K
-    "field248" = col_integer() # この列を数値型として指定 2025.07.23 Agata.K
-  )
-)
+jspho_rgst <- read_csv(paste0(rawdatapath, "JSPHO_registration_250725_0923.csv")) # JSPHOのDLデータ読込
 jspho_outcome <- read_csv(paste0(rawdatapath, "JSPHO_220722_1533.csv"))
 
 jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_250703_1520.csv"))         # JSHのDLデータ読込
@@ -44,7 +37,6 @@ df.name <- sub(".csv.*", "", list)
 for (i in 1:length(list)) {
   assign(df.name[i], read_csv(paste0(prtpath, "/input/", list[i])))
 }
-
 
 # 関数の定義 ###############################################
 YearDif <- function(starting, ending) {
@@ -107,6 +99,10 @@ Sys.setlocale("LC_TIME", "C") #必須：日本時間にコンピュータ設定�
 # シート作成時施設コードを変更する（338900010→338903089）
 jsh_report$シート作成時施設コード[jsh_report$シート作成時施設コード == '338900010'] <- '338903089'
 ############################################################
+
+# JSPHOについて、「初発時住所＝国外」は削除
+jspho_rgst <- jspho_rgst[jspho_rgst$初発時住所 != "国外 国外",]
+
 
 # 各団体の行数（症例数）を取得
 jspho_total <- nrow(jspho_rgst)
@@ -395,11 +391,15 @@ colnames(jspho_ads)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTH
 
 #------JSH---------
 #施設コードをマージする処理(JSH)
-p.jsh.rgst <- jsh.rgst[, c("登録コード", "field114", "生年月日", "性別")]
+p.jsh.rgst <- jsh.rgst[, c("登録コード", "field114", "生年月日", "性別", "初発時住所")] # 国外を削除するために初発時住所を追加
 p.jsh.rgst$SCSTRESC <- floor(as.integer(sub("^.*.-", "", p.jsh.rgst$field114))/1000)
 dxt_jsh_outcome <- jsh_outcome[, c("登録コード", "生死", "死亡日", "最終確認日")]
 m.jsh_0 <- merge(jsh_report, p.jsh.rgst, by = "登録コード", all.x = T)
 m.jsh <- merge(m.jsh_0, dxt_jsh_outcome, by = "登録コード", all.x = T)
+
+# 国外を削除（2025/8/20）
+m.jsh <- m.jsh[m.jsh$初発時住所 != "国外 国外",]  # JSPHO国外削除（JSHはreportとマージしてから削除）
+
 # STUDYID
 m.jsh$STUDYID <- "JSH"
 #WHO2008をWHO2016に変換
@@ -556,7 +556,7 @@ if(flag == 2) {
                             "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数", 　
                             "JSH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
                             "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
-                            "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因") # 2025.07.22 Agata.K "J「SH_ITP」にNHOHを削除
+                            "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因") # 2025.07.22 Agata.K
   syousai_jspho <- merge(jspho_ads, dxt.jspho1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
   
   ## JSH
@@ -582,7 +582,7 @@ if(flag == 2) {
                           "葉酸欠乏性貧血の場合の原因", "鉄芽球性貧血", "JSH_ITP_血小板数.JSPHO_慢性特発性血小板減少性紫斑病の血小板数",
                           "JSH_ITP_抗リン脂質抗体.JSPHO_慢性特発性血小板減少性紫斑病の場合の抗リン脂質抗体","ヘパリン起因性血小板減少症",
                           "ヘパリン起因性血小板減少症.抗HIT抗体.", "凝固異常症.血友病A.インヒビター合併." ,"凝固異常症.血友病B.インヒビター合併.",
-                          "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" ) # 2025.07.22 Agata.K "J「SH_ITP」にNHOHを削除
+                          "抗リン脂質抗体症候群の分類", "抗リン脂質抗体症候群の場合.合併症", "無顆粒球症の原因" ) # 2025.07.22 Agata.K
   syousai_jsh <- merge(jsh.1, dxt.jsh1, by.x = "SUBJID", by.y = "登録コード", all.x = T)
   
   ## NHOH
