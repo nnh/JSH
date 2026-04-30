@@ -13,7 +13,7 @@
 # プログラムを保管しているフォルダのパス
 prgpath <- "C:/work/R/JSH/programs"
 # inputフォルダを保管しているフォルダのパス
-prtpath <- "C:/work/R/JSH/work/summarize"
+prtpath <- "C:/work/R/JSH/test"
 ######################################################################################
 
 source(paste0(prgpath, "/summarize.R"), local = F, encoding = "UTF-8")
@@ -36,6 +36,12 @@ source(paste0(prgpath, "/summarize.R"), local = F, encoding = "UTF-8")
 # 備考：
 #--------------------------------
 OutputCSV <- function(title, out_file, list_data){
+
+  # ファイルの新規作成時にBOM（EF BB BF）を書き込む
+  # これによりエクセルが「UTF-8だ！」と100%認識するようになる（2026.4.30 Agata.K 文字化け対策）
+  con <- file(out_file, open = "w", encoding = "UTF-8")
+  writeChar("\ufeff", con, eos = NULL) # BOMの書き込み
+  close(con)
   
   # CSVファイル出力（タイトル）
   cat(paste0(title, "\n"), file = out_file, append = T)
@@ -45,7 +51,12 @@ OutputCSV <- function(title, out_file, list_data){
     subtitle <- names(list_data[i])
     print(subtitle)
     cat(paste0("\n【", subtitle, "】\n"), file = out_file, append = T)
-    write.table(list_data[[i]], file = out_file, append = T, sep=",", row.names = F, col.names = T, quote = T)
+    
+    # write.tableでUTF-8指定（BOMはすでにファイル先頭にあるので引き継がれます）（2026.4.30 Agata.K 文字化け対策）
+    write.table(list_data[[i]], file = out_file, append = T, sep=",", 
+                row.names = F, col.names = T, quote = T, qmethod = "double",
+                fileEncoding = "UTF-8")
+    # write.table(list_data[[i]], file = out_file, append = T, sep=",", row.names = F, col.names = T, quote = T)
   })
 }
 
@@ -117,6 +128,22 @@ for(i in 1:length(disease_detail)) {
   # sease_detail[[i]] がNULLでない場合のみ処理を実行 2025.07.22 Agata.K
   if (!is.null(disease_detail[[i]])) {
     disease_detail[[i]] <- AddTotal(disease_detail[[i]], 2)
+  }
+}
+
+# 詳細集計結果(disease_detail)をCSV出力用に加工する（2026.4.30 Agata.K 文字化け対策）
+for(i in 1:length(disease_detail)) {
+  if (!is.null(disease_detail[[i]])) {
+    
+    # 1列目の名前を取得
+    col1_name <- names(disease_detail[[i]])[1]
+    
+    disease_detail[[i]] <- disease_detail[[i]] %>%
+      mutate(
+        # 1列目を強制的にエクセル文字列形式（="値"）に変換
+        # これにより数値も「-Y」もすべて見た目通り文字列として表示
+        !!sym(col1_name) := paste0('="', !!sym(col1_name), '"')
+      )
   }
 }
 
