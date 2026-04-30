@@ -6,12 +6,13 @@
 # 変更履歴: 2022.08.18 Agata.K 2022年度集計に伴う、プログラム修正とコメント追加
 #           2023.08.09 Agata.K 2023年度集計：パスを手動設定に変更、outputのディレクトリを無ければ生成するよう修正
 #           2025.07.25 Agata.K 2025年度集計：エラーとなった場所が多数あり、改良
+#           2026.04.27 Agata.K 2026年度集計・年齢区分を40歳以上も10歳刻みに修正,診断名⇒疾患名・中分類に修正
 #######################################################################
 
 # 手動で設定する事項の定義
 ######################################################################################
 # inputフォルダを保管しているフォルダのパス
-prtpath <- "C:/work/R/JSH/work/summarize"
+prtpath <- "C:/Users/c0002392/Desktop/20260427_修正版/2_集計"
 ######################################################################################
 
 
@@ -154,10 +155,11 @@ DiseaseMajorSum <- function(df, cat){
   tmp <- tmp %>% select(-c(code, category, abbr, group_ja))
   
   # 項目名変更 2025.07.22 Agata.K 動きが不安定なため改良
+  # 項目名変更 2026.04.27 Agata.K 修正依頼あり対応
   # result <- tmp %>% rename_with( ~ paste0(., "歳"), matches("\\d-\\d")) %>% rename(診断名 = name_ja, `40歳以上` = `40-`)
   result <- tmp %>% 
     rename_age_cols() %>% # 変更点
-    rename(診断名 = name_ja)
+    rename(`疾患名・中分類` = name_ja)
   
   # 集計結果でNAの箇所は0にする
   result[is.na(result)] <- 0
@@ -241,7 +243,9 @@ DiseaseMinorSum <- function(df, cat){
   tmp <- tmp %>% select(-c(code, category1, category2, group_code.x, abbr, group_code.y, MHTERM))
   
   # 列順変更
-  tmp <- tmp[,c(2,1,3,4,5,6,7,8)]
+  # 2026.04.27 Agata.K 1番目(group_ja)を先頭に、次に2番目(name_ja)、その後に各年齢列(番号だと間違えそうなので、列名で指定)
+  #tmp <- tmp[,c(2,1,3,4,5,6,7,8)]
+  tmp <- tmp %>% select(group_ja, name_ja, everything())
   
   # 項目名変更 2025.07.22 Agata.K 動きが不安定なため修正
   # result <- tmp %>% rename_with( ~ paste0(., "歳"), matches("\\d-\\d")) %>% rename(`疾患名・中分類` = `group_ja`, 診断名 = name_ja, `40歳以上` = `40-`)
@@ -348,12 +352,17 @@ DfCurating <- function(df, master){
 #--------------------------------
 FormatDetailSum <- function(result){
   
-  # formというdataframeを定義する
-  form <- data.frame(matrix(rep(0, 7), nrow=1))[numeric(0),]
+  # 10歳刻みの全カラムを定義（2026.04.27 Agata.K)
+  age_cols <- c("0-9歳", "10-19歳", "20-29歳", "30-39歳", "40-49歳", "50-59歳", "60-69歳", "70-79歳", "80-89歳", "90歳以上")
+  
+  # formというdataframeを定義する(2026.04.27 Agata.K)
+  # form <- data.frame(matrix(rep(0, 7), nrow=1))[numeric(0),]
+  form <- data.frame(matrix(rep(0, length(age_cols) + 2), nrow=1))[numeric(0),]
   # 1列目は文字列型
   form$X1 <- as.character(form$X1)
-  # 1行目の項目名を設定
-  colnames(form) <- c(names(result)[1], "0-14歳", "15-19歳", "20-29歳", "30-39歳", "40歳以上", "合計")
+  # 1行目の項目名を設定(2026.04.27 Agata.K)
+  #colnames(form) <- c(names(result)[1], "0-14歳", "15-19歳", "20-29歳", "30-39歳", "40歳以上", "合計")
+  colnames(form) <- c(names(result)[1], age_cols, "合計")
   # resultをformへバインド
   result <- bind_rows(form, result)
   # NAは0にする
@@ -380,8 +389,13 @@ DetailSum <- function(df, master){
   # dfを年齢別で集計する 2025.07.22 Agata.K 動きが不安定なため修正
   # result <- df %>% select(!!item, cat.age.diagnosis) %>% group_by(!!item, cat.age.diagnosis) %>% summarize(n = n()) %>% mutate(合計 = sum(n)) %>%
   #  spread(cat.age.diagnosis, n)  %>% rename_with( ~ paste0(., "歳"), matches("\\d-\\d")) %>% rename(`40歳以上` = `40-`) %>% ungroup
-  result <- df %>% select(!!item, cat.age.diagnosis) %>% group_by(!!item, cat.age.diagnosis) %>% summarize(n = n()) %>% mutate(合計 = sum(n)) %>% spread(cat.age.diagnosis, n) %>%
-    rename_age_cols() %>% ungroup # 変更点
+  result <- df %>% select(!!item, cat.age.diagnosis) %>% 
+    group_by(!!item, cat.age.diagnosis) %>% 
+    summarize(n = n()) %>% 
+    mutate(合計 = sum(n)) %>% 
+    spread(cat.age.diagnosis, n) %>%
+    rename_age_cols() %>% 
+    ungroup # 変更点
   
   # NAの項目名を修正
   result[is.na(result[,1]),1] <- "未入力または未取得"
@@ -403,22 +417,29 @@ DetailSum <- function(df, master){
 # 引数：df (データフレーム)
 # 返値：df (リネーム後のデータフレーム)
 # 履歴：2025.07.22 Agata.K 作成 
+#       2026.04.27 Agata.K 修正（一つずつ記載するのが面倒になったので、区分追加に伴いコード修正）
 # 備考：
 #--------------------------------
 rename_age_cols <- function(df){
   
-  # 「-」を含む一般的な年代カラムをリネーム
-  general_age_cols <- c("0-14", "15-19", "20-29", "30-39")
-  cols_to_change <- intersect(names(df), general_age_cols)
+  # 「数字-数字」の形式に「歳」を付与
+  names(df) <- gsub("^(\\d+-\\d+)$", "\\1歳", names(df))
   
-  if (length(cols_to_change) > 0) {
-    names(df)[match(cols_to_change, names(df))] <- paste0(cols_to_change, "歳")
-  }
+  # 「90-」を「90歳以上」に変更
+  names(df) <- gsub("90-", "90歳以上", names(df))
+  
+  # 「-」を含む一般的な年代カラムをリネーム
+  #general_age_cols <- c("0-14", "15-19", "20-29", "30-39")
+  #cols_to_change <- intersect(names(df), general_age_cols)
+  
+  #if (length(cols_to_change) > 0) {
+  #  names(df)[match(cols_to_change, names(df))] <- paste0(cols_to_change, "歳")
+  #}
   
   # 「40-」カラムが存在すればリネーム
-  if ("40-" %in% names(df)) {
-    names(df)[names(df) == "40-"] <- "40歳以上"
-  }
+  #if ("40-" %in% names(df)) {
+  #  names(df)[names(df) == "40-"] <- "40歳以上"
+  #}
   
   return(df)
 }
@@ -493,7 +514,6 @@ cat(paste0(
 
 disease_detail <- lapply(1:nrow(detail_diag), function(i){
   
-  # マスターで一つ前の集計対象に絞り込んだ上で、さらに詳細を集計する場合の処理
   if (detail_diag$field[i] != "MHDECOD" && detail_diag$field[i] != "group_code" && detail_diag$field[i] != "-") {
     # detail_diagのfieldが上記でない行は、1つ上の行に集計する対象疾患があるので、まずは絞り込む
     df <- DfFiltering(df, detail_diag[i-1,])
@@ -531,14 +551,11 @@ disease_detail <- lapply(1:nrow(detail_diag), function(i){
       filter(id == i) %>%
       select(detail, id)
     
-    # 0埋めした年代と合計の列を追加
+    # 0埋めした年代と合計の列を追加（ここも年齢区分の修正 2026.04.28 Agata,K）
     result <- result %>% mutate(
-      `0-14歳` = 0,
-      `15-19歳` = 0,
-      `20-29歳` = 0,
-      `30-39歳` = 0,
-      `40歳以上` = 0,
-      `合計` = 0
+      `0-9歳` = 0, `10-19歳` = 0, `20-29歳` = 0, `30-39歳` = 0,
+      `40-49歳` = 0, `50-59歳` = 0, `60-69歳` = 0, `70-79歳` = 0,
+      `80-89歳` = 0, `90歳以上` = 0, `合計` = 0
     )
     return(result)
   }

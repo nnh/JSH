@@ -8,6 +8,7 @@
 # 2024/10/23 2024年度集計(Agata.K)
 # 2025/07/25 2025年度集計（Agata.K）
 # 2025/08/20 2025年度集計・国外削除対応（Agata.K）
+# 2026.04.27 2026年度集計・年齢区分を40歳以上も10歳刻みに修正(Agata.K)
 
 library(tidyverse) # read_csv利用の為のライブラリ(2022/7/28 Agata.K)
 
@@ -15,7 +16,7 @@ date.cutoff <- "20250531" # データ固定日
 kYear <- "2024"           # 集計する診断年
 flag <- 1                 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
 # programを保管しているパス
-prtpath <- "C:/Users/c0002392/work/GIT/JSH/work/JSH_NHOH_JSPHO_nenji"
+prtpath <- "C:/work/R/JSH/成形"
 kToday <- Sys.Date()
 
 # rawdataフォルダ内のファイル読込（tidyverseパッケージのread_csvを使用）(2022/7/28 Agata.K)
@@ -487,13 +488,15 @@ if(flag == 2) {
   # 集計対象年のみ抽出
   dataset.3org_yyyy <- dataset.3org[format(as.Date( dataset.3org$created.date), "%Y%m%d") <= date.cutoff & as.integer(substr(dataset.3org$MHSTDTC, 1, 4)) == kYear, ]
   
-  # 疾患別集計
+  # 疾患別集計（2026.04.27 Agata.K 年齢区分を40歳以上も10歳刻みに修正）
   dxt.dataset.3org.year <- dataset.3org_yyyy
-  dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
-                                                 labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
+  dxt.dataset.3org.year$cat.age.diagnosis <- cut(dxt.dataset.3org.year$age.diagnosis, 
+                                                 breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 150),
+                                                 labels= c("0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-89", "90-"), 
+                                                 right=FALSE)
   by.disease <- xtabs(count ~ MHDECOD + cat.age.diagnosis, data = dxt.dataset.3org.year)
   by.disease.mat <- matrix(by.disease , nrow(by.disease), ncol(by.disease))
-  colnames(by.disease.mat) <- c("0-14", "15-19", "20-29", "30-39", "40-")
+  colnames(by.disease.mat) <- c("0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-89", "90-")
   rownames(by.disease.mat) <- rownames(by.disease)
   sum <- apply(by.disease.mat, 1, sum)
   wip.by.disease <- as.data.frame(cbind(by.disease.mat, sum))
@@ -631,10 +634,12 @@ if(flag == 2) {
   dataset.3org.syousai <- rbind(syousai_jspho, syousai_jsh)
   # dataset.3org.syousai <- rbind(syousai_jspho, syousai_jsh, syousai_nhoh)
   
-  # age diagnosis
+  # age diagnosis（2026.04.27 Agata.K 年齢区分を40歳以上も10歳刻みに修正）
   dataset.3org.syousai$age.diagnosis <- YearDif(dataset.3org.syousai$BRTHDTC, dataset.3org.syousai$MHSTDTC)
-  dataset.3org.syousai$cat.age.diagnosis <- cut(dataset.3org.syousai$age.diagnosis, breaks = c(0, 15, 20, 30, 40, 150),
-                                                labels= c("0-14", "15-19", "20-29", "30-39", "40-"), right=FALSE)
+  dataset.3org.syousai$cat.age.diagnosis <- cut(dataset.3org.syousai$age.diagnosis, 
+                                                breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 150),
+                                                labels= c("0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-89", "90-"), 
+                                                right=FALSE)
   # 集計対象年のみ抽出
   dataset.3org.syousai <- dataset.3org.syousai[format(as.Date(dataset.3org.syousai$created.date), "%Y%m%d") <= date.cutoff & as.integer(substr(dataset.3org.syousai$MHSTDTC, 1, 4)) == kYear, ]
   # WHO分類のCSVをマージする
