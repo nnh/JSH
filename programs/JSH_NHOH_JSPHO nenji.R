@@ -9,24 +9,38 @@
 # 2025/07/25 2025年度集計（Agata.K）
 # 2025/08/20 2025年度集計・国外削除対応（Agata.K）
 # 2026.04.27 2026年度集計・年齢区分を40歳以上も10歳刻みに修正(Agata.K)
+# 2026/08/06 2026年度集計・読み込み方法に問題が判明したため修正（Agata.K）
 
 library(tidyverse) # read_csv利用の為のライブラリ(2022/7/28 Agata.K)
 
-date.cutoff <- "20250531" # データ固定日
-kYear <- "2024"           # 集計する診断年
+date.cutoff <- "20260531" # データ固定日
+kYear <- "2025"           # 集計する診断年
 flag <- 1                 # WHO2016で集計する場合は1を入力、WHO2008で集計する集計する場合は2を入力
 # programを保管しているパス
 prtpath <- "C:/work/R/JSH/成形"
 kToday <- Sys.Date()
 
-# rawdataフォルダ内のファイル読込（tidyverseパッケージのread_csvを使用）(2022/7/28 Agata.K)
+# rawdataフォルダ内のファイル読込
+# ファイル読みこみ方法に問題が判明し、修正（2026/08/06 Agata.K）
 rawdatapath <- paste0(prtpath, "/rawdata/") # DLデータ保管フォルダ
-jspho_rgst <- read_csv(paste0(rawdatapath, "JSPHO_registration_250725_0923.csv")) # JSPHOのDLデータ読込
-jspho_outcome <- read_csv(paste0(rawdatapath, "JSPHO_220722_1533.csv"))
+jspho_rgst <- read_csv(paste0(rawdatapath, "JSPHO_registration_260722_1416.csv"), guess_max = Inf) # JSPHOのDLデータ読込
+jspho_outcome <- read_csv(paste0(rawdatapath, "JSPHO_220722_1533.csv"), guess_max = Inf)
 
-jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_250703_1520.csv"))         # JSHのDLデータ読込
-jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_250703_1520.csv"))
-jsh_outcome <- read_csv(paste0(rawdatapath, "JSH_220701_0827.csv"))
+jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_260709_1454.csv"), guess_max = Inf)         # JSHのDLデータ読込
+jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_260709_1454.csv"), guess_max = Inf)
+jsh_outcome <- read_csv(paste0(rawdatapath, "JSH_220701_0827.csv"), guess_max = Inf)
+
+# tidyverseパッケージのread_csvを使用(2022/7/28 Agata.K)
+# jspho_rgst <- read_csv(paste0(rawdatapath, "JSPHO_registration_260722_1416.csv")) # JSPHOのDLデータ読込
+# jspho_outcome <- read_csv(paste0(rawdatapath, "JSPHO_220722_1533.csv"))
+# 
+# jsh_report <- read_csv(paste0(rawdatapath, "JSH_report_260709_1454.csv"))         # JSHのDLデータ読込
+# jsh.rgst <- read_csv(paste0(rawdatapath, "JSH_registration_260709_1454.csv"))
+# jsh_outcome <- read_csv(paste0(rawdatapath, "JSH_220701_0827.csv"))
+
+# nhoh_report <- read_csv(paste0(rawdatapath, "NHOH_report_230703_1201.csv"))       # NHOHのDLデータ読込
+# nhoh.rgst <- read_csv(paste0(rawdatapath, "NHOH_registration_230703_1201.csv"))
+# nhoh_outcome <- read_csv(paste0(rawdatapath, "NHOH_220701_1207.csv"))
 
 # nhoh_report <- read_csv(paste0(rawdatapath, "NHOH_report_230703_1201.csv"))       # NHOHのDLデータ読込
 # nhoh.rgst <- read_csv(paste0(rawdatapath, "NHOH_registration_230703_1201.csv"))
@@ -98,7 +112,7 @@ Sys.setlocale("LC_TIME", "C") #必須：日本時間にコンピュータ設定�
 
 # (2024年診断のみ以下特記対応)2025.07.23 Agata.K
 # シート作成時施設コードを変更する（338900010→338903089）
-jsh_report$シート作成時施設コード[jsh_report$シート作成時施設コード == '338900010'] <- '338903089'
+# jsh_report$シート作成時施設コード[jsh_report$シート作成時施設コード == '338900010'] <- '338903089'
 ############################################################
 
 # JSPHOについて、「初発時住所＝国外」は削除
@@ -423,6 +437,9 @@ jsh.2 <- m.jsh[as.integer(substr(m.jsh$診断年月日, 1, 4)) > 2011 & as.integ
                  "name_ja", "生年月日", "診断年月日", "STUDYID")]
 colnames(jsh.2)[1:12] <- c("created.date", "SUBJID", "SEX", "SCSTRESC", "DTHFL", "DTHDTC", "DSSTDTC", "SITEID", "MHDECOD", "MHTERM",
                            "BRTHDTC", "MHSTDTC")
+
+# # ★★★ ここにデバッグ用のコードを挿入！ ★★★
+# write.csv(m.jsh, paste0(prtpath, "/output/debug_mjsh.csv"), row.names = F, fileEncoding = "CP932")
 
 # BRTHDTC, MHSTDTCが逆転している症例を除く
 jsh_reverse_dropout <- nrow(jsh.2[is.na(jsh.2$BRTHDTC) | as.integer(format(as.Date(jsh.2$MHSTDTC), "%Y%m%d")) - as.integer(format(as.Date(jsh.2$BRTHDTC), "%Y%m%d")) < 0, ]) # dropoutした人数
